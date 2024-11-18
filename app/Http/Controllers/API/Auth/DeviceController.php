@@ -90,6 +90,9 @@ class DeviceController extends Controller
      */
     protected function sendDestroyResponse($model)
     {
-        return response()->json('', 204);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Delete device token success'
+        ], 200);
     }
 }

@@ -143,6 +143,7 @@ class LoginController extends Controller
             200
         );
     }
+
     private function storeDeviceToken(User $user, string $token)
     {
         $device = $user->devices()->whereToken($token)->first();
