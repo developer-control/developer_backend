@@ -54,6 +54,16 @@ class LoginController extends Controller
                 200
             );
         }
+        if (!$user->hasRole('user')) {
+            return response()->json(
+                [
+                    'status' => 'failed',
+                    'message' => 'You have no access token',
+                    'data' => null,
+                ],
+                200
+            );
+        }
         if ($request->device_token) {
             $this->storeDeviceToken($user, $request->device_token);
         }
@@ -87,18 +97,18 @@ class LoginController extends Controller
             ]
         );
         if ($user->wasRecentlyCreated) {
-            // $user->assignRole('user');
+            $user->assignRole('user');
         } else {
-            // if (!$user->hasRole('user')) {
-            //     return response()->json(
-            //         [
-            //             'status' => 'failed',
-            //             'message' => 'You have no access token',
-            //             'data' => null,
-            //         ],
-            //         200
-            //     );
-            // }
+            if (!$user->hasRole('user')) {
+                return response()->json(
+                    [
+                        'status' => 'failed',
+                        'message' => 'You have no access token',
+                        'data' => null,
+                    ],
+                    200
+                );
+            }
         }
         if ($request->device_token) {
             $this->storeDeviceToken($user, $request->device_token);
