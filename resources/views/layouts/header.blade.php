@@ -3,14 +3,15 @@
 <link rel="apple-touch-icon" sizes="76x76" href="{{ url('/') }}/assets/soft-ui/img/apple-icon.png">
 <link rel="icon" type="image/png" href="{{ url('/') }}/assets/soft-ui/img/favicon.png">
 <title>{{ $title }}</title>
-
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <!--     Fonts and icons     -->
 <link href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700,800" rel="stylesheet" />
 <!-- Nucleo Icons -->
 <link href="{{ url('/') }}/assets/soft-ui/css/nucleo-icons.css" rel="stylesheet" />
 <link href="{{ url('/') }}/assets/soft-ui/css/nucleo-svg.css" rel="stylesheet" />
-<!-- Font Awesome Icons -->
-<script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+<!-- Font Awesome -->
+<link rel="stylesheet" href="{{ url('/') }}/assets/fontawesome-free/css/all.min.css">
+
 <!-- CSS Files -->
 <link id="pagestyle" href="{{ url('/') }}/assets/soft-ui/css/soft-ui-dashboard.min.css" rel="stylesheet" />
 <!-- Nepcha Analytics (nepcha.com) -->
