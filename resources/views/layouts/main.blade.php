@@ -7,6 +7,7 @@
 </head>
 
 <body class="g-sidenav-show  bg-gray-100">
+    @include('sweetalert::alert')
     @include('layouts.sidebar', [
         'menu' => @$menu ?? 'dashboard',
         'submenu' => @$submenu ?? '',

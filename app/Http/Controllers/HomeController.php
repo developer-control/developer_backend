@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+// use RealRashid\SweetAlert\Facades\Alert;
 
 class HomeController extends Controller
 {
+
     /**
      * Create a new controller instance.
      *
@@ -23,6 +25,8 @@ class HomeController extends Controller
      */
     public function index()
     {
+        // Alert::success('Success Title', 'Success Message');
+        toast('Your Post as been submited!', 'info');
         return view('home');
     }
 }
