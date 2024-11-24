@@ -11,10 +11,14 @@
 <link href="{{ url('/') }}/assets/soft-ui/css/nucleo-svg.css" rel="stylesheet" />
 <!-- Font Awesome -->
 <link rel="stylesheet" href="{{ url('/') }}/assets/fontawesome/css/all.min.css">
-<script src="{{ url('/') }}/assets/fontawesome/js/all.min.css"></script>
+<script src="{{ url('/') }}/assets/fontawesome/js/all.min.js"></script>
 
 <!-- CSS Files -->
 <link id="pagestyle" href="{{ url('/') }}/assets/soft-ui/css/soft-ui-dashboard.min.css" rel="stylesheet" />
 <!-- Nepcha Analytics (nepcha.com) -->
 <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
 {{-- <script defer data-site="{{ url('/') }}" src="https://api.nepcha.com/js/nepcha-analytics.js"></script> --}}
+
+<style>
+
+</style>

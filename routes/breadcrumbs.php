@@ -13,7 +13,7 @@ Breadcrumbs::for('home', function (BreadcrumbTrail $trail) {
     $trail->push('Home', route('home'));
 });
 
-// Home > setting_role
+// Home > master_role
 Breadcrumbs::for('master_role', function (BreadcrumbTrail $trail) {
     $trail->parent('home');
     $trail->push('Setting Role Access', route('master_role'));
