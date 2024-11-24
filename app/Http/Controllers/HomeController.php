@@ -26,7 +26,7 @@ class HomeController extends Controller
     public function index()
     {
         // Alert::success('Success Title', 'Success Message');
-        toast('Your Post as been submited!', 'info');
+        // toast('Your Post as been submited!', 'info');
         return view('home');
     }
 }

@@ -1,5 +1,8 @@
-@extends('layouts.main')
+@extends('layouts.main', ['main_menu' => 'access_user', 'menu' => 'master_role'])
 @section('style')
+@endsection
+@section('page-title')
+    Master Role
 @endsection
 @section('content')
     <div class="container-fluid py-4">

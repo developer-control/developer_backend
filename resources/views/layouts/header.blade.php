@@ -10,7 +10,8 @@
 <link href="{{ url('/') }}/assets/soft-ui/css/nucleo-icons.css" rel="stylesheet" />
 <link href="{{ url('/') }}/assets/soft-ui/css/nucleo-svg.css" rel="stylesheet" />
 <!-- Font Awesome -->
-<link rel="stylesheet" href="{{ url('/') }}/assets/fontawesome-free/css/all.min.css">
+<link rel="stylesheet" href="{{ url('/') }}/assets/fontawesome/css/all.min.css">
+<script src="{{ url('/') }}/assets/fontawesome/js/all.min.css"></script>
 
 <!-- CSS Files -->
 <link id="pagestyle" href="{{ url('/') }}/assets/soft-ui/css/soft-ui-dashboard.min.css" rel="stylesheet" />

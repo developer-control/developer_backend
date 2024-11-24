@@ -7,9 +7,9 @@
           }],
           ["bold", "italic"],
           ["clean"],
-          [{
-              'align': []
-          }],
+        //   [{
+        //       'align': []
+        //   }],
           [{
               'list': 'ordered'
           }, {
@@ -23,6 +23,7 @@
 
       var quill = new Quill("#quill-editor", {
           theme: "snow",
+          placeholder: 'Please Input Your Content...',
           modules: {
               toolbar: {
                   container: fullToolbarOptions
@@ -33,7 +34,7 @@
                           const formData = new FormData();
                           formData.append("image", file);
 
-                          fetch("/store-article-image", {
+                          fetch("/images/article-image", {
                                   method: "POST",
                                   body: formData,
                                   headers: {
@@ -55,9 +56,12 @@
                   }
               }
           }
+         
       });
       quill.on('text-change', function() {
-          console.log(quill.root.innerHTML);
+        document.getElementById('quill-content').value=quill.root.innerHTML;
+        // $('#quill-content').text(quill.root.innerHTML);
+        //   console.log(quill.root.innerHTML);
       });
       // console.log(quill);
   });
