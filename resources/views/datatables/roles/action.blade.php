@@ -10,8 +10,10 @@
                 data-developer_id="{{ $role->developer_id }}"><i class="fas fa-edit me-3"></i> Edit</button>
         </li>
         <li>
-            <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-delete"> <i
-                    class="fas fa-trash me-3"></i> Delete</button>
+            <button class="dropdown-item delete-modal" data-bs-toggle="modal" data-bs-target="#modal-delete"
+                data-url="{{ route('delete_role', ['id' => $role->id]) }}" data-name="{{ $role->name }}"> <i
+                    class="fas fa-trash me-3"></i>
+                Delete</button>
         </li>
     </ul>
 </div>

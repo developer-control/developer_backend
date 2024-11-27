@@ -98,32 +98,6 @@
         </div>
     </div>
     <!-- End Modal Create-->
-    <!-- Modal Delete-->
-    <div class="modal fade" id="modal-delete" tabindex="-1" role="dialog" aria-labelledby="modal-notification"
-        aria-hidden="true">
-        <div class="modal-dialog modal-danger modal-dialog-centered modal-" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="modal-title-notification">Your attention is required</h6>
-                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="py-3 text-center">
-                        <i class="fas fa-exclamation-circle ni-3x"></i>
-                        <h4 class="text-gradient text-danger mt-4">Apa Anda Yakin Menghapus Data ini?</h4>
-
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger">Delete</button>
-                    <button type="button" class="btn bg-gradient-info ml-auto" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- End Modal Delete-->
     <!-- Modal Edit-->
     <div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-labelledby="editModalRole"
         aria-hidden="true">
@@ -175,6 +149,38 @@
         </div>
     </div>
     <!-- End Modal Edit-->
+    <!-- Modal Delete-->
+    <div class="modal fade" id="modal-delete" tabindex="-1" role="dialog" aria-labelledby="modal-notification"
+        aria-hidden="true">
+        <div class="modal-dialog modal-danger modal-dialog-centered modal-" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="modal-title-notification">Your attention is required</h6>
+                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="py-3 text-center">
+                        <i class="fas fa-exclamation-circle ni-3x"></i>
+                        <h4 class="text-gradient text-danger mt-4 " id="delete-text">Apa Anda Yakin Menghapus Data ini?
+                        </h4>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <form action="" method="POST" id="delete-form">
+                        @csrf
+                        @method('delete')
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                        <button type="button" class="btn bg-gradient-info ml-auto"
+                            data-bs-dismiss="modal">Close</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Modal Delete-->
 @endsection
 @section('scripts')
     <script src="{{ url('/') }}/assets/src/plugins/datatables/js/dataTables.min.js"></script>
@@ -223,6 +229,12 @@
             $("#role-name").val(name);
             $("#developer_id").val(developer_id);
             $('#edit-form').attr('action', url);
+        });
+        $(document).on("click", ".delete-modal", function() {
+            let url = $(this).data('url');
+            let name = $(this).data('name');
+            $("#delete-text").html(`Apa anda yakin menghapus role ${name}?`);
+            $('#delete-form').attr('action', url);
         });
     </script>
 @endsection

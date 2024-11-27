@@ -33,4 +33,5 @@ Route::group(['prefix' => 'access-users'], function () {
     Route::get('/role-datatable', [RolePermissionController::class, 'roleDatatable']);
     Route::post('/role/create', [RolePermissionController::class, 'store'])->name('store_role');
     Route::post('/role/update/{id}', [RolePermissionController::class, 'update'])->name('update_role');
+    Route::delete('/role/delete/{id}', [RolePermissionController::class, 'destroy'])->name('delete_role');
 });

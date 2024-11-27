@@ -81,10 +81,6 @@ class RolePermissionController extends Controller
 
     public function update(StoreRoleRequest $request, string $id)
     {
-        // if ($request->developer_id) {
-        //     $developer = Developer::find($request->developer_id);
-        //     $name = @$developer ? $request->name . ' ' . $developer->name : $request->name;
-        // }
         $role = Role::find($id);
         $role->developer_id = $request->developer_id;
         $role->name = $request->name;
@@ -94,10 +90,20 @@ class RolePermissionController extends Controller
         return back();
     }
 
+    /**
+     * delete role access master
+     * 
+     * @param  string $id
+     * @return \Illuminate\Http\Response
+     * 
+     */
     public function destroy(string $id)
     {
         $role = Role::find($id);
-        $role->syncPermissions([]);
+        // Hapus semua relasi dengan user dan permission
+        $role->users()->detach();        // Hapus relasi dengan user
+        $role->permissions()->detach();  // Hapus relasi dengan permission
+        $role->delete();
         toast('Role has been deleted', 'success');
         return back();
     }
