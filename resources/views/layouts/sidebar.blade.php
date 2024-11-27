@@ -136,7 +136,7 @@
                 <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Master</h6>
             </li>
             <li class="nav-item">
-                <a class="nav-link dropdown-toggle dropdown-toggle @if (@$main_menu == 'access_user') active @endif"
+                <a class="nav-link dropdown-toggle dropdown-toggle @if (@$menu == 'access_user') active @endif"
                     id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -144,10 +144,10 @@
                     </div>
                     <span class="nav-link-text ms-1">Access User</span>
                 </a>
-                <ul class="dropdown-menu bg-transparent mt-0 @if (@$main_menu == 'access_user') show @endif"
+                <ul class="dropdown-menu bg-transparent mt-0 @if (@$menu == 'access_user') show @endif"
                     aria-labelledby="dropdownMenuButton">
                     <li class="nav-item">
-                        <a class="nav-link @if (@$menu == 'master_role') active @endif"
+                        <a class="nav-link @if (@$submenu == 'master_role') active @endif"
                             href="{{ route('master_role') }}">
                             <span class="fas fa-dot-circle ms-2 me-4"></span>
                             <span class="nav-link-text ms-1">Master Role</span>

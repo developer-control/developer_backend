@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Master;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreRoleRequest;
+use App\Models\Developer;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
@@ -10,22 +13,92 @@ use Yajra\DataTables\Facades\DataTables;
 
 class RolePermissionController extends Controller
 {
+
     public function __construct()
     {
         $this->middleware('auth');
     }
+
+    /**
+     * Display page Role Access Master.
+     */
     public function index()
     {
-        return view('pages.master.role');
+        $developers = Developer::all();
+        return view('pages.master.roles.index', compact('developers'));
     }
+
+    /**
+     * get datatable resource for role access master.
+     */
     public function roleDatatable(Request $request)
     {
+        $user = User::find(Auth::user()->id);
         $roles = Role::query();
-        if (!Auth::user()->hasRole('superadmin')) {
+        if (!$user->hasRole('superadmin')) {
             $roles->where('developer_id', Auth::user()->developer_id);
         }
         return DataTables::eloquent($roles)
+            ->addColumn('action', function (Role $role) {
+                $btn = view('datatables.roles.action', compact('role'))->render();
+                return $btn;
+            })
             ->addIndexColumn()
             ->toJson();
+    }
+
+    /**
+     * store new role access master
+     * 
+     * @param  StoreRoleRequest  $request
+     * @return \Illuminate\Http\Response
+     * 
+     */
+
+    public function store(StoreRoleRequest $request)
+    {
+        if ($request->developer_id) {
+            $developer = Developer::find($request->developer_id);
+            $name = @$developer ? $request->name . ' ' . $developer->name : $request->name;
+        }
+        $role = Role::create([
+            'developer_id' => $request->developer_id,
+            'name' => @$name ?? $request->name,
+            'guard_name' => 'web',
+        ]);
+        toast('New role has been created', 'success');
+        return back();
+    }
+
+    /**
+     * update role access master
+     * 
+     * @param  StoreRoleRequest  $request
+     * @param  string $id
+     * @return \Illuminate\Http\Response
+     * 
+     */
+
+    public function update(StoreRoleRequest $request, string $id)
+    {
+        // if ($request->developer_id) {
+        //     $developer = Developer::find($request->developer_id);
+        //     $name = @$developer ? $request->name . ' ' . $developer->name : $request->name;
+        // }
+        $role = Role::find($id);
+        $role->developer_id = $request->developer_id;
+        $role->name = $request->name;
+        $role->save();
+
+        toast('New role has been updated', 'success');
+        return back();
+    }
+
+    public function destroy(string $id)
+    {
+        $role = Role::find($id);
+        $role->syncPermissions([]);
+        toast('Role has been deleted', 'success');
+        return back();
     }
 }

@@ -18,3 +18,9 @@ Breadcrumbs::for('master_role', function (BreadcrumbTrail $trail) {
     $trail->parent('home');
     $trail->push('Setting Role Access', route('master_role'));
 });
+
+// master_role > create_role
+Breadcrumbs::for('create_role', function (BreadcrumbTrail $trail) {
+    $trail->parent('master_role');
+    $trail->push('Create Role Access', route('create_role'));
+});

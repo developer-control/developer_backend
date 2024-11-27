@@ -7,6 +7,7 @@
 </head>
 
 <body>
+    @include('sweetalert::alert')
     @yield('content')
 
     <footer class="footer py-5">

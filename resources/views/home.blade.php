@@ -1,4 +1,4 @@
-@extends('layouts.main', ['menu' => 'home'])
+@extends('layouts.main', ['menu' => 'home', 'breadcrumb' => 'home'])
 @section('style')
     <!-- Theme included stylesheets -->
     {{-- <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet"> --}}

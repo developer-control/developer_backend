@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -36,5 +37,29 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
         $this->middleware('auth')->only('logout');
+    }
+    /**
+     * proses pemisahan akses halaman berdasarkan role
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param model $user
+     * @return void
+     */
+    public function authenticated(Request $request, $user)
+    {
+        if (
+            $user->hasRole('user')
+        ) {
+            $this->logout($request);
+            toast('you don\'t have acces this page', 'error');
+            return back();
+        }
+
+        if ($user->agent && @$user->agent->status != 'approve') {
+            $this->doLogout($request);
+            return redirect('/');
+        }
+        return redirect()->intended();
+        // return redirect()->route('home');
     }
 }

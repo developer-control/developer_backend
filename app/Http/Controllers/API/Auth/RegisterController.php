@@ -10,33 +10,25 @@ use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
 {
+
+    /**
+     * Register User Account.
+     * 
+     * Handle a register user from api
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+
     public function register(Request $request)
     {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'name' => 'required',
-                'email' => 'required|email|unique:users',
-                'password' => 'required|confirmed',
-                'password_confirmation' => 'required',
-            ],
-            $messages = [
-                'required' => 'The :attribute field is required.',
-                'email' => 'Email is not valid.',
-                'unique' => 'Email has been registered.',
-            ]
-        );
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|confirmed',
+            'password_confirmation' => 'required',
+        ]);
 
-        if ($validator->fails()) {
-            $error = $validator->errors()->first();
-            return response()->json(
-                [
-                    'status' => 'failed',
-                    'message' => $error,
-                ],
-                200
-            );
-        }
 
         $user = User::create([
             'name' => $request->name,
@@ -51,7 +43,7 @@ class RegisterController extends Controller
                 'message' =>
                 'Register success, please check your email to verified your account.',
             ],
-            200
+            201
         );
     }
 }

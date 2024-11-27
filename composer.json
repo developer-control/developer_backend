@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "dedoc/scramble": "^0.11.28",
         "diglactic/laravel-breadcrumbs": "^9.0",
         "intervention/image": "^3.9",
         "laravel/framework": "^11.9",

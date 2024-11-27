@@ -31,4 +31,6 @@ Route::group(['prefix' => 'images'], function () {
 Route::group(['prefix' => 'access-users'], function () {
     Route::get('/role', [RolePermissionController::class, 'index'])->name('master_role');
     Route::get('/role-datatable', [RolePermissionController::class, 'roleDatatable']);
+    Route::post('/role/create', [RolePermissionController::class, 'store'])->name('store_role');
+    Route::post('/role/update/{id}', [RolePermissionController::class, 'update'])->name('update_role');
 });

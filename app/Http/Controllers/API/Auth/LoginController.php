@@ -12,33 +12,21 @@ use Laravel\Socialite\Facades\Socialite;
 class LoginController extends Controller
 {
     /**
+     * Login by Email.
+     * 
      * Handle a login auth request to the api.
      *
      * @param  string  $provider
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function login(Request $request)
     {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'email' => 'required|email',
-                'password' => 'required',
-                'device_name' => 'required',
-            ]
-        );
-
-        if ($validator->fails()) {
-            $error = $validator->errors()->first();
-            return response()->json(
-                [
-                    'status' => 'failed',
-                    'message' => $error,
-                ],
-                200
-            );
-        }
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+            'device_name' => 'required',
+        ]);
 
         // getting user
         $user = User::where('email', $request->email)->first();
@@ -47,21 +35,21 @@ class LoginController extends Controller
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json(
                 [
-                    'status' => 'failed',
+                    'status' => 'unprocessable entity',
                     'message' => 'Email or password is incorrect.',
                     'data' => null,
                 ],
-                200
+                422
             );
         }
         if (!$user->hasRole('user')) {
             return response()->json(
                 [
-                    'status' => 'failed',
+                    'status' => 'forbidden',
                     'message' => 'You have no access token',
                     'data' => null,
                 ],
-                200
+                403
             );
         }
         if ($request->device_token) {
@@ -72,11 +60,13 @@ class LoginController extends Controller
     }
 
     /**
+     * Login By Google.
+     * 
      * Handle a login by provider request to the api.
      *
      * @param  string  $provider
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function loginProvider(string $provider, Request $request)
     {
@@ -102,11 +92,11 @@ class LoginController extends Controller
             if (!$user->hasRole('user')) {
                 return response()->json(
                     [
-                        'status' => 'failed',
+                        'status' => 'forbidden',
                         'message' => 'You have no access token',
                         'data' => null,
                     ],
-                    200
+                    403
                 );
             }
         }
@@ -115,11 +105,15 @@ class LoginController extends Controller
         }
         return $this->sendResponseLogin($user, $request);
     }
+
+
     /**
+     * Logout.
+     * 
      * Handle a logout request to the api.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function logout(Request $request)
     {
@@ -134,7 +128,7 @@ class LoginController extends Controller
                         'message' => 'Logout failed, please check your connection',
                         'data' => null,
                     ],
-                    200
+                    409
                 );
             }
         }
