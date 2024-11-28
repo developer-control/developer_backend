@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\Auth;
 
+use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -16,6 +17,7 @@ class RegisterController extends Controller
      * 
      * Handle a register user from api
      *
+     * @unauthenticated
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -37,13 +39,6 @@ class RegisterController extends Controller
         ]);
         // $user->assignRole('user');
         $user->sendEmailVerificationNotification();
-        return response()->json(
-            [
-                'status' => 'success',
-                'message' =>
-                'Register success, please check your email to verified your account.',
-            ],
-            201
-        );
+        return ApiResponse::success(null, 'Register success, please check your email to verified your account.', 201);
     }
 }

@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 use Laravel\Socialite\Facades\Socialite;
+use App\Helpers\ApiResponse;
 
 class LoginController extends Controller
 {
@@ -15,7 +15,8 @@ class LoginController extends Controller
      * Login by Email.
      * 
      * Handle a login auth request to the api.
-     *
+     * @unauthenticated
+     *  
      * @param  string  $provider
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
@@ -33,30 +34,19 @@ class LoginController extends Controller
 
         // checking credentials
         if (!$user || !Hash::check($request->password, $user->password)) {
-            return response()->json(
-                [
-                    'status' => 'unprocessable entity',
-                    'message' => 'Email or password is incorrect.',
-                    'data' => null,
-                ],
-                422
-            );
+            return ApiResponse::error('Email or password is incorrect', 422);
         }
         if (!$user->hasRole('user')) {
-            return response()->json(
-                [
-                    'status' => 'forbidden',
-                    'message' => 'You have no access token',
-                    'data' => null,
-                ],
-                403
-            );
+            return ApiResponse::error('You have no access token', 403);
         }
         if ($request->device_token) {
             $this->storeDeviceToken($user, $request->device_token);
         }
         // Returning response
-        return $this->sendResponseLogin($user, $request);
+        $data = [
+            'token' => $user->createToken($request->device_name)->plainTextToken
+        ];
+        return ApiResponse::success($data, 'Login Success.');
     }
 
     /**
@@ -64,6 +54,7 @@ class LoginController extends Controller
      * 
      * Handle a login by provider request to the api.
      *
+     * @unauthenticated
      * @param  string  $provider
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
@@ -90,20 +81,16 @@ class LoginController extends Controller
             $user->assignRole('user');
         } else {
             if (!$user->hasRole('user')) {
-                return response()->json(
-                    [
-                        'status' => 'forbidden',
-                        'message' => 'You have no access token',
-                        'data' => null,
-                    ],
-                    403
-                );
+                return ApiResponse::error('You have no access token', 402);
             }
         }
         if ($request->device_token) {
             $this->storeDeviceToken($user, $request->device_token);
         }
-        return $this->sendResponseLogin($user, $request);
+        $data = [
+            'token' => $user->createToken($request->device_name)->plainTextToken
+        ];
+        return ApiResponse::success($data, 'Login Success.');
     }
 
 
@@ -122,14 +109,7 @@ class LoginController extends Controller
                 $model = $request->user()->devices()->firstWhere('token', $request->device_token);
                 optional($model)->delete();
             } catch (\Throwable $th) {
-                return response()->json(
-                    [
-                        'status' => 'failed',
-                        'message' => 'Logout failed, please check your connection',
-                        'data' => null,
-                    ],
-                    409
-                );
+                return ApiResponse::error('Logout failed, please check your connection', 409);
             }
         }
 
@@ -138,14 +118,7 @@ class LoginController extends Controller
             ->currentAccessToken()
             ->delete();
 
-        return response()->json(
-            [
-                'status' => 'success',
-                'message' => 'Logout success.',
-                'data' => null,
-            ],
-            200
-        );
+        return ApiResponse::success(null, 'Logout success.', 200);
     }
 
     private function storeDeviceToken(User $user, string $token)
@@ -158,19 +131,5 @@ class LoginController extends Controller
                 'token' => $token
             ]);
         }
-    }
-
-    private function sendResponseLogin(User $user, Request $request)
-    {
-        return response()->json(
-            [
-                'status' => 'success',
-                'message' => 'Login success.',
-                'data' => [
-                    'token' => $user->createToken($request->device_name)->plainTextToken
-                ],
-            ],
-            200
-        );
     }
 }

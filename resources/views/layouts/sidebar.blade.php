@@ -59,6 +59,35 @@
                     </ul>
                 </a> --}}
             </li>
+            <li class="nav-item">
+                <a class="nav-link dropdown-toggle dropdown-toggle @if (@$menu == 'location') active @endif"
+                    id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div
+                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <span class="fas fa-globe-asia fx-6"></span>
+                    </div>
+                    <span class="nav-link-text ms-1">Location</span>
+                </a>
+                <ul class="dropdown-menu bg-transparent mt-0 @if (@$menu == 'location') show @endif"
+                    aria-labelledby="dropdownMenuButton">
+                    <li class="nav-item">
+                        <a class="nav-link @if (@$submenu == 'location_province') active @endif"
+                            href="{{ route('location_province') }}">
+                            <span class="fas fa-dot-circle ms-2 me-4"></span>
+                            <span class="nav-link-text ms-1">Province</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @if (@$submenu == 'location_city') active @endif"
+                            href="{{ route('location_province') }}">
+                            <span class="fas fa-dot-circle ms-2 me-4"></span>
+                            <span class="nav-link-text ms-1">City</span>
+                        </a>
+                    </li>
+
+                </ul>
+
+            </li>
             <li class="nav-item mt-3">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Account pages</h6>
             </li>
@@ -100,7 +129,8 @@
                             xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                             <title>document</title>
                             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                <g transform="translate(-1870.000000, -591.000000)" fill="#FFFFFF" fill-rule="nonzero">
+                                <g transform="translate(-1870.000000, -591.000000)" fill="#FFFFFF"
+                                    fill-rule="nonzero">
                                     <g transform="translate(1716.000000, 291.000000)">
                                         <g transform="translate(154.000000, 300.000000)">
                                             <path class="color-background opacity-6"

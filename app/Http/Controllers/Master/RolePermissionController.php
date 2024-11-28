@@ -16,7 +16,7 @@ class RolePermissionController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth', 'role_or_permission:superadmin|view role']);
     }
 
     /**
@@ -24,8 +24,8 @@ class RolePermissionController extends Controller
      */
     public function index()
     {
-        $developers = Developer::all();
-        return view('pages.master.roles.index', compact('developers'));
+        // $developers = Developer::all();
+        return view('pages.master.roles.index');
     }
 
     /**
@@ -86,7 +86,7 @@ class RolePermissionController extends Controller
         $role->name = $request->name;
         $role->save();
 
-        toast('New role has been updated', 'success');
+        toast('Role has been updated', 'success');
         return back();
     }
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Helpers\ApiResponse;
 
 class DeviceController extends Controller
 {
@@ -29,7 +30,7 @@ class DeviceController extends Controller
             $device = $request->user()->devices()->create($request->all());
         }
 
-        return $this->sendResponse($device);
+        return ApiResponse::success($device, 'Create device token success', 200);
     }
 
     /**
@@ -47,35 +48,6 @@ class DeviceController extends Controller
         $model = $request->user()->devices()->firstWhere('token', $request->token);
 
         optional($model)->delete();
-
-        return $this->sendDestroyResponse($model);
-    }
-
-
-
-
-    /**
-     * Get the response for a successful storing device.
-     *
-     * @param  williamcruzme\FCM\Device  $model
-     * @return \Illuminate\Http\JsonResponse
-     */
-    protected function sendResponse($model)
-    {
-        return response()->json($model);
-    }
-
-    /**
-     * Get the response for a successful deleting device.
-     *
-     * @param  williamcruzme\FCM\Device  $model
-     * @return \Illuminate\Http\JsonResponse
-     */
-    protected function sendDestroyResponse($model)
-    {
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Delete device token success'
-        ], 200);
+        return ApiResponse::success(null, 'Delete device token success', 204);
     }
 }

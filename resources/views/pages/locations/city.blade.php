@@ -1,11 +1,11 @@
-@extends('layouts.main', ['menu' => 'access_user', 'submenu' => 'master_role', 'breadcrumb' => 'master_role'])
+@extends('layouts.main', ['menu' => 'location', 'submenu' => 'location_city', 'breadcrumb' => 'location_city'])
 @section('style')
     <link rel="stylesheet" href="{{ url('/') }}/assets/src/plugins/datatables/css/dataTables.bootstrap5.css">
     <link rel="stylesheet" href="{{ url('/') }}/assets/src/plugins/datatables/css/responsive.bootstrap5.css">
     <link rel="stylesheet" href="{{ url('/') }}/assets/choices/css/choices.min.css">
 @endsection
 @section('page-title')
-    Master Role
+    Location City
 @endsection
 @section('content')
     <div class="container-fluid py-4">
@@ -15,12 +15,14 @@
                     <div class="card-header pb-0">
                         <div class="row">
                             <div class="col-md-6">
-                                <h6>Setting Role Access</h6>
+                                <h6>Setting Location City</h6>
                             </div>
                             <div class="col-md-6 text-end">
-                                <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal"
+                                <button type="button" class="btn bg-gradient-primary mx-1" data-bs-toggle="modal"
                                     data-bs-target="#modal-create"><i class="fas fa-plus me-sm-2"></i> Add
-                                    Role</button>
+                                    City</button>
+                                <a href="{{ route('initialize_city') }}" class="btn bg-gradient-primary mx-1"><i
+                                        class="fas fa-location-arrow me-sm-2"></i> Initialize City</a>
                             </div>
                         </div>
                     </div>
@@ -30,11 +32,11 @@
                                 <thead>
                                     <tr>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Name
+                                            Province Name
                                         </th>
                                         <th
                                             class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                            Guard Name
+                                            Name
                                         </th>
                                         <th class="text-secondary text-xs font-weight-bolder opacity-7">Action</th>
                                     </tr>
@@ -53,7 +55,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">New Role</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">New City</h5>
                     <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -62,19 +64,19 @@
                     <div class="modal-body">
                         @csrf
                         <div class="form-group">
-                            <label for="" class="col-form-label">Developer:</label>
-                            <select class="form-select @error('developer_id') is-invalid @enderror" aria-label=""
-                                name="developer_id" id="developer_id">
+                            <label for="" class="col-form-label">Province:</label>
+                            <select class="form-select @error('province_id') is-invalid @enderror" aria-label=""
+                                name="province_id" id="province_id">
                             </select>
-                            @error('developer_id')
+                            @error('province_id')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label for="" class="col-form-label">Role Name:</label>
-                            <input class="form-control @error('name') is-invalid @enderror" placeholder="Role Name..."
+                            <label for="" class="col-form-label">City Name:</label>
+                            <input class="form-control @error('name') is-invalid @enderror" placeholder="City Name..."
                                 type="text" name="name" value="{{ old('name') }}" required>
                             @error('name')
                                 <span class="invalid-feedback" role="alert">
@@ -100,7 +102,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit Role</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Edit City</h5>
                     <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -109,22 +111,22 @@
                     <div class="modal-body">
                         @csrf
                         <div class="form-group">
-                            <label for="" class="col-form-label">Developer:</label>
-                            <select class="form-select @error('developer_id') is-invalid @enderror" aria-label=""
-                                name="developer_id" id="developer_id-edit">
+                            <label for="" class="col-form-label">Province:</label>
+                            <select class="form-select @error('province_id') is-invalid @enderror" aria-label=""
+                                name="province_id" id="province_id-edit">
                                 <option selected value="">Select One..</option>
 
                             </select>
-                            @error('developer_id')
+                            @error('province_id')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label for="role-name" class="col-form-label">Role Name:</label>
-                            <input class="form-control @error('name') is-invalid @enderror" placeholder="Role Name..."
-                                type="text" id="role-name" name="name" value="{{ old('name') }}" required>
+                            <label for="city-name" class="col-form-label">City Name:</label>
+                            <input class="form-control @error('name') is-invalid @enderror" placeholder="City Name..."
+                                type="text" id="city-name" name="name" value="{{ old('name') }}" required>
                             @error('name')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -185,35 +187,36 @@
     <script src="{{ url('/') }}/assets/src/plugins/datatables/js/dataTables.responsive.js"></script>
     <script src="{{ url('/') }}/assets/src/plugins/datatables/js/responsive.bootstrap5.js"></script>
     <script>
-        const optionCreate = document.getElementById('developer_id');
-        const optionEdit = document.getElementById('developer_id-edit');
-        const choiceCreate = initializeChoice(optionCreate, '/api/developers');
-        const choiceEdit = initializeChoice(optionEdit, '/api/developers');
+        const optionCreate = document.getElementById('province_id');
+        const optionEdit = document.getElementById('province_id-edit');
+        const choiceCreate = initializeChoice(optionCreate, '/api/locations/provinces');
+        const choiceEdit = initializeChoice(optionEdit, '/api/locations/provinces');
 
         // Event listener untuk menangani input pencarian
         optionCreate.addEventListener('search', function(event) {
             const query = event.detail.value; // Ambil nilai input dari user
             // if (query.length > 2) { // Jika panjang query lebih dari 2 karakter, lakukan pencarian
-            let url = "/api/developers?search=" + query;
+            let url = "/api/locations/provinces?search=" + query;
             setInputChoices(choiceCreate, url);
             // }
         });
         optionEdit.addEventListener('search', function(event) {
             const query = event.detail.value; // Ambil nilai input dari user
             // if (query.length > 2) { // Jika panjang query lebih dari 2 karakter, lakukan pencarian
-            let url = "/api/developers?search=" + query;
+            let url = "/api/locations/provinces?search=" + query;
             setInputChoices(choiceEdit, url);
             // }
         });
 
         $(function() {
             let columnData = [{
-                    data: 'name',
-                    name: 'name'
+                    data: 'province.name',
+                    name: 'province.name',
+                    // orderable: false,
                 },
                 {
-                    data: 'guard_name',
-                    name: 'guard_name'
+                    data: 'name',
+                    name: 'name'
                 },
                 {
                     data: 'action',
@@ -222,25 +225,25 @@
                     searchable: false
                 }
             ];
-            initializeDatatable('.datatable', "/access-users/role-datatable", columnData)
+            initializeDatatable('.datatable', "/locations/cities/datatable", columnData)
 
         });
         $(document).on("click", ".edit-modal", function() {
             let url = $(this).data('url');
             let name = $(this).data('name');
-            let developer_id = $(this).data('developer_id');
-            let developer_name = $(this).data('developer_name');
-            $("#role-name").val(name);
+            let province_id = $(this).data('province_id');
+            let province_name = $(this).data('province_name');
+            $("#city-name").val(name);
             // set value option developer id
-            setInputChoices(choiceEdit, "/api/developers?search=" + developer_name, developer_id);
-            // choiceEdit.setChoiceByValue(developer_id);
-            // $("#developer_id").val(developer_id);
+            setInputChoices(choiceEdit, "/api/locations/provinces?search=" + province_name, province_id);
+            // choiceEdit.setChoiceByValue(province_id);
+            // $("#province_id").val(province_id);
             $('#edit-form').attr('action', url);
         });
         $(document).on("click", ".delete-modal", function() {
             let url = $(this).data('url');
             let name = $(this).data('name');
-            $("#delete-text").html(`Apa anda yakin menghapus role ${name}?`);
+            $("#delete-text").html(`Apa anda yakin menghapus city ${name}?`);
             $('#delete-form').attr('action', url);
         });
     </script>
