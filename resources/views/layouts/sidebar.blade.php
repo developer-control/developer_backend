@@ -79,7 +79,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @if (@$submenu == 'location_city') active @endif"
-                            href="{{ route('location_province') }}">
+                            href="{{ route('location_city') }}">
                             <span class="fas fa-dot-circle ms-2 me-4"></span>
                             <span class="nav-link-text ms-1">City</span>
                         </a>
