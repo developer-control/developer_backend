@@ -21,12 +21,15 @@ class LocationController extends Controller
      */
     public function indexProvince(Request $request)
     {
-        $limit = $request->limit ?? 10;
+        // $limit = $request->limit ?? 10;
         $provinces = Province::select('id', 'name');
         if ($request->search) {
             $provinces->where('name', 'LIKE', '%' . $request->search . '%');
         }
-        $results = $provinces->limit($limit)->get();
+        if ($request->limit) {
+            $provinces->limit($request->limit);
+        }
+        $results = $provinces->get();
         return ApiResponse::success($results, 'Get Provinces success.');
     }
 
@@ -41,12 +44,15 @@ class LocationController extends Controller
      */
     public function indexCity(Request $request)
     {
-        $limit = $request->limit ?? 10;
+        // $limit = $request->limit ?? 10;
         $cities = City::select('id', 'name');
         if ($request->search) {
             $cities->where('name', 'LIKE', '%' . $request->search . '%');
         }
-        $results = $cities->limit($limit)->get();
+        if ($request->limit) {
+            $cities->limit($request->limit);
+        }
+        $results = $cities->get();
         return ApiResponse::success($results, 'Get Cities success.');
     }
 }

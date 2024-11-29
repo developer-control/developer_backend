@@ -50,6 +50,7 @@ class CityController extends Controller
         toast('Initialize City Success', 'success');
         return back();
     }
+
     /**
      * get datatable resource for role access master.
      */

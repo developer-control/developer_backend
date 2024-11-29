@@ -3,63 +3,91 @@
 namespace App\Http\Controllers\Master;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DeveloperRequest;
+use App\Models\Developer;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class DeveloperController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['auth', 'role_or_permission:superadmin|manage developer']);
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return view('pages.master.developers.index');
     }
 
     /**
-     * Show the form for creating a new resource.
+     * get datatable resource for role access master.
      */
-    public function create()
+    public function developerDatatable(Request $request)
     {
-        //
+
+        $developers = Developer::query();
+
+        return DataTables::eloquent($developers)
+            ->editColumn('province.name', function (Developer $developer) {
+                return @$developer->province->name;
+            })
+            ->addColumn('action', function (Developer $developer) {
+                $btn = view('datatables.developers.action', compact('developer'))->render();
+                return $btn;
+            })
+            ->addIndexColumn()
+            ->toJson();
     }
 
     /**
-     * Store a newly created resource in storage.
+     * store new developer to database
+     * 
+     * @param  DeveloperRequest $request
+     * @return \Illuminate\Http\Response
+     * 
      */
-    public function store(Request $request)
+    public function store(DeveloperRequest $request)
     {
-        //
+        Developer::create([
+            'name' => $request->name,
+        ]);
+        toast('New developer has been created', 'success');
+        return back();
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
+     * 
+     *  @param  DeveloperRequest $request
+     *  @param  string $id
+     *  @return \Illuminate\Http\Response
+     * 
      */
-    public function update(Request $request, string $id)
+    public function update(DeveloperRequest $request, string $id)
     {
-        //
+        $developer = Developer::find($id);
+        $developer->name = $request->name;
+        $developer->save();
+
+        toast('Developer has been updated', 'success');
+        return back();
     }
 
     /**
      * Remove the specified resource from storage.
+     * 
+     * @param  string $id
+     * @return \Illuminate\Http\Response
+     * 
      */
     public function destroy(string $id)
     {
-        //
+        Developer::destroy($id);
+        toast('Developer has been deleted', 'success');
+        return back();
     }
 }

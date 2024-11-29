@@ -7,8 +7,7 @@
         <li>
             <button class="dropdown-item edit-modal" data-bs-toggle="modal" data-bs-target="#modal-edit"
                 data-url="{{ route('update_city', ['id' => $city->id]) }}" data-name="{{ $city->name }}"
-                data-province_id="{{ $city->province_id }}" data-province_name="{{ @$city->province->name }}"><i
-                    class="fas fa-edit me-3"></i> Edit</button>
+                data-province_id="{{ $city->province_id }}"><i class="fas fa-edit me-3"></i> Edit</button>
         </li>
         <li>
             <button class="dropdown-item delete-modal" data-bs-toggle="modal" data-bs-target="#modal-delete"

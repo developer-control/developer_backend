@@ -19,6 +19,17 @@ Breadcrumbs::for('master_role', function (BreadcrumbTrail $trail) {
     $trail->push('Setting Role Access', route('master_role'));
 });
 
+// Home > master_developer
+Breadcrumbs::for('master_developer', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Setting Master Developer', route('master_developer'));
+});
+// Home > menu_project
+Breadcrumbs::for('menu_project', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Data Project', route('menu_project'));
+});
+
 // Home > location_province
 Breadcrumbs::for('location_province', function (BreadcrumbTrail $trail) {
     $trail->parent('home');

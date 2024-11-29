@@ -4,7 +4,9 @@ use App\Http\Controllers\Base\ImageController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Location\CityController;
 use App\Http\Controllers\Location\ProvinceController;
+use App\Http\Controllers\Master\DeveloperController;
 use App\Http\Controllers\Master\RolePermissionController;
+use App\Http\Controllers\Project\ProjectController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -16,9 +18,6 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 /**
  * group route for image
- * 
- * Handle to set device token and delete device token for send notification FCM
- * 
  */
 Route::group(['prefix' => 'images'], function () {
     Route::post('/article-image', [ImageController::class, 'storeArticleImage']);
@@ -26,9 +25,6 @@ Route::group(['prefix' => 'images'], function () {
 
 /**
  * group route for access user setting
- * 
- * Handle to set device token and delete device token for send notification FCM
- * 
  */
 
 Route::group(['prefix' => 'access-users'], function () {
@@ -40,10 +36,28 @@ Route::group(['prefix' => 'access-users'], function () {
 });
 
 /**
+ * group route master developer
+ */
+Route::group(['prefix' => 'developers'], function () {
+    Route::get('/', [DeveloperController::class, 'index'])->name('master_developer');
+    Route::get('/datatable', [DeveloperController::class, 'developerDatatable']);
+    Route::post('/create', [DeveloperController::class, 'store'])->name('store_developer');
+    Route::post('/update/{id}', [DeveloperController::class, 'update'])->name('update_developer');
+    Route::delete('/delete/{id}', [DeveloperController::class, 'destroy'])->name('delete_developer');
+});
+/**
+ * group route master projects
+ */
+Route::group(['prefix' => 'projects'], function () {
+    Route::get('/', [ProjectController::class, 'index'])->name('menu_project');
+    Route::get('/datatable', [ProjectController::class, 'projectDatatable']);
+    Route::post('/create', [ProjectController::class, 'store'])->name('store_project');
+    Route::post('/update/{id}', [ProjectController::class, 'update'])->name('update_project');
+    Route::delete('/delete/{id}', [ProjectController::class, 'destroy'])->name('delete_project');
+});
+
+/**
  * group route for location settings
- * 
- * Handle to set device token and delete device token for send notification FCM
- * 
  */
 
 Route::group(['prefix' => 'locations'], function () {

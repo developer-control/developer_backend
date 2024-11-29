@@ -49,7 +49,7 @@
     </div>
     <!-- Modal Create-->
     <div class="modal fade" id="modal-create" tabindex="-1" role="dialog" aria-labelledby="createModalRole"
-        aria-hidden="true">
+        aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -95,8 +95,8 @@
     </div>
     <!-- End Modal Create-->
     <!-- Modal Edit-->
-    <div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-labelledby="editModalRole"
-        aria-hidden="true">
+    <div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-labelledby="editModalRole" aria-hidden="true"
+        data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -112,8 +112,6 @@
                             <label for="" class="col-form-label">Developer:</label>
                             <select class="form-select @error('developer_id') is-invalid @enderror" aria-label=""
                                 name="developer_id" id="developer_id-edit">
-                                <option selected value="">Select One..</option>
-
                             </select>
                             @error('developer_id')
                                 <span class="invalid-feedback" role="alert">
@@ -145,7 +143,7 @@
     <!-- End Modal Edit-->
     <!-- Modal Delete-->
     <div class="modal fade" id="modal-delete" tabindex="-1" role="dialog" aria-labelledby="modal-notification"
-        aria-hidden="true">
+        aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-danger modal-dialog-centered modal-" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -177,33 +175,26 @@
     <!-- End Modal Delete-->
 @endsection
 @section('scripts')
-    <script src="{{ url('/') }}/assets/js/custom-choices.js"></script>
     <script src="{{ url('/') }}/assets/js/custom-datatable.js"></script>
+    <script src="{{ url('/') }}/assets/js/custom-choices.js"></script>
     <script src="{{ url('/') }}/assets/choices/js/choices.min.js"></script>
     <script src="{{ url('/') }}/assets/src/plugins/datatables/js/dataTables.min.js"></script>
     <script src="{{ url('/') }}/assets/src/plugins/datatables/js/dataTables.bootstrap5.js"></script>
     <script src="{{ url('/') }}/assets/src/plugins/datatables/js/dataTables.responsive.js"></script>
     <script src="{{ url('/') }}/assets/src/plugins/datatables/js/responsive.bootstrap5.js"></script>
     <script>
-        const optionCreate = document.getElementById('developer_id');
-        const optionEdit = document.getElementById('developer_id-edit');
-        const choiceCreate = initializeChoice(optionCreate, '/api/developers');
-        const choiceEdit = initializeChoice(optionEdit, '/api/developers');
-
-        // Event listener untuk menangani input pencarian
-        optionCreate.addEventListener('search', function(event) {
-            const query = event.detail.value; // Ambil nilai input dari user
-            // if (query.length > 2) { // Jika panjang query lebih dari 2 karakter, lakukan pencarian
-            let url = "/api/developers?search=" + query;
-            setInputChoices(choiceCreate, url);
-            // }
-        });
-        optionEdit.addEventListener('search', function(event) {
-            const query = event.detail.value; // Ambil nilai input dari user
-            // if (query.length > 2) { // Jika panjang query lebih dari 2 karakter, lakukan pencarian
-            let url = "/api/developers?search=" + query;
-            setInputChoices(choiceEdit, url);
-            // }
+        let choiceCreate, choiceEdit;
+        document.addEventListener('DOMContentLoaded', function() {
+            // list for developers options
+            setInputChoices('/api/developers').then(choices => {
+                // console.log(choices); // Bisa digunakan di sini
+                const optionCreate = document.getElementById('developer_id');
+                const optionEdit = document.getElementById('developer_id-edit');
+                choiceCreate = initializeChoice(optionCreate, choices);
+                choiceEdit = initializeChoice(optionEdit, choices);
+            }).catch(error => {
+                console.error('Error:', error);
+            });
         });
 
         $(function() {
@@ -229,11 +220,10 @@
             let url = $(this).data('url');
             let name = $(this).data('name');
             let developer_id = $(this).data('developer_id');
-            let developer_name = $(this).data('developer_name');
+            // let developer_name = $(this).data('developer_name');
             $("#role-name").val(name);
             // set value option developer id
-            setInputChoices(choiceEdit, "/api/developers?search=" + developer_name, developer_id);
-            // choiceEdit.setChoiceByValue(developer_id);
+            choiceEdit.setChoiceByValue(developer_id);
             // $("#developer_id").val(developer_id);
             $('#edit-form').attr('action', url);
         });

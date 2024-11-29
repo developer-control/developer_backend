@@ -1,32 +1,29 @@
 // Inisialisasi Choices.js
-function initializeChoice(element, url) {
+function initializeChoice(element, items) {
     const choices = new Choices(element, {
         searchEnabled: true, // Aktifkan fitur pencarian
-        placeholder: false,
-        placeholderValue: 'select one...', // Placeholder default
+        // placeholderValue: 'select one...', // Placeholder default
+        removeItemButton: true,
+        placeholder: true,
+        placeholderValue: 'Pick an Strokes record',
+        maxItemCount: 5,
         searchPlaceholderValue: 'This is a search placeholder...'
     });
-    setInputChoices(choices, url);
+     choices.setChoices(items, 'value', 'label', true);
+    // setInputChoices(choices, url);
     return choices;
 }
 
-function setInputChoices(choices, url, id = null) {
-    fetch(url) // Ganti dengan endpoint backend Anda
+async function setInputChoices(url) {
+    // let items ;
+    return fetch(url) // Ganti dengan endpoint backend Anda
         .then(response => response.json())
         .then(result => {
             // console.log(result);
             // Format data untuk Choices.js
-            const items = result.data.map(item => ({
+             return result.data.map(item => ({
                 value: item.id, // Value
                 label: item.name // Label
             }));
-
-            // Tambahkan opsi ke dropdown
-            choices.setChoices(items, 'value', 'label', true);
-            // set option untuk dropdown
-            if (id) {
-                choices.setChoiceByValue(id);
-            }
-        })
-        .catch(error => console.error('Error fetching data:', error));
+        });
 }
