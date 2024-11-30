@@ -1,5 +1,8 @@
-@extends('layouts.main', ['menu' => 'access_user', 'submenu' => 'master_role', 'breadcrumb' => 'create_role'])
+@extends('layouts.main', ['menu' => 'access_user', 'submenu' => 'master_role'])
 @section('style')
+@endsection
+@section('breadcrumb')
+    {{ Breadcrumbs::render('create_role') }}
 @endsection
 @section('page-title')
     Create Master Role

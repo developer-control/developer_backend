@@ -28,10 +28,36 @@
                 <a class="nav-link @if (@$menu == 'menu_project') active @endif" href="{{ route('menu_project') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-
                         <span class="fas fa-city fs-6"></span>
                     </div>
                     <span class="nav-link-text ms-1">Project</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link @if (@$menu == 'menu_area') active @endif" href="{{ route('menu_area') }}">
+                    <div
+                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <span class="fas fa-archway fs-6"></span>
+                    </div>
+                    <span class="nav-link-text ms-1">Project Area</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link @if (@$menu == 'menu_bloc') active @endif" href="{{ route('menu_bloc') }}">
+                    <div
+                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <span class="fas fa-road fs-6"></span>
+                    </div>
+                    <span class="nav-link-text ms-1">Project Bloc</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link @if (@$menu == 'menu_unit') active @endif" href="{{ route('menu_unit') }}">
+                    <div
+                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <span class="fas fa-house-user fs-6"></span>
+                    </div>
+                    <span class="nav-link-text ms-1">Project Unit</span>
                 </a>
             </li>
             <li class="nav-item mt-3">
@@ -121,7 +147,8 @@
                             xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                             <title>customer-support</title>
                             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                <g transform="translate(-1717.000000, -291.000000)" fill="#FFFFFF" fill-rule="nonzero">
+                                <g transform="translate(-1717.000000, -291.000000)" fill="#FFFFFF"
+                                    fill-rule="nonzero">
                                     <g transform="translate(1716.000000, 291.000000)">
                                         <g transform="translate(1.000000, 0.000000)">
                                             <path class="color-background opacity-6" d=" M45,0 L26,0 C25.447,0 25,0.447 25,1 L25,20 C25,20.379 25.214,20.725

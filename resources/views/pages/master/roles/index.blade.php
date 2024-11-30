@@ -1,8 +1,21 @@
-@extends('layouts.main', ['menu' => 'access_user', 'submenu' => 'master_role', 'breadcrumb' => 'master_role'])
+@extends('layouts.main', ['menu' => 'access_user', 'submenu' => 'master_role'])
 @section('style')
     <link rel="stylesheet" href="{{ url('/') }}/assets/src/plugins/datatables/css/dataTables.bootstrap5.css">
     <link rel="stylesheet" href="{{ url('/') }}/assets/src/plugins/datatables/css/responsive.bootstrap5.css">
     <link rel="stylesheet" href="{{ url('/') }}/assets/choices/css/choices.min.css">
+    <style>
+        .choices__inner {
+            border-radius: 8px;
+            padding: .5rem .75rem;
+        }
+
+        .choices__list--multiple .choices__item {
+            border-radius: 8px;
+        }
+    </style>
+@endsection
+@section('breadcrumb')
+    {{ Breadcrumbs::render('master_role') }}
 @endsection
 @section('page-title')
     Master Role

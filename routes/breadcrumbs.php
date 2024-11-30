@@ -27,7 +27,22 @@ Breadcrumbs::for('master_developer', function (BreadcrumbTrail $trail) {
 // Home > menu_project
 Breadcrumbs::for('menu_project', function (BreadcrumbTrail $trail) {
     $trail->parent('home');
-    $trail->push('Data Project', route('menu_project'));
+    $trail->push('Projects', route('menu_project'));
+});
+// Home > menu_area
+Breadcrumbs::for('menu_area', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Project Area', route('menu_area'));
+});
+// Home > menu_bloc
+Breadcrumbs::for('menu_bloc', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Project Bloc', route('menu_bloc'));
+});
+// Home > menu_unit
+Breadcrumbs::for('menu_unit', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Project Unit', route('menu_unit'));
 });
 
 // Home > location_province

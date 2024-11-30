@@ -6,7 +6,10 @@ use App\Http\Controllers\Location\CityController;
 use App\Http\Controllers\Location\ProvinceController;
 use App\Http\Controllers\Master\DeveloperController;
 use App\Http\Controllers\Master\RolePermissionController;
+use App\Http\Controllers\Project\AreaController;
 use App\Http\Controllers\Project\ProjectController;
+use App\Http\Controllers\Project\UnitController;
+use App\Http\Controllers\Project\BlocController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -50,12 +53,45 @@ Route::group(['prefix' => 'developers'], function () {
  */
 Route::group(['prefix' => 'projects'], function () {
     Route::get('/', [ProjectController::class, 'index'])->name('menu_project');
+    Route::get('/option-projects', [ProjectController::class, 'optionProject']);
     Route::get('/datatable', [ProjectController::class, 'projectDatatable']);
     Route::post('/create', [ProjectController::class, 'store'])->name('store_project');
     Route::post('/update/{id}', [ProjectController::class, 'update'])->name('update_project');
     Route::delete('/delete/{id}', [ProjectController::class, 'destroy'])->name('delete_project');
 });
 
+/**
+ * group route master areas
+ */
+Route::group(['prefix' => 'areas'], function () {
+    Route::get('/', [AreaController::class, 'index'])->name('menu_area');
+    Route::get('/option-areas', [AreaController::class, 'optionArea']);
+    Route::get('/datatable', [AreaController::class, 'areaDatatable']);
+    Route::post('/create', [AreaController::class, 'store'])->name('store_area');
+    Route::post('/update/{id}', [AreaController::class, 'update'])->name('update_area');
+    Route::delete('/delete/{id}', [AreaController::class, 'destroy'])->name('delete_area');
+});
+/**
+ * group route master project bloc
+ */
+Route::group(['prefix' => 'blocs'], function () {
+    Route::get('/', [BlocController::class, 'index'])->name('menu_bloc');
+    Route::get('/option-blocs', [BlocController::class, 'optionBloc']);
+    Route::get('/datatable', [BlocController::class, 'blocDatatable']);
+    Route::post('/create', [BlocController::class, 'store'])->name('store_bloc');
+    Route::post('/update/{id}', [BlocController::class, 'update'])->name('update_bloc');
+    Route::delete('/delete/{id}', [BlocController::class, 'destroy'])->name('delete_bloc');
+});
+/**
+ * group route master project units
+ */
+Route::group(['prefix' => 'units'], function () {
+    Route::get('/', [UnitController::class, 'index'])->name('menu_unit');
+    Route::get('/datatable', [UnitController::class, 'unitDatatable']);
+    Route::post('/create', [UnitController::class, 'store'])->name('store_unit');
+    Route::post('/update/{id}', [UnitController::class, 'update'])->name('update_unit');
+    Route::delete('/delete/{id}', [UnitController::class, 'destroy'])->name('delete_unit');
+});
 /**
  * group route for location settings
  */

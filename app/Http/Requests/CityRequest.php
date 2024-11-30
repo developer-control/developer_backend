@@ -17,6 +17,18 @@ class CityRequest extends FormRequest
     }
 
     /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'province_id.required' => 'The province field is required.',
+        ];
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
@@ -40,8 +52,10 @@ class CityRequest extends FormRequest
     {
         // $exception = $validator->getException();
         // Ambil pesan error pertama
+
         $firstError = collect($validator->errors()->all())->first();
         toast($firstError, 'error');
+
         // Kirim respon redirect dengan pesan error untuk toast
         throw new HttpResponseException(
             redirect()->back()->withInput()->withErrors($validator)

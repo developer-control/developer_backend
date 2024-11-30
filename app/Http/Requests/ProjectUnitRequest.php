@@ -2,11 +2,11 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class ProjectRequest extends FormRequest
+class ProjectUnitRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -15,7 +15,6 @@ class ProjectRequest extends FormRequest
     {
         return true;
     }
-
     /**
      * Get the error messages for the defined validation rules.
      *
@@ -24,8 +23,7 @@ class ProjectRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'developer_id.required' => 'The developer field is required.',
-            'city_id.required' => 'The city field is required.',
+            'project_bloc_id.required' => 'The project bloc field is required.',
         ];
     }
     /**
@@ -35,17 +33,9 @@ class ProjectRequest extends FormRequest
      */
     public function rules(): array
     {
-        if (auth()->user()->hasRole('superadmin')) {
-            return [
-                'name' => 'required',
-                'developer_id' => 'required',
-                'city_id' => 'required',
-            ];
-        }
         return [
             'name' => 'required',
-            'developer_id' => 'required',
-            'city_id' => 'required',
+            'project_bloc_id' => 'required',
         ];
     }
     /**

@@ -1,8 +1,21 @@
-@extends('layouts.main', ['menu' => 'menu_project', 'breadcrumb' => 'menu_project'])
+@extends('layouts.main', ['menu' => 'menu_project'])
 @section('style')
     <link rel="stylesheet" href="{{ url('/') }}/assets/src/plugins/datatables/css/dataTables.bootstrap5.css">
     <link rel="stylesheet" href="{{ url('/') }}/assets/src/plugins/datatables/css/responsive.bootstrap5.css">
     <link rel="stylesheet" href="{{ url('/') }}/assets/choices/css/choices.min.css">
+    <style>
+        .choices__inner {
+            border-radius: 8px;
+            padding: .5rem .75rem;
+        }
+
+        .choices__list--multiple .choices__item {
+            border-radius: 8px;
+        }
+    </style>
+@endsection
+@section('breadcrumb')
+    {{ Breadcrumbs::render('menu_project') }}
 @endsection
 @section('page-title')
     Data Projects
@@ -90,7 +103,7 @@
                         <div class="form-group">
                             <label for="" class="col-form-label">Project Name:</label>
                             <input class="form-control @error('name') is-invalid @enderror" placeholder="Project Name..."
-                                type="text" name="name" value="{{ old('name') }}">
+                                type="text" name="name" value="{{ old('name') }}" required>
                             @error('name')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>

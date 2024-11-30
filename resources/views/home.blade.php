@@ -1,4 +1,4 @@
-@extends('layouts.main', ['menu' => 'home', 'breadcrumb' => 'home'])
+@extends('layouts.main', ['menu' => 'home'])
 @section('style')
     <!-- Theme included stylesheets -->
     {{-- <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet"> --}}
@@ -10,6 +10,9 @@
     <link href="{{ url('/') }}/assets/quill/image-uploader/dist/quill.imageUploader.min.css" rel="stylesheet" />
     <script src="{{ url('/') }}/assets/quill/image-uploader/dist/quill.min.js"></script>
     <script src="{{ url('/') }}/assets/quill/image-uploader/dist/quill.imageUploader.min.js"></script>
+@endsection
+@section('breadcrumb')
+    {{ Breadcrumbs::render('home') }}
 @endsection
 @section('page-title')
     Dashboard

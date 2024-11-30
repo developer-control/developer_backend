@@ -1,15 +1,17 @@
 // Inisialisasi Choices.js
-function initializeChoice(element, items) {
+function initializeChoice(element, items, id=null) {
     const choices = new Choices(element, {
         searchEnabled: true, // Aktifkan fitur pencarian
         // placeholderValue: 'select one...', // Placeholder default
         removeItemButton: true,
-        placeholder: true,
-        placeholderValue: 'Pick an Strokes record',
+        placeholder: false,
+        // placeholderValue: 'Pick an Strokes record',
         maxItemCount: 5,
         searchPlaceholderValue: 'This is a search placeholder...'
     });
+     choices.clearChoices();
      choices.setChoices(items, 'value', 'label', true);
+     choices.setChoiceByValue(id);
     // setInputChoices(choices, url);
     return choices;
 }

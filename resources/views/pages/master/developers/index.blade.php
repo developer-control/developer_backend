@@ -3,6 +3,9 @@
     <link rel="stylesheet" href="{{ url('/') }}/assets/src/plugins/datatables/css/dataTables.bootstrap5.css">
     <link rel="stylesheet" href="{{ url('/') }}/assets/src/plugins/datatables/css/responsive.bootstrap5.css">
 @endsection
+@section('breadcrumb')
+    {{ Breadcrumbs::render('master_developer') }}
+@endsection
 @section('page-title')
     Master Developers
 @endsection

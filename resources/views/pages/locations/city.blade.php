@@ -1,8 +1,21 @@
-@extends('layouts.main', ['menu' => 'location', 'submenu' => 'location_city', 'breadcrumb' => 'location_city'])
+@extends('layouts.main', ['menu' => 'location', 'submenu' => 'location_city'])
 @section('style')
     <link rel="stylesheet" href="{{ url('/') }}/assets/src/plugins/datatables/css/dataTables.bootstrap5.css">
     <link rel="stylesheet" href="{{ url('/') }}/assets/src/plugins/datatables/css/responsive.bootstrap5.css">
     <link rel="stylesheet" href="{{ url('/') }}/assets/choices/css/choices.min.css">
+    <style>
+        .choices__inner {
+            border-radius: 8px;
+            padding: .5rem .75rem;
+        }
+
+        .choices__list--multiple .choices__item {
+            border-radius: 8px;
+        }
+    </style>
+@endsection
+@section('breadcrumb')
+    {{ Breadcrumbs::render('location_city') }}
 @endsection
 @section('page-title')
     Location City
@@ -60,13 +73,13 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <form action="{{ route('store_role') }}" method="POST">
+                <form action="{{ route('store_city') }}" method="POST">
                     <div class="modal-body">
                         @csrf
                         <div class="form-group">
                             <label for="" class="col-form-label">Province:</label>
                             <select class="form-select @error('province_id') is-invalid @enderror" aria-label=""
-                                name="province_id" id="province_id">
+                                name="province_id" id="province_id" required>
                             </select>
                             @error('province_id')
                                 <span class="invalid-feedback" role="alert">
@@ -113,7 +126,7 @@
                         <div class="form-group">
                             <label for="" class="col-form-label">Province:</label>
                             <select class="form-select @error('province_id') is-invalid @enderror" aria-label=""
-                                name="province_id" id="province_id-edit">
+                                name="province_id" id="province_id-edit" required>
 
                             </select>
                             @error('province_id')

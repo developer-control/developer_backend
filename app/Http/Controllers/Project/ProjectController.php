@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Project;
 
+use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProjectRequest;
 use App\Models\Project;
@@ -94,5 +95,19 @@ class ProjectController extends Controller
         Project::destroy($id);
         toast('Project has been deleted', 'success');
         return back();
+    }
+
+    public function optionProject(Request $request)
+    {
+        $projects = Project::select('id', 'name');
+        if (!auth()->user()->hasRole('superadmin')) {
+            $projects->where('developer_id', auth()->user()->developer_id);
+        }
+
+        if ($request->limit) {
+            $projects->limit($request->limit);
+        }
+        $results = $projects->get();
+        return ApiResponse::success($results, 'Get option project success.');
     }
 }
