@@ -45,7 +45,8 @@ class UserUnitResource extends JsonResource
                 'name' => $this->ownership_unit_name,
             ],
             'status' => $this->status,
-            'is_active' => $this->is_active
+            'is_active' => $this->is_active,
+            'created_at' => $this->created_at->format('Y-m-d H:i:s')
         ];
     }
 }

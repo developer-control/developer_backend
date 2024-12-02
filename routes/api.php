@@ -57,6 +57,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/projects/units/upload-evidence-file', [UnitController::class, 'UploadEvidenceFile']);
     Route::post('/projects/units/store-claim-unit', [UnitController::class, 'storeClaimUnit']);
     Route::get('/projects/units/user-unit', [UnitController::class, 'indexMyUnit']);
+    Route::get('/projects/units/history-user-unit', [UnitController::class, 'indexHistoryMyUnit']);
+    Route::get('/projects/units/user-unit/detail/{id}', [UnitController::class, 'showUnitUser']);
 });
 
 

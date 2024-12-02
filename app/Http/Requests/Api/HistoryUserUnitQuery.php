@@ -4,7 +4,7 @@ namespace App\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserUnitQuery extends FormRequest
+class HistoryUserUnitQuery extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,11 +29,6 @@ class UserUnitQuery extends FormRequest
              * @example request, claimed, reject
              */
             'status' => 'string',
-            /**
-             * status active
-             * @example true, false
-             */
-            'is_active' => 'boolean',
             /**
              * Page number
              * 

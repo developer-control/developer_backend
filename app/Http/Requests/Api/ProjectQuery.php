@@ -23,7 +23,7 @@ class ProjectQuery extends FormRequest
     {
         return [
             'search' => 'string',
-            'developer_id' => 'int|required',
+            'developer_id' => 'int',
             'city_id' => 'int|required',
             'limit' => 'int'
         ];
