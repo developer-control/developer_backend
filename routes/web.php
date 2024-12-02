@@ -44,6 +44,7 @@ Route::group(['prefix' => 'access-users'], function () {
 Route::group(['prefix' => 'developers'], function () {
     Route::get('/', [DeveloperController::class, 'index'])->name('master_developer');
     Route::get('/datatable', [DeveloperController::class, 'developerDatatable']);
+    Route::get('/option-developers', [DeveloperController::class, 'optionDeveloper']);
     Route::post('/create', [DeveloperController::class, 'store'])->name('store_developer');
     Route::post('/update/{id}', [DeveloperController::class, 'update'])->name('update_developer');
     Route::delete('/delete/{id}', [DeveloperController::class, 'destroy'])->name('delete_developer');

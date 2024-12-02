@@ -238,7 +238,7 @@
             const optionDeveloperCreate = document.getElementById('developer_id');
             const optionDeveloperEdit = document.getElementById('developer_id-edit');
             if (optionDeveloperCreate && optionDeveloperEdit) {
-                setInputChoices('/api/developers').then(choices => {
+                setInputChoices('/developers/option-developers').then(choices => {
                     developerCreate = initializeChoice(optionDeveloperCreate, choices);
                     developerEdit = initializeChoice(optionDeveloperEdit, choices);
                 }).catch(error => {

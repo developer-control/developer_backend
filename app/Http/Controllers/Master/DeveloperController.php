@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Master;
 
+use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DeveloperRequest;
 use App\Models\Developer;
@@ -89,5 +90,19 @@ class DeveloperController extends Controller
         Developer::destroy($id);
         toast('Developer has been deleted', 'success');
         return back();
+    }
+    public function optionDeveloper(Request $request)
+    {
+        $limit = $request->limit ?? 10;
+        $developers = Developer::select('id', 'name');
+        if ($request->search) {
+            $developers->where('name', 'LIKE', '%' . $request->search . '%');
+        }
+
+        if ($request->limit) {
+            $developers->limit($request->limit);
+        }
+        $results = $developers->get();
+        return ApiResponse::success($results, 'Get developers success.');
     }
 }

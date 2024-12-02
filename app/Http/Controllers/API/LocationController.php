@@ -4,6 +4,9 @@ namespace App\Http\Controllers\API;
 
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\LocationQuery;
+use App\Http\Resources\Api\CityResource;
+use App\Http\Resources\Api\ProvinceResource;
 use App\Models\City;
 use App\Models\Province;
 use Illuminate\Http\Request;
@@ -16,10 +19,10 @@ class LocationController extends Controller
      * api for get province data from database
      *
      * @unauthenticated 
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\Api\LocationQuery  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function indexProvince(Request $request)
+    public function indexProvince(LocationQuery $request)
     {
         // $limit = $request->limit ?? 10;
         $provinces = Province::select('id', 'name');
@@ -30,7 +33,7 @@ class LocationController extends Controller
             $provinces->limit($request->limit);
         }
         $results = $provinces->get();
-        return ApiResponse::success($results, 'Get Provinces success.');
+        return ApiResponse::success(ProvinceResource::collection($results), 'Get Provinces success.');
     }
 
     /**
@@ -39,13 +42,13 @@ class LocationController extends Controller
      * api for get city data from database
      *
      * @unauthenticated 
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\Api\LocationQuery $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function indexCity(Request $request)
+    public function indexCity(LocationQuery $request)
     {
         // $limit = $request->limit ?? 10;
-        $cities = City::select('id', 'name');
+        $cities = City::select('id', 'province_id', 'name');
         if ($request->search) {
             $cities->where('name', 'LIKE', '%' . $request->search . '%');
         }
@@ -53,6 +56,6 @@ class LocationController extends Controller
             $cities->limit($request->limit);
         }
         $results = $cities->get();
-        return ApiResponse::success($results, 'Get Cities success.');
+        return ApiResponse::success(CityResource::collection($results), 'Get Cities success.');
     }
 }

@@ -199,7 +199,7 @@
         let choiceCreate, choiceEdit;
         document.addEventListener('DOMContentLoaded', function() {
             // list for developers options
-            setInputChoices('/api/developers').then(choices => {
+            setInputChoices('/developers/option-developers').then(choices => {
                 // console.log(choices); // Bisa digunakan di sini
                 const optionCreate = document.getElementById('developer_id');
                 const optionEdit = document.getElementById('developer_id-edit');
