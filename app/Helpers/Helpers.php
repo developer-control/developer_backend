@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Media;
 use Illuminate\Support\Facades\Storage;
 
 /**
@@ -26,6 +27,29 @@ if (!function_exists('storage_url')) {
 
 
         return @$defaultImage ??
-            url('/') . "/assets/main/images/default-secondary.png";
+            url('/') . "/assets/images/default-image.jpg";
+    }
+}
+if (!function_exists('remove_file')) {
+    function remove_file($path, $sourceable = null)
+    {
+        try {
+            if (Storage::exists(@$path)) {
+                Storage::delete(@$path);
+            }
+            if (Storage::disk('public')->exists(@$path)) {
+                Storage::disk('public')->delete(@$path);
+            }
+
+            // if (Storage::disk('s3')->exists(@$path)) {
+            //     Storage::disk('s3')->delete(@$path);
+            // }
+        } catch (\Throwable $th) {
+        }
+        if ($sourceable) {
+            $media =  Media::withTrashed()->where('url', $path)->first();
+            @$sourceable->media()->detach($media->id);
+        }
+        Media::where('url', $path)->delete();
     }
 }

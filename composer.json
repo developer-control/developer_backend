@@ -12,6 +12,7 @@
         "dedoc/scramble": "^0.11.28",
         "diglactic/laravel-breadcrumbs": "^9.0",
         "intervention/image": "^3.9",
+        "laravel-notification-channels/fcm": "^4.5",
         "laravel/framework": "^11.9",
         "laravel/sanctum": "^4.0",
         "laravel/socialite": "^5.16",

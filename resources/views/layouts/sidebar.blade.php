@@ -74,6 +74,17 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link @if (@$menu == 'master_ownership') active @endif"
+                    href="{{ route('master_ownership') }}">
+                    <div
+                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+
+                        <span class="fas fa-user-tag fs-6"></span>
+                    </div>
+                    <span class="nav-link-text ms-1">Ownership Unit</span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link dropdown-toggle dropdown-toggle @if (@$menu == 'access_user') active @endif"
                     id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                     <div

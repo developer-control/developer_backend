@@ -1,19 +1,12 @@
-<div class="dropdown">
-    <button class="nav-link" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-        <i class="fas fa-ellipsis-h fs-4 text-primary"></i>
-    </button>
+<div class="btn-group" aria-label="button action">
+    <a class="nav-link edit-modal" role="button" data-bs-target="#modal-edit" data-bs-toggle="modal"
+        data-bs-placement="bottom" title="Edit developer"
+        data-url="{{ route('update_developer', ['id' => $developer->id]) }}" data-name="{{ $developer->name }}">
+        <span class="fas fa-edit text-secondary mx-2"></span>
+    </a>
+    <a class="nav-link delete-modal" href="" data-bs-toggle="modal" data-bs-target="#modal-delete"
+        data-url="{{ route('delete_developer', ['id' => $developer->id]) }}" data-name="{{ $developer->name }}">
+        <span class="fas fa-trash text-secondary mx-2"></span>
+    </a>
 
-    <ul class="dropdown-menu">
-        <li>
-            <button class="dropdown-item edit-modal" data-bs-toggle="modal" data-bs-target="#modal-edit"
-                data-url="{{ route('update_developer', ['id' => $developer->id]) }}"
-                data-name="{{ $developer->name }}"><i class="fas fa-edit me-3"></i> Edit</button>
-        </li>
-        <li>
-            <button class="dropdown-item delete-modal" data-bs-toggle="modal" data-bs-target="#modal-delete"
-                data-url="{{ route('delete_developer', ['id' => $developer->id]) }}" data-name="{{ $developer->name }}">
-                <i class="fas fa-trash me-3"></i>
-                Delete</button>
-        </li>
-    </ul>
 </div>

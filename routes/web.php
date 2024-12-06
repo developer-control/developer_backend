@@ -5,11 +5,14 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Location\CityController;
 use App\Http\Controllers\Location\ProvinceController;
 use App\Http\Controllers\Master\DeveloperController;
+use App\Http\Controllers\Master\OwnershipUnitController;
 use App\Http\Controllers\Master\RolePermissionController;
+use App\Http\Controllers\Post\ArticleController;
 use App\Http\Controllers\Project\AreaController;
 use App\Http\Controllers\Project\ProjectController;
 use App\Http\Controllers\Project\UnitController;
 use App\Http\Controllers\Project\BlocController;
+use App\Http\Controllers\Project\UserUnitController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -48,6 +51,35 @@ Route::group(['prefix' => 'developers'], function () {
     Route::post('/create', [DeveloperController::class, 'store'])->name('store_developer');
     Route::post('/update/{id}', [DeveloperController::class, 'update'])->name('update_developer');
     Route::delete('/delete/{id}', [DeveloperController::class, 'destroy'])->name('delete_developer');
+});
+Route::group(['prefix' => 'developers'], function () {
+    Route::get('/', [DeveloperController::class, 'index'])->name('master_developer');
+    Route::get('/datatable', [DeveloperController::class, 'developerDatatable']);
+    Route::get('/option-developers', [DeveloperController::class, 'optionDeveloper']);
+    Route::post('/create', [DeveloperController::class, 'store'])->name('store_developer');
+    Route::post('/update/{id}', [DeveloperController::class, 'update'])->name('update_developer');
+    Route::delete('/delete/{id}', [DeveloperController::class, 'destroy'])->name('delete_developer');
+});
+Route::group(['prefix' => 'posts'], function () {
+    Route::prefix('articles')->group(function () {
+        Route::get('/', [ArticleController::class, 'index'])->name('menu_article');
+        Route::get('/create', [ArticleController::class, 'create'])->name('create_article');
+        Route::post('/store', [ArticleController::class, 'store'])->name('store_article');
+        Route::get('/edit/{id}', [ArticleController::class, 'edit'])->name('edit_article');
+        Route::post('/update/{id}', [ArticleController::class, 'update'])->name('update_article');
+        Route::delete('/delete/{id}', [ArticleController::class, 'destroy'])->name('delete_article');
+    });
+});
+/**
+ * group route master ownership unit
+ */
+Route::group(['prefix' => 'ownership-units'], function () {
+    Route::get('/', [OwnershipUnitController::class, 'index'])->name('master_ownership');
+    Route::get('/datatable', [OwnershipUnitController::class, 'ownershipDatatable']);
+    Route::get('/option-ownerships', [OwnershipUnitController::class, 'optionOwnership']);
+    Route::post('/create', [OwnershipUnitController::class, 'store'])->name('store_ownership');
+    Route::post('/update/{id}', [OwnershipUnitController::class, 'update'])->name('update_ownership');
+    Route::delete('/delete/{id}', [OwnershipUnitController::class, 'destroy'])->name('delete_ownership');
 });
 /**
  * group route master projects
@@ -92,6 +124,8 @@ Route::group(['prefix' => 'units'], function () {
     Route::post('/create', [UnitController::class, 'store'])->name('store_unit');
     Route::post('/update/{id}', [UnitController::class, 'update'])->name('update_unit');
     Route::delete('/delete/{id}', [UnitController::class, 'destroy'])->name('delete_unit');
+
+    Route::get('/history-request-unit/datatable', [UserUnitController::class, 'historyRequestDatatable']);
 });
 /**
  * group route for location settings

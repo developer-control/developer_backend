@@ -18,7 +18,7 @@
     </main>
     @include('layouts.setting')
     @include('layouts.footer')
-
+    @include('layouts.script')
     @yield('scripts')
 
 </body>

@@ -1,13 +1,13 @@
-@extends('layouts.main', ['menu' => 'master_developer'])
+@extends('layouts.main', ['menu' => 'master_ownership'])
 @section('style')
     <link rel="stylesheet" href="{{ url('/') }}/assets/src/plugins/datatables/css/dataTables.bootstrap5.css">
     <link rel="stylesheet" href="{{ url('/') }}/assets/src/plugins/datatables/css/responsive.bootstrap5.css">
 @endsection
 @section('breadcrumb')
-    {{ Breadcrumbs::render('master_developer') }}
+    {{ Breadcrumbs::render('master_ownership') }}
 @endsection
 @section('page-title')
-    Master Developers
+    Master Ownership Unit
 @endsection
 @section('content')
     <div class="container-fluid py-4">
@@ -17,12 +17,12 @@
                     <div class="card-header pb-0">
                         <div class="row">
                             <div class="col-md-6">
-                                <h6>Setting Developers</h6>
+                                <h6>Setting Ownership Unit</h6>
                             </div>
                             <div class="col-md-6 text-end">
                                 <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal"
                                     data-bs-target="#modal-create"><i class="fas fa-plus me-sm-2"></i> Add
-                                    Developer</button>
+                                    Ownership Unit</button>
                             </div>
                         </div>
                     </div>
@@ -55,19 +55,20 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">New Developer</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">New Ownership Unit</h5>
                     <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <form action="{{ route('store_developer') }}" method="POST">
+                <form action="{{ route('store_ownership') }}" method="POST">
                     <div class="modal-body">
                         @csrf
 
                         <div class="form-group">
-                            <label for="" class="col-form-label">Developer Name:</label>
-                            <input class="form-control @error('name') is-invalid @enderror" placeholder="Developer Name..."
-                                type="text" name="name" value="{{ old('name') }}">
+                            <label for="" class="col-form-label">Ownership Unit Name:</label>
+                            <input class="form-control @error('name') is-invalid @enderror"
+                                placeholder="Ownership Unit Name..." type="text" name="name"
+                                value="{{ old('name') }}">
                             @error('name')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -92,7 +93,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit Developer</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Ownership Unit</h5>
                     <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -102,9 +103,10 @@
                         @csrf
 
                         <div class="form-group">
-                            <label for="developer-name" class="col-form-label">Developer Name:</label>
-                            <input class="form-control @error('name') is-invalid @enderror" placeholder="Developer Name..."
-                                type="text" id="developer-name" name="name" value="{{ old('name') }}" required>
+                            <label for="ownership-name" class="col-form-label">Ownership Unit Name:</label>
+                            <input class="form-control @error('name') is-invalid @enderror"
+                                placeholder="Ownership Unit Name..." type="text" id="ownership-name" name="name"
+                                value="{{ old('name') }}" required>
                             @error('name')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -181,19 +183,19 @@
                     searchable: false
                 }
             ];
-            initializeDatatable('.datatable', "/developers/datatable", columnData)
+            initializeDatatable('.datatable', "/ownership-units/datatable", columnData)
 
         });
         $(document).on("click", ".edit-modal", function() {
             let url = $(this).data('url');
             let name = $(this).data('name');
-            $("#developer-name").val(name);
+            $("#ownership-name").val(name);
             $('#edit-form').attr('action', url);
         });
         $(document).on("click", ".delete-modal", function() {
             let url = $(this).data('url');
             let name = $(this).data('name');
-            $("#delete-text").html(`Apa anda yakin menghapus developer ${name}?`);
+            $("#delete-text").html(`Apa anda yakin menghapus ownership ${name}?`);
             $('#delete-form').attr('action', url);
         });
     </script>

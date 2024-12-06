@@ -24,6 +24,11 @@ Breadcrumbs::for('master_developer', function (BreadcrumbTrail $trail) {
     $trail->parent('home');
     $trail->push('Setting Master Developer', route('master_developer'));
 });
+// Home > master_ownership
+Breadcrumbs::for('master_ownership', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Setting Master Ownership Unit', route('master_ownership'));
+});
 // Home > menu_project
 Breadcrumbs::for('menu_project', function (BreadcrumbTrail $trail) {
     $trail->parent('home');
@@ -54,4 +59,20 @@ Breadcrumbs::for('location_province', function (BreadcrumbTrail $trail) {
 Breadcrumbs::for('location_city', function (BreadcrumbTrail $trail) {
     $trail->parent('home');
     $trail->push('Location City', route('location_city'));
+});
+
+// Home > menu_article
+Breadcrumbs::for('menu_article', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Article', route('menu_article'));
+});
+// menu_article > create_article
+Breadcrumbs::for('create_article', function (BreadcrumbTrail $trail) {
+    $trail->parent('menu_article');
+    $trail->push('Create Article', route('create_article'));
+});
+// menu_article > edit_article
+Breadcrumbs::for('edit_article', function (BreadcrumbTrail $trail, $resource) {
+    $trail->parent('menu_article');
+    $trail->push('Edit Article', route('edit_article', ['id' => $resource->id]));
 });
