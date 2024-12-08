@@ -38,7 +38,7 @@ class RegisterController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
-        // $user->assignRole('user');
+        $user->assignRole('user');
         $user->sendEmailVerificationNotification();
         return ApiResponse::success(null, 'Register success, please check your email to verified your account.', 201);
     }
