@@ -50,7 +50,8 @@ class RegisterController extends Controller
     }
 
     /**
-     * Send Email Verification
+     * Send Email Verification.
+     * 
      * Handle a request verification email for user.
      *
      * @unauthenticated
@@ -82,7 +83,8 @@ class RegisterController extends Controller
     }
 
     /**
-     * Do Verify user account
+     * Do Verify user account.
+     * 
      * Handle a verification email for user with verification code.
      *
      * @unauthenticated
