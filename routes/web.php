@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Base\ImageController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Location\CityController;
@@ -20,7 +21,7 @@ Auth::routes();
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-
+Route::get('email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
 
 /**
  * group route for image

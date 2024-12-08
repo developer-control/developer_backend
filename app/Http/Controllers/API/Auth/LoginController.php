@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
 use App\Helpers\ApiResponse;
+use Illuminate\Auth\Events\Verified;
 
 class LoginController extends Controller
 {
@@ -31,6 +32,10 @@ class LoginController extends Controller
 
         // getting user
         $user = User::where('email', $request->email)->first();
+
+        if (!$user->hasVerifiedEmail()) {
+            return ApiResponse::error('The user has not verified email address', 403);
+        }
 
         // checking credentials
         if (!$user || !Hash::check($request->password, $user->password)) {
@@ -79,6 +84,7 @@ class LoginController extends Controller
         );
         if ($user->wasRecentlyCreated) {
             $user->assignRole('user');
+            event(new Verified($user));
         } else {
             if (!$user->hasRole('user')) {
                 return ApiResponse::error('You have no access token', 402);

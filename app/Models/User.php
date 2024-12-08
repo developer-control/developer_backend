@@ -52,4 +52,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->devices()->pluck('token')->all();
     }
+    public function generateVerificationCode()
+    {
+        $this->verification_code = mt_rand(100000, 999999); // Kode 6 digit
+        $this->save();
+    }
 }

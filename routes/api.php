@@ -24,9 +24,8 @@ Route::post('/auth/login', [LoginController::class, 'login']);
 Route::post('auth/{provider}/login', [LoginController::class, 'loginProvider']);
 // route user for register account user
 Route::post('/auth/register', [RegisterController::class, 'register']);
-
 Route::post('/auth/send-verify-email', [RegisterController::class, 'sendEmailVerification']);
-
+Route::post('/auth/verify-email', [RegisterController::class, 'verify']);
 /*
 |--------------------------------------------------------------------------
 | Authentication & Authorization
@@ -36,7 +35,7 @@ Route::post('/auth/send-verify-email', [RegisterController::class, 'sendEmailVer
 |
  */
 
-Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+Route::middleware(['auth:sanctum', 'verified.api'])->group(function () {
     Route::post('/auth/logout', [LoginController::class, 'logout']);
     /**
      * Devices
