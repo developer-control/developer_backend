@@ -5,6 +5,7 @@ use App\Http\Controllers\API\Auth\LoginController;
 use App\Http\Controllers\API\Auth\RegisterController;
 use App\Http\Controllers\API\DeveloperController;
 use App\Http\Controllers\API\LocationController;
+use App\Http\Controllers\API\Posts\ArticleController;
 use App\Http\Controllers\API\Project\AreaController;
 use App\Http\Controllers\API\Project\BlocController;
 use App\Http\Controllers\API\Project\OwnershipUnitController;
@@ -66,4 +67,9 @@ Route::middleware(['auth:sanctum', 'verified.api'])->group(function () {
 Route::prefix('locations')->group(function () {
     Route::get('/provinces', [LocationController::class, 'indexProvince']);
     Route::get('/cities', [LocationController::class, 'indexCity']);
+});
+
+Route::prefix('posts')->group(function () {
+    Route::get('/articles', [ArticleController::class, 'index']);
+    Route::get('/article/detail/{id}', [ArticleController::class, 'show']);
 });

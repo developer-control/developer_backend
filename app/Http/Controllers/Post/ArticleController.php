@@ -7,6 +7,7 @@ use App\Http\Requests\ArticleRequest;
 use App\Models\Article;
 use App\Models\Media;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ArticleController extends Controller
@@ -57,6 +58,7 @@ class ArticleController extends Controller
             'short_content' => $request->short_content,
             'image' => $request->image,
             'content' => $request->content,
+            'created_by' => Auth::user()->id
         ]);
         //get media
         $image = Media::where('url', $request->image)->first();

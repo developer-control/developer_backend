@@ -33,13 +33,12 @@ class LoginController extends Controller
         // getting user
         $user = User::where('email', $request->email)->first();
 
-        if (!$user->hasVerifiedEmail()) {
-            return ApiResponse::error('The user has not verified email address', 403);
-        }
-
         // checking credentials
         if (!$user || !Hash::check($request->password, $user->password)) {
             return ApiResponse::error('Email or password is incorrect', 422);
+        }
+        if (!$user->hasVerifiedEmail()) {
+            return ApiResponse::error('The user has not verified email address', 403);
         }
         if (!$user->hasRole('user')) {
             return ApiResponse::error('You have no access token', 403);

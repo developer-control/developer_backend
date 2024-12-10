@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Location;
 
+use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProvinceRequest;
+use App\Http\Resources\Api\ProvinceResource;
 use App\Models\Province;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -42,6 +44,17 @@ class ProvinceController extends Controller
         DB::commit();
         toast('Initialize Province Success', 'success');
         return back();
+    }
+
+    public function indexOption(Request $request)
+    {
+
+        $provinces = Province::select('id', 'name');
+        if ($request->search) {
+            $provinces->where('name', 'LIKE', '%' . $request->search . '%');
+        }
+        $results = $provinces->get();
+        return ApiResponse::success(ProvinceResource::collection($results), 'Get Provinces success.');
     }
     /**
      * get datatable resource for role access master.

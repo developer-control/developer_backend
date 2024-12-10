@@ -65,6 +65,9 @@ class RegisterController extends Controller
         ]);
 
         $user = User::where('email', $request->email)->first();
+        if (!$user) {
+            return ApiResponse::error('User not found', 404);
+        }
         if (!$user->hasVerifiedEmail()) {
             $key = 'send-email.' . $user->id;
             $max = 1;

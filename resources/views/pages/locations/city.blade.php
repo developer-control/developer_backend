@@ -201,7 +201,7 @@
     <script>
         let choiceCreate, choiceEdit;
         document.addEventListener('DOMContentLoaded', function() {
-            setInputChoices('/api/locations/provinces').then(choices => {
+            setInputChoices('/locations/provinces/option-provinces').then(choices => {
                 const optionCreate = document.getElementById('province_id');
                 const optionEdit = document.getElementById('province_id-edit');
                 choiceCreate = initializeChoice(optionCreate, choices);

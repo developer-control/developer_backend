@@ -41,17 +41,17 @@
                     </div>
 
                 </div>
-                <div class="card-body p-3">
+                <div class="card-body p-3" style="min-height: 50vh">
                     <div class="row">
                         @if (!count($articles))
-                            <div class="col-12 d-flex justify-content-center">
+                            <div class="col-12 d-flex justify-content-center mt-4">
                                 <img src="{{ url('/') }}/assets/images/404.svg" class="img-fluid mb-2 w-50"
                                     alt="404" />
 
                             </div>
                         @endif
                         @foreach ($articles as $article)
-                            <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
+                            <div class="col-xl-3 col-md-6 mb-xl-0 my-3">
                                 <div class="card card-blog card-plain">
                                     <div class="position-relative">
                                         <a class="d-block ratio ratio-16x9">

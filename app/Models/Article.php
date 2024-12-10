@@ -14,6 +14,10 @@ class Article extends Model
     {
         return $this->belongsTo(Developer::class, 'developer_id');
     }
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
     public function media()
     {
         return $this->morphToMany(Media::class, 'sourceable', 'model_has_media')->withPivot('type');

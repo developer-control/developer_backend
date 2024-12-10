@@ -126,6 +126,9 @@ Route::group(['prefix' => 'units'], function () {
     Route::post('/update/{id}', [UnitController::class, 'update'])->name('update_unit');
     Route::delete('/delete/{id}', [UnitController::class, 'destroy'])->name('delete_unit');
 
+    Route::get('/request-units', [UserUnitController::class, 'indexRequest']);
+    Route::get('/request-units/datatable', [UserUnitController::class, 'requestDatatable']);
+
     Route::get('/history-request-unit/datatable', [UserUnitController::class, 'historyRequestDatatable']);
 });
 /**
@@ -136,6 +139,7 @@ Route::group(['prefix' => 'locations'], function () {
     // route group for provinces 
     Route::group(['prefix' => 'provinces'], function () {
         Route::get('/', [ProvinceController::class, 'index'])->name('location_province');
+        Route::get('/option-provinces', [ProvinceController::class, 'indexOption']);
         Route::get('/initialize', [ProvinceController::class, 'initializeProvince'])->name('initialize_province');
         Route::get('/datatable', [ProvinceController::class, 'provinceDatatable']);
         Route::post('/create', [ProvinceController::class, 'store'])->name('store_province');
@@ -145,6 +149,7 @@ Route::group(['prefix' => 'locations'], function () {
 
     Route::group(['prefix' => 'cities'], function () {
         Route::get('/', [CityController::class, 'index'])->name('location_city');
+        Route::get('/option-cities', [CityController::class, 'indexOption']);
         Route::get('/initialize', [CityController::class, 'initializeCity'])->name('initialize_city');
         Route::get('/datatable', [CityController::class, 'cityDatatable']);
         Route::post('/create', [CityController::class, 'store'])->name('store_city');

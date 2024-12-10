@@ -1,4 +1,4 @@
-@extends('layouts.main', ['menu' => 'create_article'])
+@extends('layouts.main', ['menu' => 'menu_article'])
 @section('style')
     <style>
         .image-preview {

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('image')->nullable();
             $table->text('short_content')->nullable()->fulltext();
             $table->longText('content')->nullable();
+            $table->unsignedBigInteger('created_by')->nullable()->index();
             $table->softDeletes();
             $table->timestamps();
         });

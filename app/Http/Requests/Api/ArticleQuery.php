@@ -4,7 +4,7 @@ namespace App\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LocationQuery extends FormRequest
+class ArticleQuery extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +22,15 @@ class LocationQuery extends FormRequest
     public function rules(): array
     {
         return [
-            'limit' => 'int',
-            'search' => 'string'
+            "limit" => 'int',
+            "search" => 'string',
+            "developer_id" => 'int',
+            /**
+             * Page number
+             * 
+             * @example 1
+             */
+            'page' => 'int',
         ];
     }
 }

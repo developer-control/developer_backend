@@ -227,7 +227,7 @@
     <script>
         let cityCreate, cityEdit, developerCreate, developerEdit;
         document.addEventListener('DOMContentLoaded', function() {
-            setInputChoices('/api/locations/cities').then(choices => {
+            setInputChoices('/locations/cities/option-cities').then(choices => {
                 const optionCityCreate = document.getElementById('city_id');
                 const optionCityEdit = document.getElementById('city_id-edit');
                 cityCreate = initializeChoice(optionCityCreate, choices);

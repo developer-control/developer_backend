@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Location;
 
+use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CityRequest;
+use App\Http\Resources\Api\CityResource;
 use App\Models\City;
 use App\Models\Province;
 use Illuminate\Http\Request;
@@ -23,6 +25,18 @@ class CityController extends Controller
     public function index()
     {
         return view('pages.locations.city');
+    }
+
+    public function indexOption(Request $request)
+    {
+
+
+        $cities = City::select('id', 'province_id', 'name');
+        if ($request->search) {
+            $cities->where('name', 'LIKE', '%' . $request->search . '%');
+        }
+        $results = $cities->get();
+        return ApiResponse::success(CityResource::collection($results), 'Get Cities success.');
     }
 
     public function initializeCity()
