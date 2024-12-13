@@ -4,11 +4,12 @@ namespace App\Http\Controllers\API\Project;
 
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\ClaimUnitRequest;
 use App\Http\Requests\Api\HistoryUserUnitQuery;
 use App\Http\Requests\Api\ProjectUnitQuery;
 use App\Http\Requests\Api\UserUnitQuery;
 use App\Http\Resources\Api\UnitResource;
-use App\Http\Resources\UserUnitResource;
+use App\Http\Resources\Api\UserUnitResource;
 use App\Models\Media;
 use App\Models\ProjectUnit;
 use App\Models\UserUnit;
@@ -79,20 +80,12 @@ class UnitController extends Controller
      * 
      * api for user send request for claim unit
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\Api\ClaimUnitRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function storeClaimUnit(Request $request)
+    public function storeClaimUnit(ClaimUnitRequest $request)
     {
-        $request->validate([
-            'developer_id' => 'required',
-            'project_id' => 'required',
-            'project_area_id' => 'required',
-            'project_bloc_id' => 'required',
-            'project_unit_id' => 'required',
-            'ownership_unit_id' => 'required',
-            'city_id' => 'required'
-        ]);
+
         DB::beginTransaction();
         $unit = UserUnit::create([
             'developer_id' => $request->developer_id,

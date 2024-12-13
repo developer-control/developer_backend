@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\Auth\DeviceController;
 use App\Http\Controllers\API\Auth\LoginController;
 use App\Http\Controllers\API\Auth\RegisterController;
+use App\Http\Controllers\API\ComplainController;
 use App\Http\Controllers\API\DeveloperController;
 use App\Http\Controllers\API\LocationController;
 use App\Http\Controllers\API\Posts\ArticleController;
@@ -51,16 +52,29 @@ Route::middleware(['auth:sanctum', 'verified.api'])->group(function () {
     });
 
     Route::get('/developers', [DeveloperController::class, 'index']);
-    Route::get('/projects', [ProjectController::class, 'index']);
-    Route::get('/projects/areas', [AreaController::class, 'index']);
-    Route::get('/projects/blocs', [BlocController::class, 'index']);
-    Route::get('/projects/units', [UnitController::class, 'index']);
-    Route::get('/projects/ownership-units', [OwnershipUnitController::class, 'index']);
-    Route::post('/projects/units/upload-evidence-file', [UnitController::class, 'UploadEvidenceFile']);
-    Route::post('/projects/units/store-claim-unit', [UnitController::class, 'storeClaimUnit']);
-    Route::get('/projects/units/user-unit', [UnitController::class, 'indexMyUnit']);
-    Route::get('/projects/units/history-user-unit', [UnitController::class, 'indexHistoryMyUnit']);
-    Route::get('/projects/units/user-unit/detail/{id}', [UnitController::class, 'showUnitUser']);
+    Route::prefix('projects')->group(function () {
+        Route::get('/', [ProjectController::class, 'index']);
+        Route::get('/areas', [AreaController::class, 'index']);
+        Route::get('/blocs', [BlocController::class, 'index']);
+        Route::get('/ownership-units', [OwnershipUnitController::class, 'index']);
+
+        Route::prefix('units')->group(function () {
+            Route::get('/', [UnitController::class, 'index']);
+            Route::post('/upload-evidence-file', [UnitController::class, 'UploadEvidenceFile']);
+            Route::post('/store-claim-unit', [UnitController::class, 'storeClaimUnit']);
+            Route::get('/user-unit', [UnitController::class, 'indexMyUnit']);
+            Route::get('/history-user-unit', [UnitController::class, 'indexHistoryMyUnit']);
+            Route::get('/user-unit/detail/{id}', [UnitController::class, 'showUnitUser']);
+        });
+    });
+    Route::prefix('complains')->group(function () {
+        Route::get('/', [ComplainController::class, 'index']);
+        Route::get('/detail/{id}', [ComplainController::class, 'index']);
+        Route::post('/store', [ComplainController::class, 'show']);
+        Route::post('/store-image', [ComplainController::class, 'storeImage']);
+        Route::put('/update/{id}', [ComplainController::class, 'update']);
+        Route::delete('/delete/{id}', [ComplainController::class, 'destroy']);
+    });
 });
 
 
