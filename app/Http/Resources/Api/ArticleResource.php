@@ -15,12 +15,12 @@ class ArticleResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
+            'id' => (int)$this->id,
             'image' => storage_url($this->image),
             'short_content' => $this->short_content,
             'content' => $this->content,
             'created_by' => [
-                'id' => @$this->createdBy->id,
+                'id' => (int)@$this->created_by,
                 'name' => @$this->createdBy->name
             ],
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),

@@ -15,33 +15,33 @@ class UserUnitResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
+            'id' => (int)$this->id,
             'developer' => [
-                'id' => $this->developer_id,
+                'id' => (int) $this->developer_id,
                 'name' => $this->developer_name,
             ],
             'project' => [
-                'id' => $this->project_id,
+                'id' => (int)$this->project_id,
                 'name' => $this->project_name,
             ],
             'project_area' => [
-                'id' => $this->project_area_id,
+                'id' => (int)$this->project_area_id,
                 'name' => $this->area_name,
             ],
             'project_bloc' => [
-                'id' => $this->project_bloc_id,
+                'id' => (int)$this->project_bloc_id,
                 'name' => $this->bloc_name,
             ],
             'project_unit' => [
-                'id' => $this->project_unit_id,
+                'id' => (int) $this->project_unit_id,
                 'name' => $this->unit_name,
             ],
             'city' => [
-                'id' => $this->city_id,
+                'id' => (int) $this->city_id,
                 'name' => $this->city_name,
             ],
             'ownership_unit' => [
-                'id' => $this->ownership_unit_id,
+                'id' => (int) $this->ownership_unit_id,
                 'name' => $this->ownership_unit_name,
             ],
             'status' => $this->status,
