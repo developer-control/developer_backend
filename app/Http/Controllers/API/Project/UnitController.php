@@ -44,38 +44,6 @@ class UnitController extends Controller
 
 
     /**
-     * Upload evidence file.
-     * 
-     * api to upload an image as proof of unit ownership
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function UploadEvidenceFile(Request $request)
-    {
-        $request->validate([
-            'image' => 'required|image'
-        ]);
-        $image = null;
-        if ($request->hasFile('image')) {
-            $image = $this->uploadImage($request, 'ownership-units/evidence', 600);
-
-            if ($image) {
-                Media::create([
-                    'name' => "File Evidence Unit",
-                    'type' => @$request->image->getMimeType(),
-                    'url' => $image,
-                    'alt' => null,
-                    'title' => "File Evidence Unit",
-                    'description' => null
-                ]);
-            }
-        }
-        $data = ['full_url' => storage_url($image), 'url' => $image];
-        return ApiResponse::success($data, 'Upload evidence file ownership success.');
-    }
-
-    /**
      * Store request claim unit.
      * 
      * api for user send request for claim unit

@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\Auth\DeviceController;
 use App\Http\Controllers\API\Auth\LoginController;
 use App\Http\Controllers\API\Auth\RegisterController;
+use App\Http\Controllers\API\Auth\ResetPasswordController;
 use App\Http\Controllers\API\ComplainController;
 use App\Http\Controllers\API\DeveloperController;
 use App\Http\Controllers\API\LocationController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\API\Project\BlocController;
 use App\Http\Controllers\API\Project\OwnershipUnitController;
 use App\Http\Controllers\API\Project\ProjectController;
 use App\Http\Controllers\API\Project\UnitController;
+use App\Http\Controllers\Base\ImageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +30,9 @@ Route::post('auth/{provider}/login', [LoginController::class, 'loginProvider']);
 Route::post('/auth/register', [RegisterController::class, 'register']);
 Route::post('/auth/send-verify-email', [RegisterController::class, 'sendEmailVerification']);
 Route::post('/auth/verify-email', [RegisterController::class, 'verify']);
+Route::post('/forget-password', [ResetPasswordController::class, 'sendResetLink']);
+Route::post('/forget-password/validation-token', [ResetPasswordController::class, 'validateToken']);
+Route::post('/reset-password', [ResetPasswordController::class, 'reset']);
 /*
 |--------------------------------------------------------------------------
 | Authentication & Authorization
@@ -39,6 +44,7 @@ Route::post('/auth/verify-email', [RegisterController::class, 'verify']);
 
 Route::middleware(['auth:sanctum', 'verified.api'])->group(function () {
     Route::post('/auth/logout', [LoginController::class, 'logout']);
+    Route::post('/media/store-image', [ImageController::class, 'storeImage']);
     /**
      * Devices
      * 
@@ -60,7 +66,6 @@ Route::middleware(['auth:sanctum', 'verified.api'])->group(function () {
 
         Route::prefix('units')->group(function () {
             Route::get('/', [UnitController::class, 'index']);
-            Route::post('/upload-evidence-file', [UnitController::class, 'UploadEvidenceFile']);
             Route::post('/store-claim-unit', [UnitController::class, 'storeClaimUnit']);
             Route::get('/user-unit', [UnitController::class, 'indexMyUnit']);
             Route::get('/history-user-unit', [UnitController::class, 'indexHistoryMyUnit']);
@@ -69,9 +74,9 @@ Route::middleware(['auth:sanctum', 'verified.api'])->group(function () {
     });
     Route::prefix('complains')->group(function () {
         Route::get('/', [ComplainController::class, 'index']);
-        Route::get('/detail/{id}', [ComplainController::class, 'index']);
-        Route::post('/store', [ComplainController::class, 'show']);
-        Route::post('/store-image', [ComplainController::class, 'storeImage']);
+        Route::get('/detail/{id}', [ComplainController::class, 'show']);
+        Route::post('/store', [ComplainController::class, 'store']);
+
         Route::put('/update/{id}', [ComplainController::class, 'update']);
         Route::delete('/delete/{id}', [ComplainController::class, 'destroy']);
     });

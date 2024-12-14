@@ -103,37 +103,7 @@ class ComplainController extends Controller
         return ApiResponse::success(new ComplainResource($complain), 'get detail complain user success');
     }
 
-    /**
-     * Upload image file.
-     * 
-     * api to upload an image as proof of complain user
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function storeImage(Request $request)
-    {
-        $request->validate([
-            'image' => 'required|image'
-        ]);
-        $image = null;
-        if ($request->hasFile('image')) {
-            $image = $this->uploadImage($request, 'complains/images', 600);
 
-            if ($image) {
-                Media::create([
-                    'name' => "File image complain",
-                    'type' => @$request->image->getMimeType(),
-                    'url' => $image,
-                    'alt' => null,
-                    'title' => "File image complain",
-                    'description' => null
-                ]);
-            }
-        }
-        $data = ['full_url' => storage_url($image), 'url' => $image];
-        return ApiResponse::success($data, 'Upload image file complain user success.');
-    }
     /**
      * Update request complain.
      * 

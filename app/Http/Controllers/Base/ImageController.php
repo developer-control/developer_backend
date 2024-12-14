@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Base;
 
+use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Media;
 use App\Traits\UploadMedia;
@@ -29,5 +30,42 @@ class ImageController extends Controller
         }
 
         return response()->json(['url' => storage_url($image), 'path' => $image]);
+    }
+    /**
+     * Upload image file.
+     * 
+     * api to upload an image to database
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function storeImage(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|image',
+            /**
+             * type
+             * 
+             * @example complains, evidences
+             */
+            'type' => ['string', 'required']
+        ]);
+        $image = null;
+        if ($request->hasFile('image')) {
+            $image = $this->uploadImage($request, 'contents/images', 600);
+
+            if ($image) {
+                Media::create([
+                    'name' => "File image " . @$request->type,
+                    'type' => @$request->image->getMimeType(),
+                    'url' => $image,
+                    'alt' => null,
+                    'title' => "File image " . @$request->type,
+                    'description' => null
+                ]);
+            }
+        }
+        $data = ['full_url' => storage_url($image), 'url' => $image];
+        return ApiResponse::success($data, 'Upload image file success.');
     }
 }
