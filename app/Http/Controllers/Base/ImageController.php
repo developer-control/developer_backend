@@ -31,6 +31,27 @@ class ImageController extends Controller
 
         return response()->json(['url' => storage_url($image), 'path' => $image]);
     }
+
+    public function storePromotionImage(Request $request)
+    {
+        $image = null;
+        if ($request->hasFile('image')) {
+            $image = $this->uploadImage($request, 'promotions/contents', 600);
+
+            if ($image) {
+                Media::create([
+                    'name' => "Promotion Contents",
+                    'type' => @$request->image->getMimeType(),
+                    'url' => $image,
+                    'alt' => null,
+                    'title' => "Promotion Contents",
+                    'description' => null
+                ]);
+            }
+        }
+
+        return response()->json(['url' => storage_url($image), 'path' => $image]);
+    }
     /**
      * Upload image file.
      * 

@@ -27,7 +27,7 @@ class BlocController extends Controller
 
     public function blocDatatable(Request $request)
     {
-        $developer_id = auth()->user()->hasRole('superadmin') ? null : auth()->user()->developer_id;
+        $developer_id = $request->user()->hasRole('superadmin') ? null : $request->user()->developer_id;
         $project_blocs = ProjectBloc::select('project_blocs.*')->with(['projectarea']);
         if ($developer_id) {
             $project_blocs->where('developer_id', $developer_id);
@@ -114,8 +114,8 @@ class BlocController extends Controller
     public function optionBloc(Request $request)
     {
         $projects = ProjectBloc::select('id', 'name');
-        if (!auth()->user()->hasRole('superadmin')) {
-            $projects->where('developer_id', auth()->user()->developer_id);
+        if (!$request->user()->hasRole('superadmin')) {
+            $projects->where('developer_id', $request->user()->developer_id);
         }
 
         if ($request->limit) {

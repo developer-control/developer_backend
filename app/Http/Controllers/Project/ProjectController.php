@@ -28,8 +28,8 @@ class ProjectController extends Controller
 
         $projects = Project::select('projects.*')->with(['city']);
 
-        if (!auth()->user()->hasRole('superadmin')) {
-            $projects->where('developer_id', auth()->user()->developer_id);
+        if (!$request->user()->hasRole('superadmin')) {
+            $projects->where('developer_id', $request->user()->developer_id);
         }
         return DataTables::eloquent($projects)
 
@@ -55,7 +55,7 @@ class ProjectController extends Controller
     {
         Project::create([
             'city_id' => $request->city_id,
-            'developer_id' => $request->developer_id ?? auth()->user()->developer_id,
+            'developer_id' => $request->developer_id ?? $request->user()->developer_id,
             'name' => $request->name,
         ]);
         toast('New project has been created', 'success');
@@ -100,8 +100,8 @@ class ProjectController extends Controller
     public function optionProject(Request $request)
     {
         $projects = Project::select('id', 'name');
-        if (!auth()->user()->hasRole('superadmin')) {
-            $projects->where('developer_id', auth()->user()->developer_id);
+        if (!$request->user()->hasRole('superadmin')) {
+            $projects->where('developer_id', $request->user()->developer_id);
         }
 
         if ($request->limit) {

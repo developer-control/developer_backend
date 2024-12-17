@@ -76,3 +76,18 @@ Breadcrumbs::for('edit_article', function (BreadcrumbTrail $trail, $resource) {
     $trail->parent('menu_article');
     $trail->push('Edit Article', route('edit_article', ['id' => $resource->id]));
 });
+// Home > menu_promotion
+Breadcrumbs::for('menu_promotion', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Promotion', route('menu_promotion'));
+});
+// menu_promotion > create_promotion
+Breadcrumbs::for('create_promotion', function (BreadcrumbTrail $trail) {
+    $trail->parent('menu_promotion');
+    $trail->push('Create Promotion', route('create_promotion'));
+});
+// menu_promotion > edit_promotion
+Breadcrumbs::for('edit_promotion', function (BreadcrumbTrail $trail, $resource) {
+    $trail->parent('menu_promotion');
+    $trail->push('Edit Promotion', route('edit_promotion', ['id' => $resource->id]));
+});

@@ -23,9 +23,9 @@ class ArticleController extends Controller
     public function index(ArticleQuery $request)
     {
         $limit = $request->limit ?? 10;
-        $articles = Article::with(['createdBy:id, name']);
+        $articles = Article::with(['createdBy:id,name']);
         if ($request->search) {
-            $articles->where('name', 'LIKE', '%' . $request->search . '%');
+            $articles->where('title', 'LIKE', '%' . $request->search . '%');
         }
         if ($request->developer_id) {
             $articles->where('developer_id', $request->developer_id);
@@ -47,7 +47,7 @@ class ArticleController extends Controller
      */
     public function show(string $id)
     {
-        $article = Article::with(['createdBy:id, name'])->find($id);
+        $article = Article::with(['createdBy:id,name'])->find($id);
         if (!$article) {
             return ApiResponse::success(null, 'article not found', 200);
         }

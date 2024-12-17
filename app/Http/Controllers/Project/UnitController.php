@@ -26,7 +26,7 @@ class UnitController extends Controller
 
     public function unitDatatable(Request $request)
     {
-        $developer_id = auth()->user()->hasRole('superadmin') ? null : auth()->user()->developer_id;
+        $developer_id = $request->user()->hasRole('superadmin') ? null : $request->user()->developer_id;
         $project_units = ProjectUnit::select('project_units.*')->with(['projectbloc']);
         if ($developer_id) {
             $project_units->where('developer_id', $developer_id);

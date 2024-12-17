@@ -5,7 +5,7 @@ namespace App\Http\Resources\Api;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ArticleResource extends JsonResource
+class PromotionResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,9 +16,8 @@ class ArticleResource extends JsonResource
     {
         return [
             'id' => (int)$this->id,
-            'image' => storage_url($this->image),
             'title' => $this->title,
-            'short_content' => $this->short_content,
+            'image' => storage_url($this->image),
             'content' => $this->content,
             'created_by' => [
                 'id' => (int)@$this->created_by,

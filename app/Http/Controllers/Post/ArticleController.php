@@ -22,7 +22,7 @@ class ArticleController extends Controller
     public function index(Request $request)
     {
         $limit = $request->limit ?? 8;
-        $developer_id = auth()->user()->hasRole('superadmin') ? null : auth()->user()->developer_id;
+        $developer_id = $request->user()->hasRole('superadmin') ? null : $request->user()->developer_id;
         $keyword = $request->input('keyword'); // Mengambil input keyword dari request
         $articles = Article::where(function ($q) use ($keyword) {
             $q->where('title', 'LIKE', "%{$keyword}%")
@@ -51,7 +51,7 @@ class ArticleController extends Controller
     public function store(ArticleRequest $request)
     {
         DB::beginTransaction();
-        $developer_id = auth()->user()->hasRole('superadmin') ? null : auth()->user()->developer_id;
+        $developer_id = $request->user()->hasRole('superadmin') ? null : $request->user()->developer_id;
         $article = Article::create([
             'developer_id' => @$developer_id,
             'title' => $request->title,

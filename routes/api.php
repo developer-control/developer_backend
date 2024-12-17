@@ -8,6 +8,7 @@ use App\Http\Controllers\API\ComplainController;
 use App\Http\Controllers\API\DeveloperController;
 use App\Http\Controllers\API\LocationController;
 use App\Http\Controllers\API\Posts\ArticleController;
+use App\Http\Controllers\API\Posts\PromotionController;
 use App\Http\Controllers\API\Project\AreaController;
 use App\Http\Controllers\API\Project\BlocController;
 use App\Http\Controllers\API\Project\OwnershipUnitController;
@@ -91,4 +92,6 @@ Route::prefix('locations')->group(function () {
 Route::prefix('posts')->group(function () {
     Route::get('/articles', [ArticleController::class, 'index']);
     Route::get('/article/detail/{id}', [ArticleController::class, 'show']);
+    Route::get('/promotions', [PromotionController::class, 'index']);
+    Route::get('/promotion/detail/{id}', [PromotionController::class, 'show']);
 });

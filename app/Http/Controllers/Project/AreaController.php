@@ -28,7 +28,7 @@ class AreaController extends Controller
 
     public function areaDatatable(Request $request)
     {
-        $developer_id = auth()->user()->hasRole('superadmin') ? null : auth()->user()->developer_id;
+        $developer_id = $request->user()->hasRole('superadmin') ? null : $request->user()->developer_id;
         $project_areas = ProjectArea::select('project_areas.*')->with(['project']);
         if ($developer_id) {
             $project_areas->where('developer_id', $developer_id);
@@ -115,8 +115,8 @@ class AreaController extends Controller
     public function optionArea(Request $request)
     {
         $projects = ProjectArea::select('id', 'name');
-        if (!auth()->user()->hasRole('superadmin')) {
-            $projects->where('developer_id', auth()->user()->developer_id);
+        if (!$request->user()->hasRole('superadmin')) {
+            $projects->where('developer_id', $request->user()->developer_id);
         }
 
         if ($request->limit) {

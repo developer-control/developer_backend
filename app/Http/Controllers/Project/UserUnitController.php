@@ -42,7 +42,7 @@ class UserUnitController extends Controller
     public function requestDatatable(Request $request)
     {
         $request->merge(['status' => 'request']);
-        $developer_id = auth()->user()->hasRole('superadmin') ? null : auth()->user()->developer_id;
+        $developer_id = $request->user()->hasRole('superadmin') ? null : $request->user()->developer_id;
 
         $units = $this->queryUserUnit($request);
         if ($developer_id) {

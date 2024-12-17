@@ -9,6 +9,7 @@ use App\Http\Controllers\Master\DeveloperController;
 use App\Http\Controllers\Master\OwnershipUnitController;
 use App\Http\Controllers\Master\RolePermissionController;
 use App\Http\Controllers\Post\ArticleController;
+use App\Http\Controllers\Post\PromotionController;
 use App\Http\Controllers\Project\AreaController;
 use App\Http\Controllers\Project\ProjectController;
 use App\Http\Controllers\Project\UnitController;
@@ -28,6 +29,7 @@ Route::get('email/verify/{id}/{hash}', [VerificationController::class, 'verify']
  */
 Route::group(['prefix' => 'images'], function () {
     Route::post('/article-image', [ImageController::class, 'storeArticleImage']);
+    Route::post('/promotion-image', [ImageController::class, 'storePromotionImage']);
 });
 
 /**
@@ -69,6 +71,14 @@ Route::group(['prefix' => 'posts'], function () {
         Route::get('/edit/{id}', [ArticleController::class, 'edit'])->name('edit_article');
         Route::post('/update/{id}', [ArticleController::class, 'update'])->name('update_article');
         Route::delete('/delete/{id}', [ArticleController::class, 'destroy'])->name('delete_article');
+    });
+    Route::prefix('promotions')->group(function () {
+        Route::get('/', [PromotionController::class, 'index'])->name('menu_promotion');
+        Route::get('/create', [PromotionController::class, 'create'])->name('create_promotion');
+        Route::post('/store', [PromotionController::class, 'store'])->name('store_promotion');
+        Route::get('/edit/{id}', [PromotionController::class, 'edit'])->name('edit_promotion');
+        Route::post('/update/{id}', [PromotionController::class, 'update'])->name('update_promotion');
+        Route::delete('/delete/{id}', [PromotionController::class, 'destroy'])->name('delete_promotion');
     });
 });
 /**
