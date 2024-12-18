@@ -90,6 +90,7 @@ Route::prefix('locations')->group(function () {
 });
 
 Route::prefix('posts')->group(function () {
+    Route::get('/tags', [ArticleController::class, 'indexTag']);
     Route::get('/articles', [ArticleController::class, 'index']);
     Route::get('/article/detail/{id}', [ArticleController::class, 'show']);
     Route::get('/promotions', [PromotionController::class, 'index']);

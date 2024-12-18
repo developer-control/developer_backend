@@ -22,4 +22,8 @@ class Article extends Model
     {
         return $this->morphToMany(Media::class, 'sourceable', 'model_has_media')->withPivot('type');
     }
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
 }

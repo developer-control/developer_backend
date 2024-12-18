@@ -16,6 +16,7 @@ class ArticleResource extends JsonResource
     {
         return [
             'id' => (int)$this->id,
+            'tags' => TagResource::collection($this->whenLoaded('tags')),
             'image' => storage_url($this->image),
             'title' => $this->title,
             'short_content' => $this->short_content,

@@ -4,7 +4,7 @@ namespace App\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ArticleQuery extends FormRequest
+class TagQuery extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,13 +25,6 @@ class ArticleQuery extends FormRequest
             "limit" => 'int',
             "search" => 'string',
             "developer_id" => 'int',
-            "tag_id" => 'int',
-            /**
-             * Page number
-             * 
-             * @example 1
-             */
-            'page' => 'int',
         ];
     }
 }

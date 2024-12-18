@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ArticleRequest;
 use App\Models\Article;
 use App\Models\Media;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -50,7 +51,18 @@ class ArticleController extends Controller
      */
     public function store(ArticleRequest $request)
     {
+
         DB::beginTransaction();
+        $tags = explode(',', $request->tags);
+        $inputTags = [];
+        foreach ($tags as $tag) {
+            $newTag = Tag::firstOrCreate([
+                'name' => $tag
+            ]);
+            if (!in_array($newTag->id, $inputTags)) {
+                array_push($inputTags, $newTag->id); // Menambahkan elemen jika belum ada
+            }
+        }
         $developer_id = $request->user()->hasRole('superadmin') ? null : $request->user()->developer_id;
         $article = Article::create([
             'developer_id' => @$developer_id,
@@ -65,6 +77,7 @@ class ArticleController extends Controller
         if ($image) {
             $article->media()->attach($image, ['type' => 'image']);
         }
+        $article->tags()->sync($inputTags);
         DB::commit();
         toast('New Article has been created', 'success');
         return redirect()->route('menu_article');

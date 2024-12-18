@@ -12,11 +12,25 @@
             /* Rasio 16:9 */
             overflow: hidden;
         }
+
+        .choices {
+            border-radius: .5rem;
+        }
+
+        .choices__inner {
+            border-radius: .5rem !important;
+            padding: .5rem .75rem;
+        }
+
+        .choices__list--multiple .choices__item {
+            border-radius: 8px;
+        }
     </style>
     <link href="{{ url('/') }}/assets/quill/image-uploader/dist/quill.snow.css" rel="stylesheet" />
     <link href="{{ url('/') }}/assets/quill/image-uploader/dist/quill.imageUploader.min.css" rel="stylesheet" />
     <script src="{{ url('/') }}/assets/quill/image-uploader/dist/quill.min.js"></script>
     <script src="{{ url('/') }}/assets/quill/image-uploader/dist/quill.imageUploader.min.js"></script>
+    <link rel="stylesheet" href="{{ url('/') }}/assets/choices/css/choices.min.css">
 @endsection
 @section('breadcrumb')
     {{ Breadcrumbs::render('create_article') }}
@@ -40,6 +54,16 @@
                                     id="title" name="title" placeholder="Input title" value="{{ old('title') }}">
                                 <label for="title">Title</label>
                                 @error('title')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="tags">Tags</label>
+                                <input class="form-control @error('tags') is-invalid @enderror" id="tags"
+                                    type="text" name="tags" value="{{ old('tags') }}" />
+                                @error('tags')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -90,7 +114,14 @@
 @endsection
 @section('scripts')
     <script src="{{ url('/') }}/assets/js/quill-main.js"></script>
+    <script src="{{ url('/') }}/assets/js/custom-choices.js"></script>
+    <script src="{{ url('/') }}/assets/choices/js/choices.min.js"></script>
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputTags = document.getElementById('tags');
+            tagsCreate = initializeChoiceInput(inputTags);
+
+        })
         // fungsi trigger untuk upload image
         function triggerFileInput(previewDiv) {
             const fileInput = previewDiv.nextElementSibling;
