@@ -92,6 +92,17 @@ class ArticleController extends Controller
 
     public function update(ArticleRequest $request, string $id)
     {
+        DB::beginTransaction();
+        $tags = explode(',', $request->tags);
+        $inputTags = [];
+        foreach ($tags as $tag) {
+            $newTag = Tag::firstOrCreate([
+                'name' => $tag
+            ]);
+            if (!in_array($newTag->id, $inputTags)) {
+                array_push($inputTags, $newTag->id); // Menambahkan elemen jika belum ada
+            }
+        }
         $article = Article::find($id);
         $old_image = $article->image;
         if ($old_image != $request->image) {
@@ -106,6 +117,8 @@ class ArticleController extends Controller
         $article->image = $request->image;
         $article->content = $request->content;
         $article->save();
+        $article->tags()->sync($inputTags);
+        DB::commit();
         toast('Article has been updated', 'success');
         return redirect()->route('menu_article');
     }
