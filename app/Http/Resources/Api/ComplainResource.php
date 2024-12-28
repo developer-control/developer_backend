@@ -42,6 +42,7 @@ class ComplainResource extends JsonResource
             'images' => $images,
             'address' => $this->address,
             'description' => $this->description,
+            'solved_notes' => $this->solved_notes,
             'type' => $this->type,
             'status' => $this->status,
             'solved_by' => @$this->solvedBy ? [
