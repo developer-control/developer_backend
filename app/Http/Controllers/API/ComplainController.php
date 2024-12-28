@@ -87,7 +87,7 @@ class ComplainController extends Controller
         return ApiResponse::success(null, 'Create request complain succes', 201);
     }
     /**
-     * Detail Comlain User.
+     * Detail Complain User.
      * 
      * api for detail of complain user from database
      *

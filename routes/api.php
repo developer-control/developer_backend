@@ -9,6 +9,7 @@ use App\Http\Controllers\API\ComplainController;
 use App\Http\Controllers\API\DeveloperController;
 use App\Http\Controllers\API\LocationController;
 use App\Http\Controllers\API\Posts\ArticleController;
+use App\Http\Controllers\API\Posts\BannerController;
 use App\Http\Controllers\API\Posts\PromotionController;
 use App\Http\Controllers\API\Project\AreaController;
 use App\Http\Controllers\API\Project\BlocController;
@@ -103,4 +104,6 @@ Route::prefix('posts')->group(function () {
     Route::get('/article/detail/{id}', [ArticleController::class, 'show']);
     Route::get('/promotions', [PromotionController::class, 'index']);
     Route::get('/promotion/detail/{id}', [PromotionController::class, 'show']);
+    Route::get('/banners', [BannerController::class, 'index']);
+    Route::get('/banner/detail/{id}', [BannerController::class, 'show']);
 });

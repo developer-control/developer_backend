@@ -49,9 +49,9 @@ class ComplainResource extends JsonResource
                 'id' => (int) $this->solved_by,
                 'name' => @$this->solvedBy->name,
             ] : null,
-            'solved_at' => $this->solved_at ? $this->solved_at->format('Y-m-d H:i:s') : null,
-            'created_at' => $this->created_at->format('Y-m-d H:i:s'),
-            'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
+            'solved_at' => $this->solved_at ? $this->solved_at->toDateTimeString() : null,
+            'created_at' => $this->created_at->toDateTimeString(),
+            'updated_at' => $this->updated_at->toDateTimeString(),
         ];
     }
 }

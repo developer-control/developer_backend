@@ -46,7 +46,7 @@ class UserUnitResource extends JsonResource
             ],
             'status' => $this->status,
             'is_active' => $this->is_active,
-            'created_at' => $this->created_at->format('Y-m-d H:i:s')
+            'created_at' => $this->created_at->toDateTimeString()
         ];
     }
 }

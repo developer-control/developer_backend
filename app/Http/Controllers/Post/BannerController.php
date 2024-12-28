@@ -3,17 +3,17 @@
 namespace App\Http\Controllers\Post;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\PromotionRequest;
+use App\Http\Requests\BannerRequest;
+use App\Models\Banner;
 use App\Models\Media;
-use App\Models\Promotion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class PromotionController extends Controller
+class BannerController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth', 'role_or_permission:superadmin|manage promotion']);
+        $this->middleware(['auth', 'role_or_permission:superadmin|manage banner']);
     }
     /**
      * Display a listing of the resource.
@@ -23,16 +23,16 @@ class PromotionController extends Controller
         $limit = $request->limit ?? 8;
         $developer_id = $request->user()->hasRole('superadmin') ? null : $request->user()->developer_id;
         $keyword = $request->input('keyword'); // Mengambil input keyword dari request
-        $promotions = Promotion::where(function ($q) use ($keyword) {
+        $banners = Banner::where(function ($q) use ($keyword) {
             $q->where('title', 'LIKE', "%{$keyword}%")
                 ->orWhere('content', 'LIKE', "%{$keyword}%");
         });
         if ($developer_id) {
-            $promotions->where('developer_id', $developer_id);
+            $banners->where('developer_id', $developer_id);
         }
         // $tes = Str::limit('As Uber works through a huge amount of internal management turmoil.', 7, '...');
-        $promotions = $promotions->paginate($limit);
-        return view('pages.promotions.index', compact('promotions', 'request'));
+        $banners = $banners->paginate($limit);
+        return view('pages.banners.index', compact('banners', 'request'));
     }
 
     /**
@@ -40,20 +40,20 @@ class PromotionController extends Controller
      */
     public function create()
     {
-        return view('pages.promotions.create');
+        return view('pages.banners.create');
     }
 
     /**
      * Store a newly created resource in storage.
-     * @param  PromotionRequest $request
+     * @param  BannerRequest $request
      * @return \Illuminate\Http\Response
      * 
      */
-    public function store(PromotionRequest $request)
+    public function store(BannerRequest $request)
     {
         DB::beginTransaction();
         $developer_id = $request->user()->hasRole('superadmin') ? null : $request->user()->developer_id;
-        $promtion = Promotion::create([
+        $promtion = Banner::create([
             'developer_id' => @$developer_id,
             'title' => $request->title,
             'image' => $request->image,
@@ -67,8 +67,8 @@ class PromotionController extends Controller
             $promtion->media()->attach($image, ['type' => 'image']);
         }
         DB::commit();
-        toast('New Promotion has been created', 'success');
-        return redirect()->route('menu_promotion');
+        toast('New Banner has been created', 'success');
+        return redirect()->route('menu_banner');
     }
 
 
@@ -77,31 +77,35 @@ class PromotionController extends Controller
      */
     public function edit(string $id)
     {
-        $promotion = Promotion::find($id);
-        return view('pages.promotions.edit', compact('promotion'));
+        $banner = Banner::find($id);
+        return view('pages.banners.edit', compact('banner'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * Store a newly created resource in storage.
+     * @param  BannerRequest $request
+     * @param  string $id
+     * @return \Illuminate\Http\Response
+     * 
      */
-    public function update(PromotionRequest $request, string $id)
+    public function update(BannerRequest $request, string $id)
     {
-        $promotion = Promotion::find($id);
-        $old_image = $promotion->image;
+        $banner = Banner::find($id);
+        $old_image = $banner->image;
         if ($old_image != $request->image) {
-            remove_file($old_image, $promotion);
+            remove_file($old_image, $banner);
             $image = Media::where('url', $request->image)->first();
             if ($image) {
-                $promotion->media()->attach($image, ['type' => 'image']);
+                $banner->media()->attach($image, ['type' => 'image']);
             }
         }
-        $promotion->title = $request->title;
-        $promotion->image = $request->image;
-        $promotion->content = $request->content;
-        $promotion->is_active = $request->is_active ? 1 : 0;
-        $promotion->save();
-        toast('Promotion has been updated', 'success');
-        return redirect()->route('menu_promotion');
+        $banner->title = $request->title;
+        $banner->image = $request->image;
+        $banner->content = $request->content;
+        $banner->is_active = $request->is_active ? 1 : 0;
+        $banner->save();
+        toast('Banner has been updated', 'success');
+        return redirect()->route('menu_banner');
     }
 
     /**
@@ -109,12 +113,12 @@ class PromotionController extends Controller
      */
     public function destroy(string $id)
     {
-        $promotion = Promotion::find($id);
-        if ($promotion->image) {
-            remove_file($promotion->image, $promotion);
+        $banner = Banner::find($id);
+        if ($banner->image) {
+            remove_file($banner->image, $banner);
         }
-        Promotion::destroy($id);
-        toast('Promotion has been deleted', 'success');
+        Banner::destroy($id);
+        toast('Banner has been deleted', 'success');
         return back();
     }
 }

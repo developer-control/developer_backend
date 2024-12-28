@@ -91,3 +91,18 @@ Breadcrumbs::for('edit_promotion', function (BreadcrumbTrail $trail, $resource) 
     $trail->parent('menu_promotion');
     $trail->push('Edit Promotion', route('edit_promotion', ['id' => $resource->id]));
 });
+// Home > menu_banner
+Breadcrumbs::for('menu_banner', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Banner', route('menu_banner'));
+});
+// menu_banner > create_banner
+Breadcrumbs::for('create_banner', function (BreadcrumbTrail $trail) {
+    $trail->parent('menu_banner');
+    $trail->push('Create Banner', route('create_banner'));
+});
+// menu_banner > edit_banner
+Breadcrumbs::for('edit_banner', function (BreadcrumbTrail $trail, $resource) {
+    $trail->parent('menu_banner');
+    $trail->push('Edit banner', route('edit_banner', ['id' => $resource->id]));
+});

@@ -9,6 +9,7 @@ use App\Http\Controllers\Master\DeveloperController;
 use App\Http\Controllers\Master\OwnershipUnitController;
 use App\Http\Controllers\Master\RolePermissionController;
 use App\Http\Controllers\Post\ArticleController;
+use App\Http\Controllers\Post\BannerController;
 use App\Http\Controllers\Post\PromotionController;
 use App\Http\Controllers\Project\AreaController;
 use App\Http\Controllers\Project\ProjectController;
@@ -30,6 +31,7 @@ Route::get('email/verify/{id}/{hash}', [VerificationController::class, 'verify']
 Route::group(['prefix' => 'images'], function () {
     Route::post('/article-image', [ImageController::class, 'storeArticleImage']);
     Route::post('/promotion-image', [ImageController::class, 'storePromotionImage']);
+    Route::post('/banner-image', [ImageController::class, 'storeBannerImage']);
 });
 
 /**
@@ -79,6 +81,14 @@ Route::group(['prefix' => 'posts'], function () {
         Route::get('/edit/{id}', [PromotionController::class, 'edit'])->name('edit_promotion');
         Route::post('/update/{id}', [PromotionController::class, 'update'])->name('update_promotion');
         Route::delete('/delete/{id}', [PromotionController::class, 'destroy'])->name('delete_promotion');
+    });
+    Route::prefix('banners')->group(function () {
+        Route::get('/', [BannerController::class, 'index'])->name('menu_banner');
+        Route::get('/create', [BannerController::class, 'create'])->name('create_banner');
+        Route::post('/store', [BannerController::class, 'store'])->name('store_banner');
+        Route::get('/edit/{id}', [BannerController::class, 'edit'])->name('edit_banner');
+        Route::post('/update/{id}', [BannerController::class, 'update'])->name('update_banner');
+        Route::delete('/delete/{id}', [BannerController::class, 'destroy'])->name('delete_banner');
     });
 });
 /**
