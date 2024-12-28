@@ -7,6 +7,7 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -17,6 +18,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasApiTokens, HasFactory, Notifiable;
     use HasRoles;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -56,5 +58,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $this->verification_code = mt_rand(100000, 999999); // Kode 6 digit
         $this->save();
+    }
+    public function media()
+    {
+        return $this->morphToMany(Media::class, 'sourceable', 'model_has_media')->withPivot('type');
     }
 }

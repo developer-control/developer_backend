@@ -24,6 +24,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('type')->nullable()->comment('unit, lingkungan, lainnya')->index();
             $table->string('status')->nullable()->index()->comment('request, finished');
+            $table->text('solved_notes')->nullable();
             $table->unsignedBigInteger('solved_by')->nullable()->index();
             $table->timestamp('solved_at')->nullable();
             $table->softDeletes();

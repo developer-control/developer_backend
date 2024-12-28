@@ -4,6 +4,7 @@ use App\Http\Controllers\API\Auth\DeviceController;
 use App\Http\Controllers\API\Auth\LoginController;
 use App\Http\Controllers\API\Auth\RegisterController;
 use App\Http\Controllers\API\Auth\ResetPasswordController;
+use App\Http\Controllers\API\Auth\UserController;
 use App\Http\Controllers\API\ComplainController;
 use App\Http\Controllers\API\DeveloperController;
 use App\Http\Controllers\API\LocationController;
@@ -80,6 +81,13 @@ Route::middleware(['auth:sanctum', 'verified.api'])->group(function () {
 
         Route::put('/update/{id}', [ComplainController::class, 'update']);
         Route::delete('/delete/{id}', [ComplainController::class, 'destroy']);
+    });
+
+    Route::prefix('user')->group(function () {
+        Route::get('/detail', [UserController::class, 'show']);
+        Route::put('/update', [UserController::class, 'update']);
+        Route::delete('/update', [UserController::class, 'removeUser']);
+        Route::patch('/change-password', [UserController::class, 'changePassword']);
     });
 });
 

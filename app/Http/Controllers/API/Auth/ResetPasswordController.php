@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\Auth;
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Mail\ResetPasswordMail;
+use App\Models\PasswordReset;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -29,24 +30,23 @@ class ResetPasswordController extends Controller
     public function sendResetLink(Request $request)
     {
         $request->validate(['email' => 'required|email']);
-
-        $status = Password::sendResetLink(
-            $request->only('email'),
-            function ($user, $token) {
-                // Gunakan email untuk mengirim deep link ini
-                Mail::to($user->email)->send(new ResetPasswordMail($token));
-            }
+        // Cek apakah email terdaftar
+        $user = User::where('email', $request->email)->first();
+        if (!$user) {
+            return ApiResponse::error('Email not found', 404);
+        }
+        // Generate OTP
+        $otp = random_int(100000, 999999);
+        PasswordReset::updateOrCreate(
+            ['email' => $request->email],
+            [
+                'otp' => $otp,
+                'otp_expires_at' => now()->addMinutes(10),
+                'created_at' => now(),
+            ]
         );
-        if ($status === Password::INVALID_USER) {
-            return ApiResponse::error('User not found', 404);
-        }
-        if ($status === Password::RESET_LINK_SENT) {
-            return response()->json(['message' => 'Reset link sent to your email.']);
-        }
-
-        throw ValidationException::withMessages([
-            'email' => [trans($status)],
-        ]);
+        Mail::to($user->email)->send(new ResetPasswordMail($otp));
+        return response()->json(['message' => 'Reset link sent to your email.']);
     }
     /**
      * Validation Token.
@@ -61,15 +61,23 @@ class ResetPasswordController extends Controller
     {
         $request->validate([
             'email' => 'required|email',
-            'token' => 'required'
+            'otp' => 'required'
         ]);
         $user = User::where('email', $request->email)->first();
         if (!$user) {
             ApiResponse::error('User not found', 404);
         }
-        $status = Password::tokenExists($user, $request->token);
-        $data = ['token' => $request->token, 'email' => $request->email, 'status' => $status ? true : false];
-        return ApiResponse::success($data, 'validation token success user can reset password', 200);
+        $resetRequest = PasswordReset::where('email', $request->email)
+            ->where('otp', $request->otp)
+            ->where('otp_expires_at', '>', now())
+            ->first();
+
+        if (!$resetRequest) {
+            return response()->json(['message' => 'Invalid or expired OTP'], 400);
+        }
+
+        $data = ['otp' => $request->otp, 'email' => $request->email, 'status' => $resetRequest ? true : false];
+        return ApiResponse::success($data, 'validation otp success user can reset password', 200);
     }
 
     /**
@@ -84,64 +92,28 @@ class ResetPasswordController extends Controller
     public function reset(Request $request)
     {
         $request->validate([
-            'token' => 'required',
+            'otp' => 'required',
             'email' => 'required|email',
             'password' => ['required', 'confirmed', Rules\Password::defaults()]
         ]);
-        $response = Password::reset(
-            $this->credentials($request),
-            function ($user, $password) {
-                $user->password = Hash::make($password);
-                $user->save();
-            }
-        );
+        // Cek OTP
+        $resetRequest = Password::where('email', $request->email)
+            ->where('otp', $request->otp)
+            ->where('otp_expires_at', '>', now())
+            ->first();
 
-        // If the password was successfully reset, we will redirect the user back to
-        // the application's home authenticated view. If there is an error we can
-        // redirect them back to where they came from with their error message.
-        return $response == Password::PASSWORD_RESET
-            ? $this->sendResetResponse($response)
-            : $this->sendResetFailedResponse($response);
-    }
+        if (!$resetRequest) {
+            return response()->json(['message' => 'Invalid or expired OTP'], 400);
+        }
 
-    /**
-     * Get the password reset credentials from the request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
-     */
-    protected function credentials(Request $request)
-    {
-        return $request->only(
-            'email',
-            'password',
-            'password_confirmation',
-            'token'
-        );
-    }
+        // Update password user
+        $user = User::where('email', $request->email)->first();
+        $user->password = bcrypt($request->password);
+        $user->save();
 
-    /**
-     * Get the response for a successful password reset.
-     *
-     * @param  string  $response
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
-     */
-    protected function sendResetResponse($response)
-    {
-        return new JsonResponse(['message' => trans($response)], 200);
-    }
+        // Hapus OTP setelah reset password
+        PasswordReset::where('email', $request->email)->delete();
 
-    /**
-     * Get the response for a failed password reset.
-     *
-     * @param  string  $response
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
-     */
-    protected function sendResetFailedResponse($response)
-    {
-
-        throw ValidationException::withMessages([
-            'email' => [trans($response)],
-        ]);
+        return response()->json(['message' => 'Password reset successfully']);
     }
 }

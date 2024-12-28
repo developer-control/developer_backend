@@ -112,6 +112,5 @@ class RegisterController extends Controller
         $user->verification_code = null; // Hapus kode setelah verifikasi
         $user->save();
         return ApiResponse::success(null, 'Email verified successfully', 200);
-        return response()->json(['message' => 'Email verified successfully.'], 200);
     }
 }
