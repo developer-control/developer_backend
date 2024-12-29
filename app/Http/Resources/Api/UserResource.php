@@ -17,7 +17,7 @@ class UserResource extends JsonResource
         return [
             'id' => (int)$this->id,
             'name' => $this->name,
-            'email' => (int)$this->email,
+            'email' => $this->email,
             'image' => $this->image ? storage_url($this->image) : null,
             'id_card_image' => $this->id_card_image ? storage_url($this->id_card_image) : null,
             'identity_number' => $this->identity_number,
