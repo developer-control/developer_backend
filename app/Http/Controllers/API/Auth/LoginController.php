@@ -28,6 +28,7 @@ class LoginController extends Controller
             'email' => 'required|email',
             'password' => 'required',
             'device_name' => 'required',
+            'device_token' => 'required',
         ]);
 
         // getting user
@@ -68,6 +69,7 @@ class LoginController extends Controller
         $request->validate([
             'token' => 'required',
             'device_name' => 'required',
+            'device_token' => 'required',
         ]);
         // Getting the user from socialite using token from google
         $socialUser = Socialite::driver($provider)->stateless()->userFromToken($request->token);

@@ -9,6 +9,7 @@ use App\Models\Media;
 use App\Models\User;
 use App\Traits\UploadMedia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -125,6 +126,14 @@ class UserController extends Controller
         return ApiResponse::success(null, 'Remove User Account success.', 200);
     }
 
+    /**
+     * Change Password User (Profile).
+     * 
+     * api for remove user account from database
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function changePassword(Request $request)
     {
         $user = User::find(@$request->user()->id);
@@ -132,12 +141,14 @@ class UserController extends Controller
             return ApiResponse::error('User not found', 404);
         }
         $request->validate([
-            'otp' => 'required',
-            'email' => 'required|email',
-            'password' => ['required', 'confirmed']
+            'current_password' => 'required',
+            'new_password' => ['required', 'confirmed']
         ]);
-        $user->password = bcrypt($request->password);
+        if (!Hash::check($request->current_password, $user->password)) {
+            return ApiResponse::error('Current password is incorrect', 422);
+        }
+        $user->password = bcrypt($request->new_password);
         $user->save();
-        return ApiResponse::success(null, 'Remove User Account success.', 200);
+        return ApiResponse::success(null, 'Change Password Account success.', 200);
     }
 }

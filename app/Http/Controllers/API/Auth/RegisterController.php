@@ -33,6 +33,7 @@ class RegisterController extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required|confirmed',
             'password_confirmation' => 'required',
+            'device_name' => 'required',
         ]);
 
 
@@ -107,7 +108,8 @@ class RegisterController extends Controller
         if (!$user) {
             return ApiResponse::error('Invalid verification code or email.', 422);
         }
-        event(new Verified($user));
+        $user->markEmailAsVerified();
+        // event(new Verified($user));
         // $user->email_verified_at = now();
         $user->verification_code = null; // Hapus kode setelah verifikasi
         $user->save();
