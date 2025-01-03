@@ -100,6 +100,8 @@ class RegisterController extends Controller
         $request->validate([
             'email' => 'required|email',
             'verification_code' => 'required|size:6',
+            'device_name' => 'string',
+            'device_token' => 'string',
         ]);
         $user = User::where('email', $request->email)
             ->where('verification_code', $request->verification_code)
@@ -113,6 +115,26 @@ class RegisterController extends Controller
         // $user->email_verified_at = now();
         $user->verification_code = null; // Hapus kode setelah verifikasi
         $user->save();
-        return ApiResponse::success(null, 'Email verified successfully', 200);
+        if ($request->device_name) {
+            $token = $user->createToken($request->device_name)->plainTextToken;
+        }
+        $data = [
+            'token' => @$token
+        ];
+        if ($request->device_token) {
+            $this->storeDeviceToken($user, $request->device_token);
+        }
+        return ApiResponse::success($data, 'Email verified successfully', 200);
+    }
+    private function storeDeviceToken(User $user, string $token)
+    {
+        $device = $user->devices()->whereToken($token)->first();
+        if ($device) {
+            $device->touch();
+        } else {
+            $device = $user->devices()->create([
+                'token' => $token
+            ]);
+        }
     }
 }

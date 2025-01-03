@@ -90,8 +90,8 @@ class UserController extends Controller
             $newImage = path_image($request->image);
             if ($newImage != $user->image) {
                 remove_file($user->image, $user);
-                $user->image = path_image($request->image);
-                $image = Media::where('url', path_image($request->image))->first();
+                $user->image = $newImage;
+                $image = Media::where('url', $newImage)->first();
                 if (@$image) {
                     $user->media()->attach($image, ['type' => 'image']);
                 }

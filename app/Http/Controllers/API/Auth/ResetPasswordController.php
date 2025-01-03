@@ -43,6 +43,7 @@ class ResetPasswordController extends Controller
                 'otp' => $otp,
                 'otp_expires_at' => now()->addMinutes(10),
                 'created_at' => now(),
+                'updated_at' => now(),
             ]
         );
         Mail::to($user->email)->send(new ResetPasswordMail($otp));
