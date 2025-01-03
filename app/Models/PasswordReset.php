@@ -8,4 +8,5 @@ class PasswordReset extends Model
 {
     protected $table = 'password_reset_tokens';
     protected $guarded = [];
+    public $timestamps = false;
 }

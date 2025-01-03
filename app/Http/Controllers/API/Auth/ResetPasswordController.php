@@ -40,10 +40,10 @@ class ResetPasswordController extends Controller
         PasswordReset::updateOrCreate(
             ['email' => $request->email],
             [
+                'token' => $otp,
                 'otp' => $otp,
                 'otp_expires_at' => now()->addMinutes(10),
                 'created_at' => now(),
-                'updated_at' => now(),
             ]
         );
         Mail::to($user->email)->send(new ResetPasswordMail($otp));
