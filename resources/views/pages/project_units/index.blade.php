@@ -31,7 +31,7 @@
                     </div>
                     <form action="{{ route('menu_unit') }}" method="get">
                         <div class="card-body row px-4 pt-0">
-                            <div class="col-md-9">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <input type="hidden" id="bloc" value="{{ $request->project_bloc_id }}">
                                     <select class="rounded form-select @error('project_bloc_id') is-invalid @enderror"
@@ -39,7 +39,19 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-3 text-end">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <select class="rounded form-select @error('status') is-invalid @enderror" aria-label=""
+                                        name="status" id="filter-status">
+                                        <option value=""@if ($request->status == '') selected @endif>All</option>
+                                        <option value="claimed"@if ($request->status == 'claimed') selected @endif>Sudah
+                                            diklaim</option>
+                                        <option value="not_claimed"@if ($request->status == 'not_claimed') selected @endif>Belum
+                                            Diklaim</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2 text-end">
                                 <div class="form-group">
                                     <label for="" class="col-form-label"></label>
                                     <button type="submit" class="btn bg-gradient-primary">Submit</button>
@@ -77,6 +89,9 @@
                                         </th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             Name
+                                        </th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            Status
                                         </th>
                                         <th class="text-secondary text-xs font-weight-bolder opacity-7">Action</th>
                                     </tr>
@@ -259,6 +274,12 @@
                     name: 'name'
                 },
                 {
+                    data: 'has_claimed',
+                    name: 'has_claimed',
+                    orderable: false,
+                    searchable: false
+                },
+                {
                     data: 'action',
                     name: 'action',
                     orderable: false,
@@ -269,6 +290,7 @@
                 url: "/units/datatable",
                 data: function(d) {
                     d.project_bloc_id = document.getElementById('bloc').value;
+                    d.status = document.getElementById('filter-status').value;
                 }
             };
             initializeDatatable('.datatable', url, columnData)

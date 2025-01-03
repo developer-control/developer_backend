@@ -28,7 +28,7 @@ class LoginController extends Controller
             'email' => 'required|email',
             'password' => 'required',
             'device_name' => 'required',
-            'device_token' => 'required',
+            'device_token' => 'string',
         ]);
 
         // getting user
@@ -69,7 +69,7 @@ class LoginController extends Controller
         $request->validate([
             'token' => 'required',
             'device_name' => 'required',
-            'device_token' => 'required',
+            'device_token' => 'string',
         ]);
         // Getting the user from socialite using token from google
         $socialUser = Socialite::driver($provider)->stateless()->userFromToken($request->token);
@@ -85,7 +85,8 @@ class LoginController extends Controller
         );
         if ($user->wasRecentlyCreated) {
             $user->assignRole('user');
-            event(new Verified($user));
+            $user->markEmailAsVerified();
+            // event(new Verified($user));
         } else {
             if (!$user->hasRole('user')) {
                 return ApiResponse::error('You have no access token', 402);

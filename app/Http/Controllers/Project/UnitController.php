@@ -27,12 +27,18 @@ class UnitController extends Controller
     public function unitDatatable(Request $request)
     {
         $developer_id = $request->user()->hasRole('superadmin') ? null : $request->user()->developer_id;
-        $project_units = ProjectUnit::select('project_units.*')->with(['projectbloc']);
+        $project_units = ProjectUnit::select('project_units.*')->with(['projectbloc', 'unitactive']);
         if ($developer_id) {
             $project_units->where('developer_id', $developer_id);
         }
         if ($request->project_bloc_id) {
             $project_units->where('project_bloc_id', $request->project_bloc_id);
+        }
+        if ($request->status == 'claimed') {
+            $project_units->has('unitActive');
+        }
+        if ($request->status == 'not_claimed') {
+            $project_units->doesntHave('unitActive');
         }
         return DataTables::eloquent($project_units)
             ->editColumn('projectbloc.name', function (ProjectUnit $unit) {
@@ -41,6 +47,9 @@ class UnitController extends Controller
             ->addColumn('action', function (ProjectUnit $unit) {
                 $btn = view('datatables.project_units.action', compact('unit'))->render();
                 return $btn;
+            })
+            ->addColumn('has_claimed', function (ProjectUnit $unit) {
+                return $unit->unitactive ? 'Sudah diklaim' : 'Belum diklaim';
             })
             ->addIndexColumn()
             ->toJson();

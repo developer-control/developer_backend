@@ -23,6 +23,7 @@ class UserResource extends JsonResource
             'identity_number' => $this->identity_number,
             'date_of_birth' => $this->date_of_birth,
             'phone_number' => $this->phone_number,
+            'address' => $this->address,
             'email_verified_at' => $this->email_verified_at ? $this->email_verified_at->toDateTimeString() : null,
             'updated_at' => $this->updated_at->toDateTimeString(),
         ];

@@ -146,7 +146,7 @@ Route::group(['prefix' => 'units'], function () {
     Route::post('/update/{id}', [UnitController::class, 'update'])->name('update_unit');
     Route::delete('/delete/{id}', [UnitController::class, 'destroy'])->name('delete_unit');
 
-    Route::get('/request-units', [UserUnitController::class, 'indexRequest']);
+    Route::get('/request-units', [UserUnitController::class, 'indexRequest'])->name('menu_request_claim_unit');
     Route::get('/request-units/datatable', [UserUnitController::class, 'requestDatatable']);
 
     Route::get('/history-request-unit/datatable', [UserUnitController::class, 'historyRequestDatatable']);

@@ -14,12 +14,13 @@ class UserUnitController extends Controller
         $units = UserUnit::select('user_units.*')->with([
             'developer:name,id',
             'project:name,id',
-            'projectArea:name,id',
-            'projectBloc:name,id',
-            'projectUnit:name,id',
+            'projectarea:name,id',
+            'projectbloc:name,id',
+            'projectunit:name,id',
             'city:name,id',
-            'ownershipUnit:name,id',
-            'user: id,name'
+            'ownershipunit:name,id',
+            'user:id,name',
+            'media:id,url'
         ]);
         if ($request->status) {
             $units->where('status', $request->status);
@@ -29,9 +30,22 @@ class UserUnitController extends Controller
 
     public function historyRequestDatatable(Request $request)
     {
+        $developer_id = $request->user()->hasRole('superadmin') ? null : $request->user()->developer_id;
+
         $units = $this->queryUserUnit($request);
+        if ($developer_id) {
+            $units->where('developer_id', $developer_id);
+        }
         return DataTables::eloquent($units)
             ->addIndexColumn()
+            ->addColumn('evidence_file', function (UserUnit $unit) {
+                $evidence_file = $unit->media->first();
+                return $evidence_file ? storage_url($evidence_file->url) : null;
+            })
+            ->addColumn('action', function (UserUnit $unit) {
+                $btn = view('datatables.projects.action', compact('unit'))->render();
+                return $btn;
+            })
             ->toJson();
     }
     public function indexRequest()
@@ -50,6 +64,11 @@ class UserUnitController extends Controller
         }
         return DataTables::eloquent($units)
             ->addIndexColumn()
-            ->toJson();
+            ->addColumn('evidence_file', function (UserUnit $unit) {
+                $evidence_file = $unit->media->first();
+                return $evidence_file ? '<a href="' . storage_url($evidence_file->url) . '" class="btn-sm text-xs btn-link" target="_blank">File Bukti <i class="fas fa-long-arrow-alt-right"></i></a>' : null;
+            })
+            ->rawColumns(['evidence_file'])
+            ->make(true);
     }
 }

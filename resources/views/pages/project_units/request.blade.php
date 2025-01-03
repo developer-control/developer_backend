@@ -1,10 +1,10 @@
-@extends('layouts.main', ['menu' => 'menu_unit'])
+@extends('layouts.main', ['menu' => 'menu_request_claim_unit'])
 @section('style')
     <link rel="stylesheet" href="{{ url('/') }}/assets/src/plugins/datatables/css/dataTables.bootstrap5.css">
     <link rel="stylesheet" href="{{ url('/') }}/assets/src/plugins/datatables/css/responsive.bootstrap5.css">
 @endsection
 @section('breadcrumb')
-    {{ Breadcrumbs::render('menu_unit') }}
+    {{ Breadcrumbs::render('menu_request_claim_unit') }}
 @endsection
 @section('page-title')
     Request Claim Project Unit
@@ -47,6 +47,9 @@
                                         </th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             Name User
+                                        </th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            Bukti Kepemilikan
                                         </th>
                                         <th class="text-secondary text-xs font-weight-bolder opacity-7">Action</th>
                                     </tr>
@@ -97,6 +100,12 @@
                 {
                     data: 'user.name',
                     name: 'user.name'
+                },
+                {
+                    data: 'evidence_file',
+                    name: 'evidence_file',
+                    orderable: false,
+                    searchable: false
                 },
                 {
                     data: 'action',

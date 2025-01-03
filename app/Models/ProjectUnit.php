@@ -17,4 +17,12 @@ class ProjectUnit extends Model
     {
         return $this->belongsTo(ProjectBloc::class, 'project_bloc_id');
     }
+    public function userUnits()
+    {
+        return $this->hasMany(UserUnit::class, 'project_unit_id');
+    }
+    public function unitActive()
+    {
+        return $this->hasOne(UserUnit::class, 'project_unit_id')->where('is_active', 1)->where('status', 'claimed');
+    }
 }

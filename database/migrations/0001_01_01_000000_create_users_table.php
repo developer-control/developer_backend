@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('phone_number')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->text('image')->nullable();
+            $table->text('address')->nullable();
             $table->string('verification_code', 6)->nullable();
             $table->string('password');
             $table->rememberToken();

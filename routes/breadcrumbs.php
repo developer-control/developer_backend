@@ -49,6 +49,11 @@ Breadcrumbs::for('menu_unit', function (BreadcrumbTrail $trail) {
     $trail->parent('home');
     $trail->push('Project Unit', route('menu_unit'));
 });
+// Home > menu_request_claim_unit
+Breadcrumbs::for('menu_request_claim_unit', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Request Claim Unit', route('menu_request_claim_unit'));
+});
 
 // Home > location_province
 Breadcrumbs::for('location_province', function (BreadcrumbTrail $trail) {

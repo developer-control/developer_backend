@@ -60,6 +60,7 @@ class UserController extends Controller
              */
             'date_of_birth' => 'string',
             'phone_number' => 'string',
+            'address' => 'string',
             /**
              * url from image profile image
              * 
@@ -71,6 +72,7 @@ class UserController extends Controller
         $user->identity_number = $request->identity_number;
         $user->date_of_birth = $request->date_of_birth;
         $user->phone_number = $request->phone_number;
+        $user->address = $request->address;
         $user->image = $request->image;
 
         if ($request->id_card_image) {
