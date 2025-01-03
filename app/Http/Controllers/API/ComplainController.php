@@ -87,7 +87,7 @@ class ComplainController extends Controller
 
         DB::commit();
 
-        return ApiResponse::success(null, 'Create request complain succes', 201);
+        return ApiResponse::success(null, 'Create request complain success', 201);
     }
     /**
      * Detail Complain User.
@@ -101,7 +101,7 @@ class ComplainController extends Controller
     {
         $complain = Complain::find($id);
         if (!$complain) {
-            return ApiResponse::success(null, 'complain not found', 200);
+            return ApiResponse::error(null, 'complain not found', 404);
         }
         return ApiResponse::success(new ComplainResource($complain), 'get detail complain user success');
     }
@@ -152,7 +152,7 @@ class ComplainController extends Controller
         $complain->images = json_encode(@$images, true);
         $complain->save();
         DB::commit();
-        return ApiResponse::success(null, 'Update request complain succes', 200);
+        return ApiResponse::success(null, 'Update request complain success', 200);
     }
 
     /**

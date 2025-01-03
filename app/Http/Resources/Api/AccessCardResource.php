@@ -25,7 +25,7 @@ class AccessCardResource extends JsonResource
                 'name' => @$this->projectUnit->name,
             ] : null,
             'name' => $this->name,
-            'vehicle_numbe' => $this->vehicle_numbe,
+            'vehicle_number' => $this->vehicle_number,
             'start_date' => $this->start_date,
             'start_time' => $this->start_time,
             'end_date' => $this->end_date,

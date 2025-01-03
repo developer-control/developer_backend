@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\AccessCardController;
 use App\Http\Controllers\API\Auth\DeviceController;
 use App\Http\Controllers\API\Auth\LoginController;
 use App\Http\Controllers\API\Auth\RegisterController;
@@ -82,6 +83,14 @@ Route::middleware(['auth:sanctum', 'verified.api'])->group(function () {
 
         Route::put('/update/{id}', [ComplainController::class, 'update']);
         Route::delete('/delete/{id}', [ComplainController::class, 'destroy']);
+    });
+    Route::prefix('access-cards')->group(function () {
+        Route::get('/', [AccessCardController::class, 'index']);
+        Route::get('/detail/{id}', [AccessCardController::class, 'show']);
+        Route::post('/store', [AccessCardController::class, 'store']);
+
+        Route::put('/update/{id}', [AccessCardController::class, 'update']);
+        Route::delete('/delete/{id}', [AccessCardController::class, 'destroy']);
     });
 
     Route::prefix('user')->group(function () {
