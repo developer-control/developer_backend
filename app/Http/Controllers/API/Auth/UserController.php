@@ -76,19 +76,25 @@ class UserController extends Controller
         $user->image = $request->image;
 
         if ($request->id_card_image) {
-            remove_file($user->id_card_image, $user);
-            $user->id_card_image = path_image($request->id_card_image);
-            $id_card = Media::where('url', path_image($request->id_card_image))->first();
-            if (@$id_card) {
-                $user->media()->attach($id_card, ['type' => 'image']);
+            $newCardImage = path_image($request->id_card_image);
+            if ($newCardImage != $user->id_card_image) {
+                remove_file($user->id_card_image, $user);
+                $user->id_card_image = $newCardImage;
+                $id_card = Media::where('url', $newCardImage)->first();
+                if (@$id_card) {
+                    $user->media()->attach($id_card, ['type' => 'image']);
+                }
             }
         }
         if ($request->image) {
-            remove_file($user->image, $user);
-            $user->image = path_image($request->image);
-            $image = Media::where('url', path_image($request->image))->first();
-            if (@$image) {
-                $user->media()->attach($image, ['type' => 'image']);
+            $newImage = path_image($request->image);
+            if ($newImage != $user->image) {
+                remove_file($user->image, $user);
+                $user->image = path_image($request->image);
+                $image = Media::where('url', path_image($request->image))->first();
+                if (@$image) {
+                    $user->media()->attach($image, ['type' => 'image']);
+                }
             }
         }
         $user->save();
