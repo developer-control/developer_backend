@@ -98,7 +98,7 @@ class ResetPasswordController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()]
         ]);
         // Cek OTP
-        $resetRequest = Password::where('email', $request->email)
+        $resetRequest = PasswordReset::where('email', $request->email)
             ->where('otp', $request->otp)
             ->where('otp_expires_at', '>', now())
             ->first();
