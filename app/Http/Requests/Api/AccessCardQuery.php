@@ -4,7 +4,7 @@ namespace App\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ComplainQuery extends FormRequest
+class AccessCardQuery extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,18 +25,7 @@ class ComplainQuery extends FormRequest
             "limit" => 'int',
             "search" => 'string',
             "developer_id" => 'int',
-            /**
-             * type complain
-             * 
-             * @example unit, lingkungan, lainnya
-             */
-            "type" => 'string',
-            /**
-             * status complain
-             * 
-             * @example request, finished
-             */
-            "status" => 'string',
+            "project_unit_id" => 'int',
             /**
              * Page number
              * 

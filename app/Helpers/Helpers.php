@@ -53,3 +53,9 @@ if (!function_exists('remove_file')) {
         Media::where('url', $path)->delete();
     }
 }
+if (!function_exists('path_image')) {
+    function path_image($fullUrl)
+    {
+        return strstr($fullUrl, 'contents');
+    }
+}

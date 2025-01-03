@@ -41,6 +41,9 @@ class ComplainController extends Controller
         if ($request->status) {
             $complains->where('status', $request->status); //request, finished
         }
+        if ($request->developer_id) {
+            $complains->where('developer_id', $request->developer_id);
+        }
         if ($request->search) {
             $complains->where('title', 'like', '%' . $request->search . '%');
         }
@@ -76,7 +79,7 @@ class ComplainController extends Controller
             'status' => 'request',
         ]);
         foreach (@$images  as $item) {
-            $image_media = Media::where('url', $item)->first();
+            $image_media = Media::where('url', path_image($item))->first();
             if (@$image_media) {
                 $complain->media()->attach($image_media, ['type' => 'image']);
             }
@@ -117,7 +120,11 @@ class ComplainController extends Controller
     {
         $complain = Complain::find($id);
         $oldImages = @json_decode($complain->images, true) ?? [];
-        $images = @$request->images ?? [];
+        // $images = @$request->images ?? [];
+        $images = array_map(function ($url) {
+            return strstr($url, 'contents'); // Ambil bagian dari "contents"
+        }, @$request->images ?? []);
+
         if ($complain->status == 'finished') {
             return ApiResponse::error('The complaint request has been completed', 402);
         }

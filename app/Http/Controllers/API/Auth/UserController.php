@@ -77,22 +77,22 @@ class UserController extends Controller
 
         if ($request->id_card_image) {
             remove_file($user->id_card_image, $user);
-            $user->id_card_image = $request->id_card_image;
-            $id_card = Media::where('url', $request->id_card_image)->first();
+            $user->id_card_image = path_image($request->id_card_image);
+            $id_card = Media::where('url', path_image($request->id_card_image))->first();
             if (@$id_card) {
                 $user->media()->attach($id_card, ['type' => 'image']);
             }
         }
         if ($request->image) {
             remove_file($user->image, $user);
-            $user->image = $request->image;
-            $image = Media::where('url', $request->image)->first();
+            $user->image = path_image($request->image);
+            $image = Media::where('url', path_image($request->image))->first();
             if (@$image) {
                 $user->media()->attach($image, ['type' => 'image']);
             }
         }
         $user->save();
-        return ApiResponse::success(new UserResource($user), 'Updated request complain succes', 200);
+        return ApiResponse::success(new UserResource($user), 'Updated data user success', 200);
     }
 
     /**

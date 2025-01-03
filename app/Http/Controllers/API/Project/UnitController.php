@@ -68,7 +68,7 @@ class UnitController extends Controller
             'is_active' => 0,
         ]);
         //get media
-        $evidence_file = Media::where('url', $request->evidence_file)->first();
+        $evidence_file = Media::where('url', path_image($request->evidence_file))->first();
         if ($evidence_file) {
             $unit->media()->attach($evidence_file, ['type' => 'image']);
         }
