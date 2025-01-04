@@ -11,7 +11,7 @@ class BannerQuery extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,15 @@ class BannerQuery extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            "limit" => 'int',
+            "search" => 'string',
+            "developer_id" => 'int',
+            /**
+             * Page number
+             * 
+             * @example 1
+             */
+            'page' => 'int',
         ];
     }
 }
