@@ -48,7 +48,7 @@ class ComplainController extends Controller
             $complains->where('title', 'like', '%' . $request->search . '%');
         }
         $results = $complains->paginate($limit);
-        return ApiResponse::success(ComplainResource::collection($results), 'Get project units success.');
+        return ApiResponse::success(ComplainResource::collection($results), 'Get Complain user success.');
     }
     /**
      * Store request complain.
