@@ -22,19 +22,19 @@ class HistoryUserUnitQuery extends FormRequest
     public function rules(): array
     {
         return [
-            'search' => 'string',
-            'limit' => 'int',
+            'search' => 'string|nullable',
+            'limit' => 'int|nullable',
             /**
              * status kepemilikan
              * @example request, claimed, reject
              */
-            'status' => 'string',
+            'status' => 'string|nullable',
             /**
              * Page number
              * 
              * @example 1
              */
-            'page' => 'int',
+            'page' => 'int|nullable',
         ];
     }
 }

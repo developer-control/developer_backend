@@ -22,10 +22,10 @@ class ProjectQuery extends FormRequest
     public function rules(): array
     {
         return [
-            'search' => 'string',
-            'developer_id' => 'int',
+            'search' => 'string|nullable',
+            'developer_id' => 'int|nullable',
             'city_id' => 'int|required',
-            'limit' => 'int'
+            'limit' => 'int|nullable'
         ];
     }
 }

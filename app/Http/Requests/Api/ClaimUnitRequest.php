@@ -34,7 +34,7 @@ class ClaimUnitRequest extends FormRequest
              * 
              * @example ownership-units/evidence/hdsfgkjgsjfg.png
              */
-            'evidence_file' => 'string'
+            'evidence_file' => 'string|nullable'
         ];
     }
 }

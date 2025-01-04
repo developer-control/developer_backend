@@ -22,27 +22,27 @@ class ComplainQuery extends FormRequest
     public function rules(): array
     {
         return [
-            "limit" => 'int',
-            "search" => 'string',
-            "developer_id" => 'int',
+            "limit" => 'int|nullable',
+            "search" => 'string|nullable',
+            "developer_id" => 'int|nullable',
             /**
              * type complain
              * 
              * @example unit, lingkungan, lainnya
              */
-            "type" => 'string',
+            "type" => 'string|nullable',
             /**
              * status complain
              * 
              * @example request, finished
              */
-            "status" => 'string',
+            "status" => 'string|nullable',
             /**
              * Page number
              * 
              * @example 1
              */
-            'page' => 'int',
+            'page' => 'int|nullable',
         ];
     }
 }

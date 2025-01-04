@@ -25,7 +25,7 @@ class AccessCardRequest extends FormRequest
             'developer_id' => ['required', 'int'],
             'project_unit_id' => ['int', 'required'],
             'name' => ['required', 'string'],
-            'vehicle_number' => ['string'],
+            'vehicle_number' => 'string|nullable',
             /**
              * start date tanggal Y-m-d
              */

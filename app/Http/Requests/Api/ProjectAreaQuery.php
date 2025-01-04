@@ -23,8 +23,8 @@ class ProjectAreaQuery extends FormRequest
     {
         return [
             'project_id' => 'int|required',
-            'search' => 'string',
-            'limit' => 'int'
+            'search' => 'string|nullable',
+            'limit' => 'int|nullable'
         ];
     }
 }

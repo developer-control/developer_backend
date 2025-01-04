@@ -22,9 +22,9 @@ class ProjectUnitQuery extends FormRequest
     public function rules(): array
     {
         return [
-            'search' => 'string',
+            'search' => 'string|nullable',
             'project_bloc_id' => 'int|required',
-            'limit' => 'int'
+            'limit' => 'int|nullable'
         ];
     }
 }

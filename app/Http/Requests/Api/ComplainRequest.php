@@ -40,12 +40,12 @@ class ComplainRequest extends FormRequest
              */
             'project_unit_id' => ['int'],
             'title' => ['required', 'string'],
-            'images' => ['array'],
+            'images' => 'array|nullable',
             /**
              * required jika type adalah lingkungan atau lainnya
              * 
              */
-            'address' => ['string'],
+            'address' => 'string|nullable',
             'description' => ['required', 'string'],
             'type' => ['required', 'string'],
         ], $this->conditionalRules());

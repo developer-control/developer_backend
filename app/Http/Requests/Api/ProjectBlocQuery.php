@@ -22,9 +22,9 @@ class ProjectBlocQuery extends FormRequest
     public function rules(): array
     {
         return [
-            'search' => 'string',
+            'search' => 'string|nullable',
             'project_area_id' => 'int|required',
-            'limit' => 'int'
+            'limit' => 'int|nullable'
         ];
     }
 }

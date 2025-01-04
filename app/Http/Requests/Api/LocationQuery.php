@@ -22,8 +22,8 @@ class LocationQuery extends FormRequest
     public function rules(): array
     {
         return [
-            'limit' => 'int',
-            'search' => 'string'
+            'limit' => 'int|nullable',
+            'search' => 'string|nullable'
         ];
     }
 }

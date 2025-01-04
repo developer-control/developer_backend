@@ -22,24 +22,24 @@ class UserUnitQuery extends FormRequest
     public function rules(): array
     {
         return [
-            'search' => 'string',
-            'limit' => 'int',
+            'search' => 'string|nullable',
+            'limit' => 'int|nullable',
             /**
              * status kepemilikan
              * @example request, claimed, reject
              */
-            'status' => 'string',
+            'status' => 'string|nullable',
             /**
              * status active
              * @example true, false
              */
-            'is_active' => 'boolean',
+            'is_active' => 'boolean|nullable',
             /**
              * Page number
              * 
              * @example 1
              */
-            'page' => 'int',
+            'page' => 'int|nullable',
         ];
     }
 }

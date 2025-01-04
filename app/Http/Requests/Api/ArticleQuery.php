@@ -22,16 +22,16 @@ class ArticleQuery extends FormRequest
     public function rules(): array
     {
         return [
-            "limit" => 'int',
-            "search" => 'string',
-            "developer_id" => 'int',
-            "tag_id" => 'int',
+            "limit" => 'int|nullable',
+            "search" => 'string|nullable',
+            "developer_id" => 'int|nullable',
+            "tag_id" => 'int|nullable',
             /**
              * Page number
              * 
              * @example 1
              */
-            'page' => 'int',
+            'page' => 'int|nullable',
         ];
     }
 }
