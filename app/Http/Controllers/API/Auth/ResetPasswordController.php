@@ -37,9 +37,10 @@ class ResetPasswordController extends Controller
         }
         // Generate OTP
         $otp = random_int(100000, 999999);
-        PasswordReset::updateOrCreate(
-            ['email' => $request->email],
+        PasswordReset::where('email', $request->email)->delete();
+        PasswordReset::create(
             [
+                'email' => $request->email,
                 'token' => $otp,
                 'otp' => $otp,
                 'otp_expires_at' => now()->addMinutes(10),
