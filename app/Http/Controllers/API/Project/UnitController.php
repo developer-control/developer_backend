@@ -71,6 +71,8 @@ class UnitController extends Controller
         $evidence_file = Media::where('url', path_image($request->evidence_file))->first();
         if ($evidence_file) {
             $unit->media()->attach($evidence_file, ['type' => 'image']);
+            $unit->evidence_file = $evidence_file->url;
+            $unit->save();
         }
         DB::commit();
 

@@ -44,6 +44,7 @@ class UserUnitResource extends JsonResource
                 'id' => (int) $this->ownership_unit_id,
                 'name' => $this->ownership_unit_name,
             ],
+            'evidence_file' => $this->evidence_file ? storage_url($this->evidence_file) : null,
             'status' => $this->status,
             'is_active' => $this->is_active,
             'created_at' => $this->created_at->toDateTimeString()

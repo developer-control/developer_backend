@@ -39,8 +39,7 @@ class UserUnitController extends Controller
         return DataTables::eloquent($units)
             ->addIndexColumn()
             ->addColumn('evidence_file', function (UserUnit $unit) {
-                $evidence_file = $unit->media->first();
-                return $evidence_file ? storage_url($evidence_file->url) : null;
+                return $unit->evidence_file ? '<a href="' . storage_url($unit->evidence_file) . '" class="btn-sm text-xs btn-link" target="_blank">File Bukti <i class="fas fa-long-arrow-alt-right"></i></a>' : null;
             })
             ->addColumn('action', function (UserUnit $unit) {
                 $btn = view('datatables.projects.action', compact('unit'))->render();
@@ -65,8 +64,7 @@ class UserUnitController extends Controller
         return DataTables::eloquent($units)
             ->addIndexColumn()
             ->addColumn('evidence_file', function (UserUnit $unit) {
-                $evidence_file = $unit->media->first();
-                return $evidence_file ? '<a href="' . storage_url($evidence_file->url) . '" class="btn-sm text-xs btn-link" target="_blank">File Bukti <i class="fas fa-long-arrow-alt-right"></i></a>' : null;
+                return $unit->evidence_file ? '<a href="' . storage_url($unit->evidence_file) . '" class="btn-sm text-xs btn-link" target="_blank">File Bukti <i class="fas fa-long-arrow-alt-right"></i></a>' : null;
             })
             ->rawColumns(['evidence_file'])
             ->make(true);

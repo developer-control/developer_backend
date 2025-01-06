@@ -21,6 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger('city_id')->nullable()->index();
             $table->unsignedBigInteger('user_id')->nullable()->index();
             $table->unsignedBigInteger('ownership_unit_id')->nullable()->index();
+            $table->text('evidence_file')->nullable();
             $table->string('status')->nullable()->comment('claimed, request, failed')->index();
             $table->boolean('is_active')->nullable()->default(0);
             $table->unsignedBigInteger('verified_by')->nullable()->index();
