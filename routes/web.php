@@ -15,6 +15,7 @@ use App\Http\Controllers\Project\AreaController;
 use App\Http\Controllers\Project\ProjectController;
 use App\Http\Controllers\Project\UnitController;
 use App\Http\Controllers\Project\BlocController;
+use App\Http\Controllers\Project\FacilityController;
 use App\Http\Controllers\Project\UserUnitController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -32,6 +33,7 @@ Route::group(['prefix' => 'images'], function () {
     Route::post('/article-image', [ImageController::class, 'storeArticleImage']);
     Route::post('/promotion-image', [ImageController::class, 'storePromotionImage']);
     Route::post('/banner-image', [ImageController::class, 'storeBannerImage']);
+    Route::post('/facility-image', [ImageController::class, 'storeFacilityImage']);
 });
 
 /**
@@ -176,4 +178,14 @@ Route::group(['prefix' => 'locations'], function () {
         Route::post('/update/{id}', [CityController::class, 'update'])->name('update_city');
         Route::delete('/delete/{id}', [CityController::class, 'destroy'])->name('delete_city');
     });
+});
+
+Route::prefix('facilities')->group(function () {
+    Route::get('/', [FacilityController::class, 'index'])->name('menu_facility');
+    Route::get('/datatable', [FacilityController::class, 'facilityDatatable']);
+    Route::get('/create', [FacilityController::class, 'create'])->name('create_facility');
+    Route::post('/store', [FacilityController::class, 'store'])->name('store_facility');
+    Route::get('/edit/{id}', [FacilityController::class, 'edit'])->name('edit_facility');
+    Route::post('/update/{id}', [FacilityController::class, 'update'])->name('update_facility');
+    Route::delete('/delete/{id}', [FacilityController::class, 'destroy'])->name('delete_facility');
 });

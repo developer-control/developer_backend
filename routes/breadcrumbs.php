@@ -111,3 +111,19 @@ Breadcrumbs::for('edit_banner', function (BreadcrumbTrail $trail, $resource) {
     $trail->parent('menu_banner');
     $trail->push('Edit banner', route('edit_banner', ['id' => $resource->id]));
 });
+
+// Home > menu_facility
+Breadcrumbs::for('menu_facility', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Facility', route('menu_facility'));
+});
+// menu_facility > create_facility
+Breadcrumbs::for('create_facility', function (BreadcrumbTrail $trail) {
+    $trail->parent('menu_facility');
+    $trail->push('Create Banner', route('create_facility'));
+});
+// menu_facility > edit_facility
+Breadcrumbs::for('edit_facility', function (BreadcrumbTrail $trail, $resource) {
+    $trail->parent('menu_facility');
+    $trail->push('Edit Facility', route('edit_facility', ['id' => $resource->id]));
+});
