@@ -21,4 +21,8 @@ class Facility extends Model
     {
         return $this->morphToMany(Media::class, 'sourceable', 'model_has_media')->withPivot('type');
     }
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }

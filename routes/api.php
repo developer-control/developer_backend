@@ -14,6 +14,7 @@ use App\Http\Controllers\API\Posts\BannerController;
 use App\Http\Controllers\API\Posts\PromotionController;
 use App\Http\Controllers\API\Project\AreaController;
 use App\Http\Controllers\API\Project\BlocController;
+use App\Http\Controllers\API\Project\FacilityController;
 use App\Http\Controllers\API\Project\OwnershipUnitController;
 use App\Http\Controllers\API\Project\ProjectController;
 use App\Http\Controllers\API\Project\UnitController;
@@ -74,6 +75,10 @@ Route::middleware(['auth:sanctum', 'verified.api'])->group(function () {
             Route::get('/user-unit', [UnitController::class, 'indexMyUnit']);
             Route::get('/history-user-unit', [UnitController::class, 'indexHistoryMyUnit']);
             Route::get('/user-unit/detail/{id}', [UnitController::class, 'showUnitUser']);
+        });
+        Route::prefix('facilities')->group(function () {
+            Route::get('/', [FacilityController::class, 'index']);
+            Route::get('/detail/{id}', [FacilityController::class, 'show']);
         });
     });
     Route::prefix('complains')->group(function () {

@@ -18,4 +18,8 @@ class Project extends Model
     {
         return $this->belongsTo(Developer::class, 'developer_id');
     }
+    public function projectAreas()
+    {
+        return $this->hasMany(ProjectArea::class, 'project_id');
+    }
 }
