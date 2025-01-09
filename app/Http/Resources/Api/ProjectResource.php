@@ -20,6 +20,7 @@ class ProjectResource extends JsonResource
                 'id' => (int) $this->city_id,
                 'name' => @$this->city->name
             ],
+            'developer' => new DeveloperResource($this->developer),
             'name' => $this->name,
         ];
     }

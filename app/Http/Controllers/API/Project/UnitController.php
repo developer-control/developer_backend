@@ -76,7 +76,7 @@ class UnitController extends Controller
         }
         DB::commit();
 
-        return ApiResponse::success(null, 'Create request claim unit succes', 201);
+        return ApiResponse::success(null, 'Create request claim unit success', 201);
     }
 
 

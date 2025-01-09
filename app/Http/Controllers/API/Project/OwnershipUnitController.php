@@ -22,6 +22,6 @@ class OwnershipUnitController extends Controller
     {
         $ownerships = OwnershipUnit::select('id', 'name');
         $results = $ownerships->get();
-        return ApiResponse::success(OwnershipUnitResource::collection($results), 'Get project areas success.');
+        return ApiResponse::success(OwnershipUnitResource::collection($results), 'Get ownership unit success.');
     }
 }
