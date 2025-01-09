@@ -21,7 +21,7 @@ class ProjectController extends Controller
     public function index(ProjectQuery $request)
     {
         $limit = $request->limit ?? 10;
-        $projects = Project::select('id', 'name');
+        $projects = Project::with(['city:id,name'])->select('id', 'name');
         if ($request->search) {
             $projects->where('name', 'LIKE', '%' . $request->search . '%');
         }

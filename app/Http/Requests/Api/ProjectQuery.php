@@ -24,7 +24,7 @@ class ProjectQuery extends FormRequest
         return [
             'search' => 'string|nullable',
             'developer_id' => 'int|nullable',
-            'city_id' => 'int|required',
+            'city_id' => 'int|nullable',
             'limit' => 'int|nullable'
         ];
     }
