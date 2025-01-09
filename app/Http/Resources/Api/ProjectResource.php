@@ -18,7 +18,7 @@ class ProjectResource extends JsonResource
             'id' => (int)$this->id,
             'city' => [
                 'id' => (int) $this->city_id,
-                'name' => $this->city->name
+                'name' => @$this->city->name
             ],
             'name' => $this->name,
         ];

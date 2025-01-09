@@ -21,5 +21,12 @@ class UserSeeder extends Seeder
             'password' => Hash::make('password'),
         ]);
         $user->assignRole('superadmin');
+        $user =  User::create([
+            'name' => 'user developer control',
+            'email' => 'user@developer.com',
+            'email_verified_at' => now(),
+            'password' => Hash::make('password'),
+        ]);
+        $user->assignRole('user');
     }
 }
