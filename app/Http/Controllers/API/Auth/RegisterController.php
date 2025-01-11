@@ -34,12 +34,14 @@ class RegisterController extends Controller
             'password' => 'required|confirmed',
             'password_confirmation' => 'required',
             'device_name' => 'required',
+            'phone_number' => 'string',
         ]);
 
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'phone_number' => $request->phone_number,
             'password' => Hash::make($request->password),
         ]);
         $user->assignRole('user');
