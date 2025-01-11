@@ -190,7 +190,25 @@ class UnitController extends Controller
      */
     public function showUnitUser(int $id)
     {
-        $unit = UserUnit::find($id);
+        $unit = UserUnit::select(
+            'user_units.*',
+            'developers.name as developer_name',
+            'projects.name as project_name',
+            'project_areas.name as area_name',
+            'project_blocs.name as bloc_name',
+            'project_units.name as unit_name',
+            'cities.name as city_name',
+            'ownership_units.name as ownership_unit_name'
+        )
+            ->join('developers', 'user_units.developer_id', '=', 'developers.id')
+            ->join('projects', 'user_units.project_id', '=', 'projects.id')
+            ->join('project_areas', 'user_units.project_area_id', '=', 'project_areas.id')
+            ->join('project_blocs', 'user_units.project_bloc_id', '=', 'project_blocs.id')
+            ->join('project_units', 'user_units.project_unit_id', '=', 'project_units.id')
+            ->join('cities', 'user_units.city_id', '=', 'cities.id')
+            ->join('ownership_units', 'user_units.ownership_unit_id', '=', 'ownership_units.id')
+            ->where('user_units.id', $id)
+            ->first();
         if (!$unit) {
             return ApiResponse::success(null, 'unit not found', 200);
         }
