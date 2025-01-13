@@ -19,7 +19,7 @@ class Complain extends Model
     protected function type(): Attribute
     {
         return Attribute::make(
-            set: fn(string $value) => $value ? strtolower($value) : null,
+            set: fn($value) => $value ? strtolower($value) : null,
         );
     }
     public function user()
@@ -45,5 +45,9 @@ class Complain extends Model
     public function solvedBy()
     {
         return $this->belongsTo(User::class, 'solved_by');
+    }
+    public function media()
+    {
+        return $this->morphToMany(Media::class, 'sourceable', 'model_has_media')->withPivot('type');
     }
 }
