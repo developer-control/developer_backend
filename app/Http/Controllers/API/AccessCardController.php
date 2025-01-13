@@ -132,6 +132,6 @@ class AccessCardController extends Controller
             return ApiResponse::error('Access Card not found', 404);
         }
         $card->delete();
-        return ApiResponse::success(null, 'Delete access card user success', 204);
+        return ApiResponse::success(null, 'Delete access card user success', 200);
     }
 }

@@ -47,7 +47,7 @@ class ComplainController extends Controller
         if ($request->search) {
             $complains->where('title', 'like', '%' . $request->search . '%');
         }
-        $results = $complains->paginate($limit);
+        $results = $complains->latest()->paginate($limit);
         return ApiResponse::success(ComplainResource::collection($results), 'Get Complain user success.');
     }
     /**
@@ -63,8 +63,10 @@ class ComplainController extends Controller
 
         DB::beginTransaction();
 
-        $images = @$request->images ?? [];
-
+        // $images = @$request->images ?? [];
+        $images = array_map(function ($url) {
+            return strstr($url, 'contents'); // Ambil bagian dari "contents"
+        }, @$request->images ?? []);
         $complain = Complain::create([
             'user_id' => $request->user()->id,
             'developer_id' => $request->developer_id,
@@ -79,7 +81,7 @@ class ComplainController extends Controller
             'status' => 'request',
         ]);
         foreach (@$images  as $item) {
-            $image_media = Media::where('url', path_image($item))->first();
+            $image_media = Media::where('url', $item)->first();
             if (@$image_media) {
                 $complain->media()->attach($image_media, ['type' => 'image']);
             }
@@ -174,6 +176,6 @@ class ComplainController extends Controller
             remove_file($item, $complain);
         }
         $complain->delete();
-        return ApiResponse::success(null, 'Delete complain user success', 204);
+        return ApiResponse::success(null, 'Delete complain user success', 200);
     }
 }
