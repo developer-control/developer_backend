@@ -20,7 +20,7 @@ class FacilityResource extends JsonResource
             'project' => new ProjectResource($this->project),
             'image' => storage_url($this->image),
             'title' => $this->title,
-            'description' => $this->dnscriptiom,
+            'description' => $this->description,
             'created_by' => [
                 'id' => (int)@$this->created_by,
                 'name' => @$this->createdBy->name

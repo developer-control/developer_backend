@@ -52,6 +52,26 @@ class ImageController extends Controller
 
         return response()->json(['url' => storage_url($image), 'path' => $image]);
     }
+    public function storeBannerImage(Request $request)
+    {
+        $image = null;
+        if ($request->hasFile('image')) {
+            $image = $this->uploadImage($request, 'banners/contents', 600);
+
+            if ($image) {
+                Media::create([
+                    'name' => "Banner Contents",
+                    'type' => @$request->image->getMimeType(),
+                    'url' => $image,
+                    'alt' => null,
+                    'title' => "Banner Contents",
+                    'description' => null
+                ]);
+            }
+        }
+
+        return response()->json(['url' => storage_url($image), 'path' => $image]);
+    }
     public function storeFacilityImage(Request $request)
     {
         $image = null;

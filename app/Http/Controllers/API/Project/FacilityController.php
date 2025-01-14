@@ -23,7 +23,7 @@ class FacilityController extends Controller
     public function index(FacilityQuery $request)
     {
         $limit = $request->limit ?? 10;
-        $facilities = Facility::with(['createdBy:id,name', 'project:id,name', 'developer:id,name']);
+        $facilities = Facility::with(['createdBy:id,name', 'project:id,name,city_id,developer_id', 'developer:id,name']);
         if ($request->search) {
             $facilities->where('title', 'LIKE', '%' . $request->search . '%');
         }
@@ -50,7 +50,7 @@ class FacilityController extends Controller
      */
     public function show(string $id)
     {
-        $facility = Facility::with(['createdBy:id,name', 'project:id,name', 'developer:id,name'])->find($id);
+        $facility = Facility::with(['createdBy:id,name', 'project:id,name,city_id,developer_id', 'developer:id,name'])->find($id);
         if (!$facility) {
             return ApiResponse::success(null, 'facility not found', 200);
         }

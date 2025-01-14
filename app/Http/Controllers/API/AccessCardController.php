@@ -38,7 +38,7 @@ class AccessCardController extends Controller
         if ($request->search) {
             $cards->where('name', 'like', '%' . $request->search . '%');
         }
-        $results = $cards->paginate($limit);
+        $results = $cards->latest()->paginate($limit);
         return ApiResponse::success(AccessCardResource::collection($results), 'Get access card for units success.');
     }
 
