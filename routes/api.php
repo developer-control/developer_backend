@@ -86,6 +86,7 @@ Route::middleware(['auth:sanctum', 'verified.api'])->group(function () {
         Route::get('/detail/{id}', [ComplainController::class, 'show']);
         Route::post('/store', [ComplainController::class, 'store']);
 
+        Route::patch('/solved/{id}', [ComplainController::class, 'updateSolve']);
         Route::put('/update/{id}', [ComplainController::class, 'update']);
         Route::delete('/delete/{id}', [ComplainController::class, 'destroy']);
     });

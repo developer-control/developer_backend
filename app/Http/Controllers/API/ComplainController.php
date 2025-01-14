@@ -156,6 +156,31 @@ class ComplainController extends Controller
         DB::commit();
         return ApiResponse::success(null, 'Update request complain success', 200);
     }
+    /**
+     * Update Solve complain by User.
+     * 
+     * api for user update complain to solved that problem
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateSolve(Request $request, int $id)
+    {
+        $complain = Complain::find($id);
+        $request->validate(['solved_notes' => 'required']);
+        if ($complain->status == 'finished') {
+            return ApiResponse::error('The complaint request has been completed', 402);
+        }
+        DB::beginTransaction();
+        $complain->status = 'finished';
+        $complain->solved_notes = $request->solved_notes;
+        $complain->solved_by = $request->user()->id;
+        $complain->solved_at = NOW();
+        $complain->save();
+        DB::commit();
+        return ApiResponse::success(null, 'Update solved complain by user success', 200);
+    }
 
     /**
      * destroy complain.
