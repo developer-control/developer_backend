@@ -97,16 +97,7 @@
                         <div class="col-12 d-flex justify-content-end">
                             {{ $articles->appends(request()->except('page'))->onEachSide(0)->links() }}
                         </div>
-                        {{-- <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
-                            <div class="card h-100 card-plain border">
-                                <div class="card-body d-flex flex-column justify-content-center text-center">
-                                    <a href="javascript:;">
-                                        <i class="fa fa-plus text-secondary mb-3"></i>
-                                        <h5 class=" text-secondary"> New project </h5>
-                                    </a>
-                                </div>
-                            </div>
-                        </div> --}}
+
                     </div>
                 </div>
             </div>

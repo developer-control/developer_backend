@@ -6,8 +6,10 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Location\CityController;
 use App\Http\Controllers\Location\ProvinceController;
 use App\Http\Controllers\Master\DeveloperController;
+use App\Http\Controllers\Master\EmergencyController;
 use App\Http\Controllers\Master\OwnershipUnitController;
 use App\Http\Controllers\Master\RolePermissionController;
+use App\Http\Controllers\Master\SupportController;
 use App\Http\Controllers\Post\ArticleController;
 use App\Http\Controllers\Post\BannerController;
 use App\Http\Controllers\Post\PromotionController;
@@ -59,14 +61,22 @@ Route::group(['prefix' => 'developers'], function () {
     Route::post('/update/{id}', [DeveloperController::class, 'update'])->name('update_developer');
     Route::delete('/delete/{id}', [DeveloperController::class, 'destroy'])->name('delete_developer');
 });
-Route::group(['prefix' => 'developers'], function () {
-    Route::get('/', [DeveloperController::class, 'index'])->name('master_developer');
-    Route::get('/datatable', [DeveloperController::class, 'developerDatatable']);
-    Route::get('/option-developers', [DeveloperController::class, 'optionDeveloper']);
-    Route::post('/create', [DeveloperController::class, 'store'])->name('store_developer');
-    Route::post('/update/{id}', [DeveloperController::class, 'update'])->name('update_developer');
-    Route::delete('/delete/{id}', [DeveloperController::class, 'destroy'])->name('delete_developer');
+
+Route::group(['prefix' => 'supports'], function () {
+    Route::get('/', [SupportController::class, 'index'])->name('menu_support');
+    Route::get('/datatable', [SupportController::class, 'supportDatatable']);
+    Route::post('/create', [SupportController::class, 'store'])->name('store_support');
+    Route::post('/update/{id}', [SupportController::class, 'update'])->name('update_support');
+    Route::delete('/delete/{id}', [SupportController::class, 'destroy'])->name('delete_support');
 });
+Route::group(['prefix' => 'emergency-numbers'], function () {
+    Route::get('/', [EmergencyController::class, 'index'])->name('menu_emergency');
+    Route::get('/datatable', [EmergencyController::class, 'emergencyDatatable']);
+    Route::post('/create', [EmergencyController::class, 'store'])->name('store_emergency');
+    Route::post('/update/{id}', [EmergencyController::class, 'update'])->name('update_emergency');
+    Route::delete('/delete/{id}', [EmergencyController::class, 'destroy'])->name('delete_emergency');
+});
+
 Route::group(['prefix' => 'posts'], function () {
     Route::prefix('articles')->group(function () {
         Route::get('/', [ArticleController::class, 'index'])->name('menu_article');

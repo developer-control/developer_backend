@@ -1,4 +1,4 @@
-@extends('layouts.main', ['menu' => 'menu_area'])
+@extends('layouts.main', ['menu' => 'menu_support'])
 @section('style')
     <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/dataTables.bootstrap5.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/responsive.bootstrap5.css') }}">
@@ -15,10 +15,10 @@
     </style>
 @endsection
 @section('breadcrumb')
-    {{ Breadcrumbs::render('menu_area') }}
+    {{ Breadcrumbs::render('menu_support') }}
 @endsection
 @section('page-title')
-    Project Area
+    Data Kontak Bantuan
 @endsection
 @section('content')
     <div class="container-fluid py-4">
@@ -26,40 +26,14 @@
             <div class="col-12">
                 <div class="card mb-4">
                     <div class="card-header pb-0">
-                        <h4 class="ps-0">Filter Project Area</h4>
-                        <hr class="horizontal gray-light">
-                    </div>
-                    <form action="{{ route('menu_area') }}" method="get">
-                        <div class="card-body row px-4 pt-0">
-                            <div class="col-md-9">
-                                <div class="form-group">
-                                    <input type="hidden" id="project" value="{{ $request->project_id }}">
-                                    <select class="rounded form-select @error('project_id') is-invalid @enderror"
-                                        aria-label="" name="project_id" id="filter-project">
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-3 text-end">
-                                <div class="form-group">
-                                    <label for="" class="col-form-label"></label>
-                                    <button type="submit" class="btn bg-gradient-primary">Submit</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="col-12">
-                <div class="card mb-4">
-                    <div class="card-header pb-0">
                         <div class="row">
                             <div class="col-md-6">
-                                <h6>Data Area</h6>
+                                <h6>Data Kontak Bantuan</h6>
                             </div>
                             <div class="col-md-6 text-end">
                                 <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal"
                                     data-bs-target="#modal-create"><i class="fas fa-plus me-sm-2"></i> Add
-                                    Area</button>
+                                    Bantuan</button>
                             </div>
                         </div>
                     </div>
@@ -71,12 +45,17 @@
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             No.
                                         </th>
-
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Project
+                                            Develoepr
                                         </th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             Name
+                                        </th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            Type
+                                        </th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            Kontak Bantuan
                                         </th>
                                         <th class="text-secondary text-xs font-weight-bolder opacity-7">Action</th>
                                     </tr>
@@ -95,37 +74,69 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">New Area</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Buat Bantuan</h5>
                     <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <form action="{{ route('store_area') }}" method="POST">
+                <form action="{{ route('store_support') }}" method="POST">
                     <div class="modal-body">
                         @csrf
+                        @hasrole('superadmin')
+                            <div class="form-group">
+                                <label for="" class="col-form-label">Developer:</label>
+                                <select class="form-select @error('developer_id') is-invalid @enderror" aria-label=""
+                                    name="developer_id" id="developer_id">
+                                </select>
+                                @error('developer_id')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        @endhasrole
+
                         <div class="form-group">
-                            <label for="" class="col-form-label">Project:</label>
-                            <select class="form-select @error('project_id') is-invalid @enderror" aria-label=""
-                                name="project_id" id="project_id">
+                            <label for="" class="col-form-label">Judul:</label>
+                            <input class="form-control @error('title') is-invalid @enderror" placeholder="Title Bantuan..."
+                                type="text" name="title" value="{{ old('title') }}" required>
+                            @error('title')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="col-form-label">Type:</label>
+                            <select class="form-select @error('type') is-invalid @enderror" aria-label="" name="type"
+                                id="type" required>
+                                <option value=""@if (old('type') == '') selected @endif>Pilih Type
+                                    Bantuan...
+                                </option>
+                                <option value="email"@if (old('type') == 'email') selected @endif>Email</option>
+                                <option value="whatsapp"@if (old('type') == 'whatsapp') selected @endif>Whatsapp</option>
+                                <option value="telegram"@if (old('type') == 'telegram') selected @endif>Telegram</option>
+                                <option value="number"@if (old('type') == 'number') selected @endif>Nomor Telepon
+                                </option>
                             </select>
-                            @error('project_id')
+                            @error('type')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label for="" class="col-form-label">Area Name:</label>
-                            <input class="form-control @error('name') is-invalid @enderror" placeholder="Area Name..."
-                                type="text" name="name" value="{{ old('name') }}" required>
-                            @error('name')
+                            <label for="" class="col-form-label">Kontak Bantuan:</label>
+                            <input class="form-control @error('value') is-invalid @enderror" placeholder="Kontak Bantuan..."
+                                type="text" name="value" value="{{ old('value') }}" required>
+                            @error('value')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
 
                         </div>
-
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Close</button>
@@ -136,13 +147,14 @@
         </div>
     </div>
     <!-- End Modal Create-->
+
     <!-- Modal Edit-->
     <div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-labelledby="editModalRole"
         aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit Area</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Bantuan</h5>
                     <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -150,30 +162,60 @@
                 <form action="" id="edit-form" method="POST">
                     <div class="modal-body">
                         @csrf
-                        <div class="form-group">
-                            <label for="" class="col-form-label">Project:</label>
-                            <select class="form-select @error('project_id') is-invalid @enderror" aria-label=""
-                                name="project_id" id="project_id-edit" required>
+                        @hasrole('superadmin')
+                            <div class="form-group">
+                                <label for="" class="col-form-label">Developer:</label>
+                                <select class="form-select @error('developer_id') is-invalid @enderror" aria-label=""
+                                    name="developer_id" id="developer_id-edit">
+                                </select>
+                                @error('developer_id')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        @endhasrole
 
+                        <div class="form-group">
+                            <label for="title" class="col-form-label">Judul:</label>
+                            <input class="form-control @error('title') is-invalid @enderror"
+                                placeholder="Title Bantuan..." type="text" id="title-edit" name="title"
+                                value="{{ old('title') }}" required>
+                            @error('title')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="col-form-label">Type:</label>
+                            <select class="form-select @error('type') is-invalid @enderror" aria-label=""
+                                name="type" id="type-edit" required>
+                                <option value="">Pilih Type Bantuan...</option>
+                                <option value="email">Email</option>
+                                <option value="whatsapp">Whatsapp</option>
+                                <option value="telegram">Telegram</option>
+                                <option value="number">Nomor Telepon</option>
                             </select>
-                            @error('project_id')
+                            @error('type')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label for="area-name" class="col-form-label">Area Name:</label>
-                            <input class="form-control @error('name') is-invalid @enderror" placeholder="Area Name..."
-                                type="text" id="area-name" name="name" value="{{ old('name') }}" required>
-                            @error('name')
+                            <label for="" class="col-form-label">Kontak Bantuan:</label>
+                            <input class="form-control @error('value') is-invalid @enderror"
+                                placeholder="Kontak Bantuan..." type="text" name="value" id="value-edit"
+                                value="{{ old('value') }}" required>
+                            @error('value')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
 
                         </div>
-
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Close</button>
@@ -226,23 +268,19 @@
     <script src="{{ asset('assets/src/plugins/datatables/js/dataTables.responsive.js') }}"></script>
     <script src="{{ asset('assets/src/plugins/datatables/js/responsive.bootstrap5.js') }}"></script>
     <script>
-        let optionProject, projectCreate, projectEdit;
+        let developerCreate, developerEdit;
         document.addEventListener('DOMContentLoaded', function() {
-            setInputChoices('/projects/option-projects').then(choices => {
-                // set input for filter project for get area
-                const filterProject = document.getElementById('filter-project');
-                const project_id = parseInt(document.getElementById('project').value);
-                optionProject = initializeChoice(filterProject, choices, project_id);
-                // set option for create and update area for get option projects
-                const optionProjectCreate = document.getElementById('project_id');
-                const optionProjectEdit = document.getElementById('project_id-edit');
-                projectCreate = initializeChoice(optionProjectCreate, choices);
-                projectEdit = initializeChoice(optionProjectEdit, choices);
-            }).catch(error => {
-                console.error('Error:', error);
-            });
+            const optionDeveloperCreate = document.getElementById('developer_id');
+            const optionDeveloperEdit = document.getElementById('developer_id-edit');
+            if (optionDeveloperCreate && optionDeveloperEdit) {
+                setInputChoices('/developers/option-developers').then(choices => {
+                    developerCreate = initializeChoice(optionDeveloperCreate, choices);
+                    developerEdit = initializeChoice(optionDeveloperEdit, choices);
+                }).catch(error => {
+                    console.error('Error:', error);
+                });
+            }
         })
-
         $(function() {
             let columnData = [{
                     data: 'DT_RowIndex',
@@ -251,12 +289,20 @@
                     searchable: false
                 },
                 {
-                    data: 'project.name',
-                    name: 'project.name'
+                    data: 'developer.name',
+                    name: 'developer.name'
                 },
                 {
-                    data: 'name',
-                    name: 'name'
+                    data: 'title',
+                    name: 'title'
+                },
+                {
+                    data: 'type',
+                    name: 'type'
+                },
+                {
+                    data: 'value',
+                    name: 'value'
                 },
                 {
                     data: 'action',
@@ -265,31 +311,27 @@
                     searchable: false
                 }
             ];
-            let url = {
-                url: "/areas/datatable",
-                data: function(d) {
-                    d.project_id = document.getElementById('project').value;
-                }
-            };
-            initializeDatatable('.datatable', url, columnData)
+            initializeDatatable('.datatable', "/supports/datatable", columnData)
 
         });
         $(document).on("click", ".edit-modal", function() {
             let url = $(this).data('url');
-            let name = $(this).data('name');
-            $("#area-name").val(name);
-            let project_id = $(this).data('project_id');
+            let title = $(this).data('title');
+            let type = $(this).data('type');
+            let value = $(this).data('value');
             let developer_id = $(this).data('developer_id');
-            // set value option city id
-            projectEdit.setChoiceByValue(project_id);
-
-
+            $("#title-edit").val(title);
+            $("#type-edit").val(type);
+            $("#value-edit").val(value);
+            if (developerEdit) {
+                developerEdit.setChoiceByValue(developer_id);
+            }
             $('#edit-form').attr('action', url);
         });
         $(document).on("click", ".delete-modal", function() {
             let url = $(this).data('url');
-            let name = $(this).data('name');
-            $("#delete-text").html(`Apa anda yakin menghapus area ${name}?`);
+            let title = $(this).data('title');
+            $("#delete-text").html(`Apa anda yakin menghapus bantuan ${title}?`);
             $('#delete-form').attr('action', url);
         });
     </script>

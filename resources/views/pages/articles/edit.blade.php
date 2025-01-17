@@ -26,11 +26,11 @@
             border-radius: 8px;
         }
     </style>
-    <link href="{{ url('/') }}/assets/quill/image-uploader/dist/quill.snow.css" rel="stylesheet" />
-    <link href="{{ url('/') }}/assets/quill/image-uploader/dist/quill.imageUploader.min.css" rel="stylesheet" />
-    <script src="{{ url('/') }}/assets/quill/image-uploader/dist/quill.min.js"></script>
-    <script src="{{ url('/') }}/assets/quill/image-uploader/dist/quill.imageUploader.min.js"></script>
-    <link rel="stylesheet" href="{{ url('/') }}/assets/choices/css/choices.min.css">
+    <link href="{{ asset('assets/quill/image-uploader/dist/quill.snow.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/quill/image-uploader/dist/quill.imageUploader.min.css') }}" rel="stylesheet" />
+    <script src="{{ asset('assets/quill/image-uploader/dist/quill.min.js') }}"></script>
+    <script src="{{ asset('assets/quill/image-uploader/dist/quill.imageUploader.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('assets/choices/css/choices.min.css') }}" />
 @endsection
 @section('breadcrumb')
     {{ Breadcrumbs::render('edit_article', $article) }}
@@ -118,9 +118,9 @@
     </div>
 @endsection
 @section('scripts')
-    <script src="{{ url('/') }}/assets/js/quill-main.js"></script>
-    <script src="{{ url('/') }}/assets/js/custom-choices.js"></script>
-    <script src="{{ url('/') }}/assets/choices/js/choices.min.js"></script>
+    <script src="{{ asset('assets/js/quill-main.js') }}"></script>
+    <script src="{{ asset('assets/js/custom-choices.js') }}"></script>
+    <script src="{{ asset('assets/choices/js/choices.min.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const inputTags = document.getElementById('tags');

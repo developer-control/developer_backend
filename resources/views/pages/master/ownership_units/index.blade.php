@@ -1,7 +1,7 @@
 @extends('layouts.main', ['menu' => 'master_ownership'])
 @section('style')
-    <link rel="stylesheet" href="{{ url('/') }}/assets/src/plugins/datatables/css/dataTables.bootstrap5.css">
-    <link rel="stylesheet" href="{{ url('/') }}/assets/src/plugins/datatables/css/responsive.bootstrap5.css">
+    <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/dataTables.bootstrap5.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/responsive.bootstrap5.css') }}">
 @endsection
 @section('breadcrumb')
     {{ Breadcrumbs::render('master_ownership') }}
@@ -159,11 +159,11 @@
     <!-- End Modal Delete-->
 @endsection
 @section('scripts')
-    <script src="{{ url('/') }}/assets/js/custom-datatable.js"></script>
-    <script src="{{ url('/') }}/assets/src/plugins/datatables/js/dataTables.min.js"></script>
-    <script src="{{ url('/') }}/assets/src/plugins/datatables/js/dataTables.bootstrap5.js"></script>
-    <script src="{{ url('/') }}/assets/src/plugins/datatables/js/dataTables.responsive.js"></script>
-    <script src="{{ url('/') }}/assets/src/plugins/datatables/js/responsive.bootstrap5.js"></script>
+    <script src="{{ asset('assets/js/custom-datatable.js') }}"></script>
+    <script src="{{ asset('assets/src/plugins/datatables/js/dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/src/plugins/datatables/js/dataTables.bootstrap5.js') }}"></script>
+    <script src="{{ asset('assets/src/plugins/datatables/js/dataTables.responsive.js') }}"></script>
+    <script src="{{ asset('assets/src/plugins/datatables/js/responsive.bootstrap5.js') }}"></script>
     <script>
         $(function() {
             let columnData = [{

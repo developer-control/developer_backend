@@ -2,11 +2,11 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class ProjectRequest extends FormRequest
+class SupportRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,6 @@ class ProjectRequest extends FormRequest
     {
         return [
             'developer_id.required' => 'The developer field is required.',
-            'city_id.required' => 'The city field is required.',
         ];
     }
     /**
@@ -35,17 +34,9 @@ class ProjectRequest extends FormRequest
      */
     public function rules(): array
     {
-        if (auth()->user()->hasRole('superadmin')) {
-            return [
-                'name' => 'required',
-                'developer_id' => 'required',
-                'city_id' => 'required',
-            ];
-        }
         return [
-            'name' => 'required',
-            // 'developer_id' => 'required',
-            'city_id' => 'required',
+            'title' => 'required',
+            'type' => 'required',
         ];
     }
     /**

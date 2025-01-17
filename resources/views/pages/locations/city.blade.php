@@ -1,8 +1,8 @@
 @extends('layouts.main', ['menu' => 'location', 'submenu' => 'location_city'])
 @section('style')
-    <link rel="stylesheet" href="{{ url('/') }}/assets/src/plugins/datatables/css/dataTables.bootstrap5.css">
-    <link rel="stylesheet" href="{{ url('/') }}/assets/src/plugins/datatables/css/responsive.bootstrap5.css">
-    <link rel="stylesheet" href="{{ url('/') }}/assets/choices/css/choices.min.css">
+    <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/dataTables.bootstrap5.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/responsive.bootstrap5.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/choices/css/choices.min.css') }}">
     <style>
         .choices__inner {
             border-radius: 8px;
@@ -191,13 +191,13 @@
     <!-- End Modal Delete-->
 @endsection
 @section('scripts')
-    <script src="{{ url('/') }}/assets/js/custom-datatable.js"></script>
-    <script src="{{ url('/') }}/assets/js/custom-choices.js"></script>
-    <script src="{{ url('/') }}/assets/choices/js/choices.min.js"></script>
-    <script src="{{ url('/') }}/assets/src/plugins/datatables/js/dataTables.min.js"></script>
-    <script src="{{ url('/') }}/assets/src/plugins/datatables/js/dataTables.bootstrap5.js"></script>
-    <script src="{{ url('/') }}/assets/src/plugins/datatables/js/dataTables.responsive.js"></script>
-    <script src="{{ url('/') }}/assets/src/plugins/datatables/js/responsive.bootstrap5.js"></script>
+    <script src="{{ asset('assets/js/custom-datatable.js') }}"></script>
+    <script src="{{ asset('assets/js/custom-choices.js') }}"></script>
+    <script src="{{ asset('assets/choices/js/choices.min.js') }}"></script>
+    <script src="{{ asset('assets/src/plugins/datatables/js/dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/src/plugins/datatables/js/dataTables.bootstrap5.js') }}"></script>
+    <script src="{{ asset('assets/src/plugins/datatables/js/dataTables.responsive.js') }}"></script>
+    <script src="{{ asset('assets/src/plugins/datatables/js/responsive.bootstrap5.js') }}"></script>
     <script>
         let choiceCreate, choiceEdit;
         document.addEventListener('DOMContentLoaded', function() {

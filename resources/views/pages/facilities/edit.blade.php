@@ -1,6 +1,6 @@
 @extends('layouts.main', ['menu' => 'menu_facility'])
 @section('style')
-    <link rel="stylesheet" href="{{ url('/') }}/assets/choices/css/choices.min.css">
+    <link rel="stylesheet" href="{{ asset('assets/choices/css/choices.min.css') }}">
     <style>
         .image-preview {
             border: 2px dashed #ccc;
@@ -117,8 +117,8 @@
     </div>
 @endsection
 @section('scripts')
-    <script src="{{ url('/') }}/assets/js/custom-choices.js"></script>
-    <script src="{{ url('/') }}/assets/choices/js/choices.min.js"></script>
+    <script src="{{ asset('assets/js/custom-choices.js') }}"></script>
+    <script src="{{ asset('assets/choices/js/choices.min.js') }}"></script>
     <script>
         let projectOption;
         document.addEventListener('DOMContentLoaded', function() {

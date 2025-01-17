@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RoleSeeder::class,
             UserSeeder::class,
+            OwnershipUnitSeeder::class,
             ProjectSeeder::class,
         ]);
         Storage::deleteDirectory(storage_path('app/public/articles'));

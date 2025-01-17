@@ -1,4 +1,4 @@
-@extends('layouts.main', ['menu' => 'menu_area'])
+@extends('layouts.main', ['menu' => 'menu_emergency'])
 @section('style')
     <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/dataTables.bootstrap5.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/responsive.bootstrap5.css') }}">
@@ -15,10 +15,10 @@
     </style>
 @endsection
 @section('breadcrumb')
-    {{ Breadcrumbs::render('menu_area') }}
+    {{ Breadcrumbs::render('menu_emergency') }}
 @endsection
 @section('page-title')
-    Project Area
+    Nomor Darurat
 @endsection
 @section('content')
     <div class="container-fluid py-4">
@@ -26,10 +26,10 @@
             <div class="col-12">
                 <div class="card mb-4">
                     <div class="card-header pb-0">
-                        <h4 class="ps-0">Filter Project Area</h4>
+                        <h4 class="ps-0">Filter Nomor Darurat</h4>
                         <hr class="horizontal gray-light">
                     </div>
-                    <form action="{{ route('menu_area') }}" method="get">
+                    <form action="{{ route('menu_emergency') }}" method="get">
                         <div class="card-body row px-4 pt-0">
                             <div class="col-md-9">
                                 <div class="form-group">
@@ -54,12 +54,12 @@
                     <div class="card-header pb-0">
                         <div class="row">
                             <div class="col-md-6">
-                                <h6>Data Area</h6>
+                                <h6>Data Nomor Darurat</h6>
                             </div>
                             <div class="col-md-6 text-end">
                                 <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal"
                                     data-bs-target="#modal-create"><i class="fas fa-plus me-sm-2"></i> Add
-                                    Area</button>
+                                    Nomor Darurat</button>
                             </div>
                         </div>
                     </div>
@@ -76,7 +76,10 @@
                                             Project
                                         </th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Name
+                                            Judul
+                                        </th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            Nomor Darurat
                                         </th>
                                         <th class="text-secondary text-xs font-weight-bolder opacity-7">Action</th>
                                     </tr>
@@ -95,16 +98,16 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">New Area</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Tambah Nomor Darurat</h5>
                     <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <form action="{{ route('store_area') }}" method="POST">
+                <form action="{{ route('store_emergency') }}" method="POST">
                     <div class="modal-body">
                         @csrf
                         <div class="form-group">
-                            <label for="" class="col-form-label">Project:</label>
+                            <label for="" class="col-form-label">Nama Project:</label>
                             <select class="form-select @error('project_id') is-invalid @enderror" aria-label=""
                                 name="project_id" id="project_id">
                             </select>
@@ -115,10 +118,22 @@
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label for="" class="col-form-label">Area Name:</label>
-                            <input class="form-control @error('name') is-invalid @enderror" placeholder="Area Name..."
-                                type="text" name="name" value="{{ old('name') }}" required>
-                            @error('name')
+                            <label for="" class="col-form-label">Judul:</label>
+                            <input class="form-control @error('title') is-invalid @enderror" placeholder="Emergency Name..."
+                                type="text" name="title" value="{{ old('title') }}" required>
+                            @error('title')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="col-form-label">Emergency Number:</label>
+                            <input class="form-control @error('number') is-invalid @enderror"
+                                placeholder="Emergency Number..." type="text" name="number" value="{{ old('number') }}"
+                                required>
+                            @error('number')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -142,7 +157,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit Area</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Nomor Darurat</h5>
                     <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -151,7 +166,7 @@
                     <div class="modal-body">
                         @csrf
                         <div class="form-group">
-                            <label for="" class="col-form-label">Project:</label>
+                            <label for="" class="col-form-label">Nama Project:</label>
                             <select class="form-select @error('project_id') is-invalid @enderror" aria-label=""
                                 name="project_id" id="project_id-edit" required>
 
@@ -163,17 +178,29 @@
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label for="area-name" class="col-form-label">Area Name:</label>
-                            <input class="form-control @error('name') is-invalid @enderror" placeholder="Area Name..."
-                                type="text" id="area-name" name="name" value="{{ old('name') }}" required>
-                            @error('name')
+                            <label for="emergency-title" class="col-form-label">Judul:</label>
+                            <input class="form-control @error('title') is-invalid @enderror"
+                                placeholder="Emergency Name..." type="text" id="emergency-title" name="title"
+                                value="{{ old('title') }}" required>
+                            @error('title')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
 
                         </div>
+                        <div class="form-group">
+                            <label for="" class="col-form-label">Emergency Number:</label>
+                            <input class="form-control @error('number') is-invalid @enderror"
+                                placeholder="Emergency Number..." type="text" name="number" id="number-edit"
+                                value="{{ old('number') }}" required>
+                            @error('number')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
 
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Close</button>
@@ -255,8 +282,12 @@
                     name: 'project.name'
                 },
                 {
-                    data: 'name',
-                    name: 'name'
+                    data: 'title',
+                    name: 'title'
+                },
+                {
+                    data: 'number',
+                    name: 'number'
                 },
                 {
                     data: 'action',
@@ -266,7 +297,7 @@
                 }
             ];
             let url = {
-                url: "/areas/datatable",
+                url: "/emergency-numbers/datatable",
                 data: function(d) {
                     d.project_id = document.getElementById('project').value;
                 }
@@ -276,20 +307,19 @@
         });
         $(document).on("click", ".edit-modal", function() {
             let url = $(this).data('url');
-            let name = $(this).data('name');
-            $("#area-name").val(name);
+            let title = $(this).data('title');
+            $("#emergency-title").val(title);
             let project_id = $(this).data('project_id');
-            let developer_id = $(this).data('developer_id');
+            let number = $(this).data('number');
+            $("#number-edit").val(number)
             // set value option city id
             projectEdit.setChoiceByValue(project_id);
-
-
             $('#edit-form').attr('action', url);
         });
         $(document).on("click", ".delete-modal", function() {
             let url = $(this).data('url');
-            let name = $(this).data('name');
-            $("#delete-text").html(`Apa anda yakin menghapus area ${name}?`);
+            let title = $(this).data('title');
+            $("#delete-text").html(`Apa anda yakin menghapus nomor darurat ${title}?`);
             $('#delete-form').attr('action', url);
         });
     </script>

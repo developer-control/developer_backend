@@ -29,7 +29,7 @@ class AreaController extends Controller
     public function areaDatatable(Request $request)
     {
         $developer_id = $request->user()->hasRole('superadmin') ? null : $request->user()->developer_id;
-        $project_areas = ProjectArea::select('project_areas.*')->with(['project']);
+        $project_areas = ProjectArea::select('project_areas.*')->with(['project:id,name']);
         if ($developer_id) {
             $project_areas->where('developer_id', $developer_id);
         }
@@ -37,8 +37,8 @@ class AreaController extends Controller
             $project_areas->where('project_id', $request->project_id);
         }
         return DataTables::eloquent($project_areas)
-            ->editColumn('area.name', function (ProjectArea $area) {
-                return @$area->area->name;
+            ->editColumn('project.name', function (ProjectArea $area) {
+                return @$area->project->name;
             })
             ->addColumn('action', function (ProjectArea $area) {
                 $btn = view('datatables.project_areas.action', compact('area'))->render();

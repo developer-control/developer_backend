@@ -8,6 +8,7 @@ use App\Http\Controllers\API\Auth\ResetPasswordController;
 use App\Http\Controllers\API\Auth\UserController;
 use App\Http\Controllers\API\ComplainController;
 use App\Http\Controllers\API\DeveloperController;
+use App\Http\Controllers\API\EmergencyController;
 use App\Http\Controllers\API\LocationController;
 use App\Http\Controllers\API\Posts\ArticleController;
 use App\Http\Controllers\API\Posts\BannerController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\API\Project\FacilityController;
 use App\Http\Controllers\API\Project\OwnershipUnitController;
 use App\Http\Controllers\API\Project\ProjectController;
 use App\Http\Controllers\API\Project\UnitController;
+use App\Http\Controllers\API\SupportController;
 use App\Http\Controllers\Base\ImageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -105,8 +107,11 @@ Route::middleware(['auth:sanctum', 'verified.api'])->group(function () {
         Route::delete('/update', [UserController::class, 'removeUser']);
         Route::patch('/change-password', [UserController::class, 'changePassword']);
     });
+
+    Route::get('/emergency-number', [EmergencyController::class, 'index']);
 });
 
+Route::get('/supports', [SupportController::class, 'index']);
 
 Route::prefix('locations')->group(function () {
     Route::get('/provinces', [LocationController::class, 'indexProvince']);

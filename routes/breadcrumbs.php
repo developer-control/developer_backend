@@ -127,3 +127,14 @@ Breadcrumbs::for('edit_facility', function (BreadcrumbTrail $trail, $resource) {
     $trail->parent('menu_facility');
     $trail->push('Edit Facility', route('edit_facility', ['id' => $resource->id]));
 });
+
+// Home > menu_support
+Breadcrumbs::for('menu_support', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Bantuan', route('menu_support'));
+});
+// Home > menu_support
+Breadcrumbs::for('menu_emergency', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Nomor Darurat', route('menu_emergency'));
+});

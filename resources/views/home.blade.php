@@ -6,10 +6,10 @@
     {{-- <link href="https://unpkg.com/quill-image-uploader@1.2.4/dist/quill.imageUploader.min.css" rel="stylesheet" /> --}}
     {{-- <script src="https://unpkg.com/quill-image-uploader@1.2.4/dist/quill.imageUploader.min.js"></script> --}}
 
-    <link href="{{ url('/') }}/assets/quill/image-uploader/dist/quill.snow.css" rel="stylesheet" />
-    <link href="{{ url('/') }}/assets/quill/image-uploader/dist/quill.imageUploader.min.css" rel="stylesheet" />
-    <script src="{{ url('/') }}/assets/quill/image-uploader/dist/quill.min.js"></script>
-    <script src="{{ url('/') }}/assets/quill/image-uploader/dist/quill.imageUploader.min.js"></script>
+    <link href="{{ asset('assets/quill/image-uploader/dist/quill.snow.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/quill/image-uploader/dist/quill.imageUploader.min.css') }}" rel="stylesheet" />
+    <script src="{{ asset('assets/quill/image-uploader/dist/quill.min.js') }}"></script>
+    <script src="{{ asset('assets/quill/image-uploader/dist/quill.imageUploader.min.js') }}"></script>
 @endsection
 @section('breadcrumb')
     {{ Breadcrumbs::render('home') }}
@@ -40,5 +40,5 @@
 @endsection
 
 @section('scripts')
-    <script src="{{ url('/') }}/assets/js/quill-main.js"></script>
+    <script src="{{ asset('assets/js/quill-main.js') }}"></script>
 @endsection
