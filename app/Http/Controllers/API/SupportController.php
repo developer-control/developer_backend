@@ -22,8 +22,8 @@ class SupportController extends Controller
     {
         $request->validate([
             'search' => 'string|nullable',
-            'developer_id' => 'int|nullable',
-            'limit' => 'int|nullable'
+            'developer_id' => 'string|nullable',
+            'limit' => 'string|nullable'
         ]);
         $supports = Support::with(['developer:id,name'])->select('id', 'title', 'value', 'type', 'developer_id')->where('developer_id', $request->developer_id);
         if ($request->search) {

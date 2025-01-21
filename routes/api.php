@@ -10,6 +10,7 @@ use App\Http\Controllers\API\ComplainController;
 use App\Http\Controllers\API\DeveloperController;
 use App\Http\Controllers\API\EmergencyController;
 use App\Http\Controllers\API\LocationController;
+use App\Http\Controllers\API\MasterController;
 use App\Http\Controllers\API\Posts\ArticleController;
 use App\Http\Controllers\API\Posts\BannerController;
 use App\Http\Controllers\API\Posts\PromotionController;
@@ -21,6 +22,8 @@ use App\Http\Controllers\API\Project\ProjectController;
 use App\Http\Controllers\API\Project\UnitController;
 use App\Http\Controllers\API\SupportController;
 use App\Http\Controllers\Base\ImageController;
+use App\Http\Controllers\Setting\FaqController;
+use App\Http\Controllers\Setting\TermConditionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -127,3 +130,6 @@ Route::prefix('posts')->group(function () {
     Route::get('/banners', [BannerController::class, 'index']);
     Route::get('/banner/detail/{id}', [BannerController::class, 'show']);
 });
+
+Route::get('/term-condition', [MasterController::class, 'termCondition']);
+Route::get('/faqs', [MasterController::class, 'faq']);

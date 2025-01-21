@@ -120,7 +120,7 @@ Breadcrumbs::for('menu_facility', function (BreadcrumbTrail $trail) {
 // menu_facility > create_facility
 Breadcrumbs::for('create_facility', function (BreadcrumbTrail $trail) {
     $trail->parent('menu_facility');
-    $trail->push('Create Banner', route('create_facility'));
+    $trail->push('Create Facility', route('create_facility'));
 });
 // menu_facility > edit_facility
 Breadcrumbs::for('edit_facility', function (BreadcrumbTrail $trail, $resource) {
@@ -137,4 +137,26 @@ Breadcrumbs::for('menu_support', function (BreadcrumbTrail $trail) {
 Breadcrumbs::for('menu_emergency', function (BreadcrumbTrail $trail) {
     $trail->parent('home');
     $trail->push('Nomor Darurat', route('menu_emergency'));
+});
+
+// Home > menu_term_condition
+Breadcrumbs::for('menu_term_condition', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Term & Condition', route('menu_term_condition'));
+});
+// menu_term_condition > create_term_condition
+Breadcrumbs::for('create_term_condition', function (BreadcrumbTrail $trail) {
+    $trail->parent('menu_term_condition');
+    $trail->push('Create Term & Condition', route('create_term_condition'));
+});
+// menu_term_condition > edit_facility
+Breadcrumbs::for('edit_term_condition', function (BreadcrumbTrail $trail, $resource) {
+    $trail->parent('menu_term_condition');
+    $trail->push('Edit Term & Condition', route('edit_term_condition', ['id' => $resource->id]));
+});
+
+// Home > menu_faq
+Breadcrumbs::for('menu_faq', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('FAQ', route('menu_faq'));
 });

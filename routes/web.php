@@ -19,6 +19,8 @@ use App\Http\Controllers\Project\UnitController;
 use App\Http\Controllers\Project\BlocController;
 use App\Http\Controllers\Project\FacilityController;
 use App\Http\Controllers\Project\UserUnitController;
+use App\Http\Controllers\Setting\FaqController;
+use App\Http\Controllers\Setting\TermConditionController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -75,6 +77,24 @@ Route::group(['prefix' => 'emergency-numbers'], function () {
     Route::post('/create', [EmergencyController::class, 'store'])->name('store_emergency');
     Route::post('/update/{id}', [EmergencyController::class, 'update'])->name('update_emergency');
     Route::delete('/delete/{id}', [EmergencyController::class, 'destroy'])->name('delete_emergency');
+});
+
+Route::group(['prefix' => 'term-conditions'], function () {
+    Route::get('/', [TermConditionController::class, 'index'])->name('menu_term_condition');
+    Route::get('/create', [TermConditionController::class, 'create'])->name('create_term_condition');
+    Route::post('/store', [TermConditionController::class, 'store'])->name('store_term_condition');
+    Route::get('/edit/{id}', [TermConditionController::class, 'edit'])->name('edit_term_condition');
+    Route::post('/update/{id}', [TermConditionController::class, 'update'])->name('update_term_condition');
+    Route::delete('/delete/{id}', [TermConditionController::class, 'destroy'])->name('delete_term_condition');
+});
+Route::group(['prefix' => 'faqs'], function () {
+    Route::get('/', [FaqController::class, 'index'])->name('menu_faq');
+    Route::get('/datatable', [FaqController::class, 'faqDatatable']);
+    Route::get('/create', [FaqController::class, 'create'])->name('create_faq');
+    Route::post('/store', [FaqController::class, 'store'])->name('store_faq');
+    Route::get('/edit/{id}', [FaqController::class, 'edit'])->name('edit_faq');
+    Route::post('/update/{id}', [FaqController::class, 'update'])->name('update_faq');
+    Route::delete('/delete/{id}', [FaqController::class, 'destroy'])->name('delete_faq');
 });
 
 Route::group(['prefix' => 'posts'], function () {

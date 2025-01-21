@@ -21,7 +21,7 @@ class EmergencyController extends Controller
     public function index(Request $request)
     {
         $request->validate([
-            'project_id' => 'int|required',
+            'project_id' => 'required|int',
             'search' => 'string|nullable',
             'limit' => 'int|nullable'
         ]);
