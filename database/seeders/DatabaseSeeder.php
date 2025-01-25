@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             OwnershipUnitSeeder::class,
             ProjectSeeder::class,
+            BillTypeSeeder::class
         ]);
         Storage::deleteDirectory(storage_path('app/public/articles'));
         Storage::deleteDirectory(storage_path('app/public/contents'));

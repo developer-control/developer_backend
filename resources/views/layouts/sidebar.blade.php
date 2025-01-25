@@ -146,6 +146,25 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link @if (@$menu == 'menu_term_condition') active @endif"
+                    href="{{ route('menu_term_condition') }}">
+                    <div
+                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fas fa-book fs-6"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Term Condition</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link @if (@$menu == 'menu_faq') active @endif" href="{{ route('menu_faq') }}">
+                    <div
+                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fas fa-question-circle fs-6"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Setting Faqs</span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link dropdown-toggle dropdown-toggle @if (@$menu == 'access_user') active @endif"
                     id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                     <div
