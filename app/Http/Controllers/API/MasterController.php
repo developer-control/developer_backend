@@ -39,6 +39,9 @@ class MasterController extends Controller
     public function termCondition()
     {
         $term = TermCondition::first();
+        if (!$term) {
+            return ApiResponse::success(null, 'Term & Condition not found', 200);
+        }
         return ApiResponse::success(new TermConditionResource($term), 'Get term condition success.');
     }
 }
