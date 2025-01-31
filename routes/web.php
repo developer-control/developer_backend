@@ -5,6 +5,7 @@ use App\Http\Controllers\Base\ImageController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Location\CityController;
 use App\Http\Controllers\Location\ProvinceController;
+use App\Http\Controllers\Master\BillTypeController;
 use App\Http\Controllers\Master\DeveloperController;
 use App\Http\Controllers\Master\EmergencyController;
 use App\Http\Controllers\Master\OwnershipUnitController;
@@ -62,6 +63,17 @@ Route::group(['prefix' => 'developers'], function () {
     Route::post('/create', [DeveloperController::class, 'store'])->name('store_developer');
     Route::post('/update/{id}', [DeveloperController::class, 'update'])->name('update_developer');
     Route::delete('/delete/{id}', [DeveloperController::class, 'destroy'])->name('delete_developer');
+});
+/**
+ * group route master bill
+ */
+Route::group(['prefix' => 'bill-types'], function () {
+    Route::get('/', [BillTypeController::class, 'index'])->name('menu_bill_type');
+    Route::get('/datatable', [BillTypeController::class, 'billTypeDatatable']);
+    Route::get('/option-bill-types', [BillTypeController::class, 'optionBillType']);
+    Route::post('/create', [BillTypeController::class, 'store'])->name('store_bill_type');
+    Route::post('/update/{id}', [BillTypeController::class, 'update'])->name('update_bill_type');
+    Route::delete('/delete/{id}', [BillTypeController::class, 'destroy'])->name('delete_bill_type');
 });
 
 Route::group(['prefix' => 'supports'], function () {

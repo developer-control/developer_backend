@@ -87,14 +87,27 @@
                             <label for="" class="col-form-label">Subscribtion Type:</label>
                             <input class="form-control @error('premium_type') is-invalid @enderror"
                                 placeholder="Subscription type..." type="text" name="premium_type"
-                                value="{{ old('premium_type') }}" required>
+                                value="{{ old('premium_type') }}">
                             @error('premium_type')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
                         </div>
-
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="is_premium" name="is_premium"
+                                value="1">
+                            <label class="form-check-label" for="is_premium">Premium Type</label>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="is_edit" name="is_edit" value="1">
+                            <label class="form-check-label" for="is_edit">Edit Title</label>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="with_start_value" name="with_start_value"
+                                value="1">
+                            <label class="form-check-label" for="with_start_value">Input Start Value</label>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Close</button>
@@ -106,8 +119,8 @@
     </div>
     <!-- End Modal Create-->
     <!-- Modal Edit-->
-    <div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-labelledby="editModalRole" aria-hidden="true"
-        data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-labelledby="editModalRole"
+        aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -134,14 +147,29 @@
                         <div class="form-group">
                             <label for="" class="col-form-label">Subscribtion Type:</label>
                             <input class="form-control @error('premium_type') is-invalid @enderror" placeholder=""
-                                type="text" name="premium_type" id="premium_type" value="{{ old('premium_type') }}"
-                                required>
+                                type="text" name="premium_type" id="bill_type-premium_type"
+                                value="{{ old('premium_type') }}">
                             @error('premium_type')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="bill_type-is_premium" name="is_premium"
+                                value="1">
+                            <label class="form-check-label" for="bill_type-is_premium">Premium Type</label>
 
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="bill_type-is_edit" name="is_edit"
+                                value="1">
+                            <label class="form-check-label" for="bill_type-is_edit">Edit Title</label>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="bill_type-with_start_value"
+                                name="with_start_value" value="1">
+                            <label class="form-check-label" for="bill_type-with_start_value">Input Start Value</label>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -201,16 +229,22 @@
                     searchable: false
                 },
                 {
-                    data: 'project.name',
-                    name: 'project.name'
+                    data: 'name',
+                    name: 'name'
                 },
                 {
-                    data: 'title',
-                    name: 'title'
+                    data: 'is_edit',
+                    name: 'is_edit',
+                    searchable: false
                 },
                 {
-                    data: 'number',
-                    name: 'number'
+                    data: 'premium_type',
+                    name: 'premium_type'
+                },
+                {
+                    data: 'with_start_value',
+                    name: 'with_start_value',
+                    searchable: false
                 },
                 {
                     data: 'action',
@@ -227,17 +261,28 @@
         });
         $(document).on("click", ".edit-modal", function() {
             let url = $(this).data('url');
-            let title = $(this).data('title');
-            $("#bill_type-title").val(title);
-            let number = $(this).data('number');
-            $("#number-edit").val(number)
-
+            let name = $(this).data('name');
+            $("#bill_type-name").val(name);
+            let premium_type = $(this).data('premium_type');
+            $("#bill_type-premium_type").val(premium_type);
+            let is_edit = $(this).data('is_edit');
+            if (is_edit == 1) {
+                $("#bill_type-is_edit").prop("checked", true);
+            }
+            let is_premium = $(this).data('is_premium');
+            if (is_premium == 1) {
+                $("#bill_type-is_premium").prop("checked", true);
+            }
+            let with_start_value = $(this).data('with_start_value');
+            if (with_start_value == 1) {
+                $("#bill_type-with_start_value").prop("checked", true);
+            }
             $('#edit-form').attr('action', url);
         });
         $(document).on("click", ".delete-modal", function() {
             let url = $(this).data('url');
             let title = $(this).data('title');
-            $("#delete-text").html(`Apa anda yakin menghapusType Tagihan ${title}?`);
+            $("#delete-text").html(`Apa anda yakin menghapus type tagihan ${title}?`);
             $('#delete-form').attr('action', url);
         });
     </script>

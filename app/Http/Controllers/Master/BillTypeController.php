@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Master;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\BillTypeRequest;
+use App\Models\BillType;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class BillTypeController extends Controller
 {
@@ -19,44 +22,46 @@ class BillTypeController extends Controller
         return view('pages.master.bill_types.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+
+    public function billTypeDatatable(Request $request)
     {
-        //
+        $types = BillType::query();
+
+        return DataTables::of($types)
+            ->editColumn('is_edit', function ($row) {
+                return @$row->is_edit ? 'iya' : 'tidak';
+            })
+            ->editColumn('with_start_value', function ($row) {
+                return @$row->with_start_value ? 'iya' : 'tidak';
+            })
+            ->addColumn('action', function ($row) {
+                $btn = view('datatables.bill_types.action', compact('row'))->render();
+                return $btn;
+            })
+            ->addIndexColumn()
+            ->toJson();
     }
+
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(BillTypeRequest $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        BillType::create($request->all());
+        toast('New bill type has been created', 'success');
+        return back();
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(BillTypeRequest $request, string $id)
     {
-        //
+        $type = BillType::find($id);
+        $type->update($request->all());
+        toast('Bill type has been updated', 'success');
+        return back();
     }
 
     /**
@@ -64,6 +69,8 @@ class BillTypeController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        BillType::destroy($id);
+        toast('Bill type has been deleted', 'success');
+        return back();
     }
 }

@@ -160,3 +160,8 @@ Breadcrumbs::for('menu_faq', function (BreadcrumbTrail $trail) {
     $trail->parent('home');
     $trail->push('FAQ', route('menu_faq'));
 });
+// Home > menu_bill_type
+Breadcrumbs::for('menu_bill_type', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('FAQ', route('menu_bill_type'));
+});
