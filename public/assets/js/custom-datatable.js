@@ -1,4 +1,4 @@
-function initializeDatatable(element, url, columnValues){
+function initializeDatatable(element, url, columnValues) {
     return $(element).DataTable({
         autoWidth: false,
         responsive: {
@@ -10,7 +10,7 @@ function initializeDatatable(element, url, columnValues){
         },
         // scrollY: '400px',
         // scrollCollapse: true,
-        responsive: true,
+        responsive: false,
         processing: true,
         serverSide: true,
         ajax: url,

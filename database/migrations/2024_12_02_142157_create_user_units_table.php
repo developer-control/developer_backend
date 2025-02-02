@@ -24,6 +24,7 @@ return new class extends Migration
             $table->text('evidence_file')->nullable();
             $table->string('status')->nullable()->comment('claimed, request, failed')->index();
             $table->boolean('is_active')->nullable()->default(0);
+            $table->text('notes')->nullable();
             $table->unsignedBigInteger('verified_by')->nullable()->index();
             $table->timestamp('verified_at')->nullable();
             $table->softDeletes();

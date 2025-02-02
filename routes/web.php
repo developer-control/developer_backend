@@ -192,6 +192,8 @@ Route::group(['prefix' => 'units'], function () {
 
     Route::get('/request-units', [UserUnitController::class, 'indexRequest'])->name('menu_request_claim_unit');
     Route::get('/request-units/datatable', [UserUnitController::class, 'requestDatatable']);
+    Route::post('/request-unit/approve/{id}', [UserUnitController::class, 'updateApprove'])->name('approve_claim_unit');
+    Route::post('/request-unit/reject/{id}', [UserUnitController::class, 'updateReject'])->name('reject_claim_unit');
 
     Route::get('/history-request-unit/datatable', [UserUnitController::class, 'historyRequestDatatable']);
 });

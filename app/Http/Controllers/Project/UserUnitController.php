@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Project;
 
 use App\Http\Controllers\Controller;
+use App\Models\OwnershipUnit;
 use App\Models\UserUnit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class UserUnitController extends Controller
@@ -49,7 +52,8 @@ class UserUnitController extends Controller
     }
     public function indexRequest()
     {
-        return view('pages.project_units.request');
+        $ownerships = OwnershipUnit::all();
+        return view('pages.project_units.request', compact('ownerships'));
     }
 
     public function requestDatatable(Request $request)
@@ -66,7 +70,73 @@ class UserUnitController extends Controller
             ->addColumn('evidence_file', function (UserUnit $unit) {
                 return $unit->evidence_file ? '<a href="' . storage_url($unit->evidence_file) . '" class="btn-sm text-xs btn-link" target="_blank">File Bukti <i class="fas fa-long-arrow-alt-right"></i></a>' : null;
             })
-            ->rawColumns(['evidence_file'])
+            ->addColumn('action', function (UserUnit $unit) {
+                $btn = view('datatables.project_units.request_action', compact('unit'))->render();
+                return $btn;
+            })
+            ->rawColumns(['evidence_file', 'action'])
             ->make(true);
+    }
+
+    public function updateApprove(string $id, Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $unit = UserUnit::find($id);
+            $oldUnit = UserUnit::where('ownership_unit_id', $unit->ownership_unit_id)
+                ->where('project_unit_id', $unit->project_unit_id)
+                ->where('status', 'claimed')
+                ->where('is_active', 1)
+                ->where('id', '<>', $id)
+                ->first();
+            if ($oldUnit) {
+                toast('Unit sudah di klaim dengan status kepimilikan yang sama', 'error');
+                return back();
+            }
+            $unit->status = 'claimed';
+            $unit->is_active = 1;
+            $unit->verified_by = Auth::user()->id;
+            $unit->verified_at = now();
+            $unit->save();
+            UserUnit::where('id', '<>', $id)
+                ->where('ownership_unit_id', $unit->ownership_unit_id)
+                ->where('project_unit_id', $unit->project_unit_id)
+                ->where('status', 'request')
+                ->where('is_active', 0)
+                ->update([
+                    'status' => 'failed',
+                    'notes' => 'Unit yang anda ajukan sudah klaim user lain, mohon hubungi developer untuk info lebih lanjut',
+                    'verified_by' => Auth::user()->id,
+                    'verified_at' => now()
+                ]);
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            toast($th->getMessage(), 'error');
+            return back();
+        }
+        toast('Klaim unit berhasil di setujui', 'success');
+        return back();
+    }
+    public function updateReject(string $id, Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $unit = UserUnit::find($id);
+
+            $unit->status = 'failed';
+            $unit->notes = $request->notes;
+            $unit->verified_by = Auth::user()->id;
+            $unit->verified_at = now();
+            $unit->save();
+
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            toast($th->getMessage(), 'error');
+            return back();
+        }
+        toast('Klaim unit berhasil di tolak', 'success');
+        return back();
     }
 }

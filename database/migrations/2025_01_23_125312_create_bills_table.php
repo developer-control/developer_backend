@@ -28,7 +28,7 @@ return new class extends Migration
             $table->double('penalty_release')->nullable();
             $table->double('paid')->nullable();
             $table->double('total')->nullable();
-            $table->string('status')->nullable()->index()->comment('not_paid, paid, cancel');
+            $table->string('status')->nullable()->index()->comment('not_paid, paid, cancel, pending');
             $table->softDeletes();
             $table->timestamps();
         });

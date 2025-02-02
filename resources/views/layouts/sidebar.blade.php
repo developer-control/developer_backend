@@ -90,6 +90,16 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link @if (@$menu == 'menu_request_claim_unit') active @endif"
+                    href="{{ route('menu_request_claim_unit') }}">
+                    <div
+                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <span class="fas fa-laptop-house fs-6"></span>
+                    </div>
+                    <span class="nav-link-text ms-1">Request Klaim Unit</span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link @if (@$menu == 'menu_facility') active @endif"
                     href="{{ route('menu_facility') }}">
                     <div
