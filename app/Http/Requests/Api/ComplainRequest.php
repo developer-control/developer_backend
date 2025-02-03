@@ -47,6 +47,11 @@ class ComplainRequest extends FormRequest
              */
             'address' => 'string|nullable',
             'description' => ['required', 'string'],
+            /**
+             * type complain
+             * 
+             * @example unit, lingkungan, lainnya
+             */
             'type' => ['required', 'string'],
         ], $this->conditionalRules());
     }

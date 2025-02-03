@@ -165,3 +165,8 @@ Breadcrumbs::for('menu_bill_type', function (BreadcrumbTrail $trail) {
     $trail->parent('home');
     $trail->push('FAQ', route('menu_bill_type'));
 });
+// Home > menu_access_card
+Breadcrumbs::for('menu_access_card', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Access Card', route('menu_access_card'));
+});

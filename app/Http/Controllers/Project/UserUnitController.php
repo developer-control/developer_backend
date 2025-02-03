@@ -12,6 +12,10 @@ use Yajra\DataTables\Facades\DataTables;
 
 class UserUnitController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['auth']);
+    }
     public function queryUserUnit(Request $request)
     {
         $units = UserUnit::select('user_units.*')->with([

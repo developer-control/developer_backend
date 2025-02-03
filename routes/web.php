@@ -14,6 +14,7 @@ use App\Http\Controllers\Master\SupportController;
 use App\Http\Controllers\Post\ArticleController;
 use App\Http\Controllers\Post\BannerController;
 use App\Http\Controllers\Post\PromotionController;
+use App\Http\Controllers\Project\AccessCardController;
 use App\Http\Controllers\Project\AreaController;
 use App\Http\Controllers\Project\ProjectController;
 use App\Http\Controllers\Project\UnitController;
@@ -232,4 +233,12 @@ Route::prefix('facilities')->group(function () {
     Route::get('/edit/{id}', [FacilityController::class, 'edit'])->name('edit_facility');
     Route::post('/update/{id}', [FacilityController::class, 'update'])->name('update_facility');
     Route::delete('/delete/{id}', [FacilityController::class, 'destroy'])->name('delete_facility');
+});
+
+/**
+ * group route master developer
+ */
+Route::group(['prefix' => 'access-cards'], function () {
+    Route::get('/', [AccessCardController::class, 'index'])->name('menu_access_card');
+    Route::get('/datatable', [AccessCardController::class, 'dataTable']);
 });
