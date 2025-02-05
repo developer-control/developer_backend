@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Project;
 
+use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProjectUnitRequest;
 use App\Models\ProjectBloc;
@@ -126,6 +127,20 @@ class UnitController extends Controller
 
         toast('Unit has been updated', 'success');
         return back();
+    }
+
+    public function optionUnit(Request $request)
+    {
+        $units = ProjectUnit::select('id', 'name');
+        if (!$request->user()->hasRole('superadmin')) {
+            $units->where('developer_id', $request->user()->developer_id);
+        }
+
+        if ($request->limit) {
+            $units->limit($request->limit);
+        }
+        $results = $units->get();
+        return ApiResponse::success($results, 'Get option project unit success.');
     }
 
     /**

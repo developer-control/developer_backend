@@ -26,7 +26,7 @@
                             <div class="col-md-6">
                                 <form action="{{ route('menu_history_claim_unit') }}" method="get">
                                     <div class="row">
-                                        <div class="form-group mb-1 w-75">
+                                        <div class="form-group mb-1 col-8">
                                             <select class="rounded form-select @error('status') is-invalid @enderror"
                                                 aria-label="" name="status" id="filter-status">
                                                 <option value=""@if ($request->status == '') selected @endif>All
@@ -43,9 +43,10 @@
                                                 </option>
                                             </select>
                                         </div>
-                                        <div class="form-group mb-1 w-25">
+                                        <div class="form-group mb-1 col-4">
                                             <label for="" class="col-form-label"></label>
-                                            <button type="submit" class="btn bg-gradient-primary">Submit</button>
+                                            <button type="submit" class="btn bg-gradient-primary"><i
+                                                    class="fas fa-search"></i> Filter</button>
                                         </div>
                                     </div>
                                 </form>

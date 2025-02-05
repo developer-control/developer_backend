@@ -1,13 +1,13 @@
-@extends('layouts.main', ['menu' => 'menu_complain'])
+@extends('layouts.main', ['menu' => 'menu_bill'])
 @section('style')
     <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/dataTables.bootstrap5.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/responsive.bootstrap5.css') }}">
 @endsection
 @section('breadcrumb')
-    {{ Breadcrumbs::render('menu_complain') }}
+    {{ Breadcrumbs::render('menu_bill') }}
 @endsection
 @section('page-title')
-    Complain Users
+    Tagihan Unit
 @endsection
 @section('content')
     <div class="container-fluid py-4">
@@ -17,31 +17,38 @@
                     <div class="card-header pb-0">
                         <div class="row">
                             <div class="col-md-6">
-                                <h6>Complain Users</h6>
-                            </div>
-                            <div class="col-md-6">
-                                <form action="{{ route('menu_complain') }}" method="get">
+                                <h6>Tagihan Unit</h6>
+                                <form action="{{ route('menu_bill') }}" method="get">
                                     <div class="row">
                                         <div class="form-group mb-1 col-8">
                                             <select class="rounded form-select @error('status') is-invalid @enderror"
                                                 aria-label="" name="status" id="filter-status">
                                                 <option value=""@if ($request->status == '') selected @endif>All
                                                 </option>
-                                                <option value="request" @if ($request->status == 'request') selected @endif>
-                                                    Menunggu
+                                                <option value="not_paid" @if ($request->status == 'not_paid') selected @endif>
+                                                    Belum Dibayar
                                                 </option>
-                                                <option value="finished" @if ($request->status == 'finished') selected @endif>
-                                                    Selesai
+                                                <option value="paid" @if ($request->status == 'paid') selected @endif>
+                                                    Dibayar
+                                                </option>
+                                                <option value="cancel" @if ($request->status == 'cancel') selected @endif>
+                                                    Dibatalkan
                                                 </option>
                                             </select>
                                         </div>
                                         <div class="form-group mb-1 col-4">
                                             <label for="" class="col-form-label"></label>
-                                            <button type="submit" class="btn bg-gradient-primary"><i
-                                                    class="fas fa-search"></i> Filter</button>
+                                            <button type="submit" class="btn bg-gradient-primary"> <i
+                                                    class="fas fa-search me-1"></i>filter</button>
                                         </div>
                                     </div>
                                 </form>
+                            </div>
+
+                            <div class="col-md-6 text-end">
+                                <a href="{{ route('create_bill') }}" class="btn bg-gradient-primary"><i
+                                        class="fas fa-plus me-sm-2"></i> Add
+                                    Tagihan</a>
                             </div>
                         </div>
                     </div>
@@ -54,22 +61,22 @@
                                             No.
                                         </th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Judul
+                                            Unit
                                         </th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Nama User
+                                            Type Tagihan
                                         </th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Type
+                                            Periode Penggunaan
                                         </th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Deskripsi
+                                            Bulan Penagihan
+                                        </th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            Total Tagihan
                                         </th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             Status
-                                        </th>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Catatan Penyelesaian
                                         </th>
                                         <th class="text-secondary text-xs font-weight-bolder opacity-7">Action</th>
                                     </tr>
@@ -82,6 +89,37 @@
             </div>
         </div>
     </div>
+    <!-- Modal Delete-->
+    <div class="modal fade" id="modal-delete" tabindex="-1" role="dialog" aria-labelledby="modal-notification"
+        aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-danger modal-dialog-centered modal-" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="modal-title-notification">Your attention is required</h6>
+                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="py-3 text-center">
+                        <i class="fas fa-exclamation-circle ni-3x"></i>
+                        <h4 class="text-gradient text-danger mt-4 " id="delete-text">Apa Anda Yakin Menghapus Data ini?
+                        </h4>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <form action="" method="POST" id="delete-form">
+                        @csrf
+                        @method('delete')
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                        <button type="button" class="btn bg-gradient-info ml-auto" data-bs-dismiss="modal">Close</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Modal Delete-->
 @endsection
 @section('scripts')
     <script src="{{ asset('assets/js/custom-datatable.js') }}"></script>
@@ -98,32 +136,28 @@
                     searchable: false
                 },
                 {
-                    data: 'title',
-                    name: 'title'
+                    data: 'projectunit.name',
+                    name: 'projectunit.name'
                 },
                 {
-                    data: 'user.name',
-                    name: 'user.name'
+                    data: 'billtype.name',
+                    name: 'billtype.name'
                 },
                 {
-                    data: 'type',
-                    name: 'type'
+                    data: 'usage_period_at',
+                    name: 'usage_period_at'
                 },
                 {
-                    data: 'description',
-                    name: 'description',
-                    orderable: false,
-                    searchable: false
+                    data: 'billed_at',
+                    name: 'billed_at'
+                },
+                {
+                    data: 'total',
+                    name: 'total'
                 },
                 {
                     data: 'status',
                     name: 'status',
-                },
-                {
-                    data: 'solved_notes',
-                    name: 'solved_notes',
-                    orderable: false,
-                    searchable: false
                 },
                 {
                     data: 'action',
@@ -133,13 +167,19 @@
                 },
             ];
             let url = {
-                url: "/complains/datatable",
+                url: "/bills/datatable",
                 data: function(d) {
                     d.status = document.getElementById('filter-status').value;
                 }
             };
             initializeDatatable('.datatable', url, columnData)
 
+        });
+        $(document).on("click", ".delete-modal", function() {
+            let url = $(this).data('url');
+            let name = $(this).data('name');
+            $("#delete-text").html(`Apa anda yakin menghapus tagihan ${name}?`);
+            $('#delete-form').attr('action', url);
         });
     </script>
 @endsection

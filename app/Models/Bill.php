@@ -9,6 +9,10 @@ class Bill extends Model
 {
     use SoftDeletes;
     protected $guarded = [];
+    protected $casts = [
+        'usage_period_at' => 'date',
+        'billed_at' => 'date',
+    ];
     public function developer()
     {
         return $this->belongsTo(Developer::class, 'developer_id');

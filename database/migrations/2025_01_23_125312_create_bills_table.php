@@ -14,10 +14,12 @@ return new class extends Migration
         Schema::create('bills', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('developer_id')->nullable()->index();
+            $table->unsignedBigInteger('payment_id')->nullable()->index();
             $table->unsignedBigInteger('project_unit_id')->nullable()->index();
             $table->unsignedBigInteger('bill_type_id')->nullable()->index();
             $table->unsignedBigInteger('start_value')->nullable();
             $table->unsignedBigInteger('end_value')->nullable();
+            $table->string('title')->nullable()->index();
             $table->date('billed_at')->nullable()->index();
             $table->date('usage_period_at')->nullable()->index();
             $table->unsignedBigInteger('value')->nullable();

@@ -11,6 +11,7 @@ function initializeChoice(element, items, id = null) {
     });
     choices.clearChoices();
     choices.setChoices(items, 'value', 'label', true);
+    console.log(id);
     choices.setChoiceByValue(id);
     // setInputChoices(choices, url);
     return choices;

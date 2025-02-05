@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\BillController;
 use App\Http\Controllers\Admin\ComplainController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Base\ImageController;
@@ -189,6 +190,7 @@ Route::group(['prefix' => 'units'], function () {
     Route::get('/', [UnitController::class, 'index'])->name('menu_unit');
     Route::get('/detail/{id}', [UnitController::class, 'show'])->name('menu_detail_unit');
     Route::get('/datatable', [UnitController::class, 'unitDatatable']);
+    Route::get('/option-units', [UnitController::class, 'optionUnit']);
     Route::post('/create', [UnitController::class, 'store'])->name('store_unit');
     Route::post('/update/{id}', [UnitController::class, 'update'])->name('update_unit');
     Route::delete('/delete/{id}', [UnitController::class, 'destroy'])->name('delete_unit');
@@ -253,4 +255,17 @@ Route::group(['prefix' => 'complains'], function () {
     Route::get('/detail/{id}', [ComplainController::class, 'show'])->name('menu_detail_complain');
     Route::post('/solved-complain/{id}', [ComplainController::class, 'updateSolve'])->name('solve_complain');
     Route::get('/datatable', [ComplainController::class, 'dataTable']);
+});
+/**
+ * group route master developer
+ */
+Route::group(['prefix' => 'bills'], function () {
+    Route::get('/', [BillController::class, 'index'])->name('menu_bill');
+    Route::get('/create', [BillController::class, 'create'])->name('create_bill');
+    Route::post('/store', [BillController::class, 'store'])->name('store_bill');
+    Route::get('/edit/{id}', [BillController::class, 'edit'])->name('edit_bill');
+    Route::post('/update/{id}', [BillController::class, 'update'])->name('update_bill');
+    Route::get('/datatable', [BillController::class, 'dataTable']);
+    Route::get('/detail/{id}', [BillController::class, 'show'])->name('menu_detail_bill');
+    Route::delete('/delete/{id}', [BillController::class, 'destroy'])->name('delete_bill');
 });

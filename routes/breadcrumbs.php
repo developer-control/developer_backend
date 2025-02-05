@@ -192,3 +192,24 @@ Breadcrumbs::for('menu_detail_complain', function (BreadcrumbTrail $trail, $reso
     $trail->parent('menu_complain');
     $trail->push('Complain User', route('menu_detail_complain', ['id' => $resource->id]));
 });
+
+// Home > menu_bill
+Breadcrumbs::for('menu_bill', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Tagihan Unit', route('menu_bill'));
+});
+// menu_bill > create_bill
+Breadcrumbs::for('create_bill', function (BreadcrumbTrail $trail) {
+    $trail->parent('menu_bill');
+    $trail->push('Tagihan Unit', route('create_bill'));
+});
+// menu_bill > edit_bill
+Breadcrumbs::for('edit_bill', function (BreadcrumbTrail $trail, $resource) {
+    $trail->parent('menu_bill');
+    $trail->push('Edit Tagihan Unit', route('edit_bill', ['id' => $resource->id]));
+});
+// menu_bill > menu_detail_bill
+Breadcrumbs::for('menu_detail_bill', function (BreadcrumbTrail $trail, $resource) {
+    $trail->parent('menu_bill');
+    $trail->push('Detail Tagihan Unit', route('menu_detail_bill', ['id' => $resource->id]));
+});
