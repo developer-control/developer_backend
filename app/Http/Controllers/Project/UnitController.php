@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ProjectUnitRequest;
 use App\Models\ProjectBloc;
 use App\Models\ProjectUnit;
+use App\Models\UserUnit;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -78,6 +79,28 @@ class UnitController extends Controller
         return back();
     }
 
+    /**
+     * Display a listing of the resource.
+     * 
+     */
+    public function show(string $id)
+    {
+        $unit = ProjectUnit::with([
+            'projectBloc:name,id,project_area_id',
+            'projectBloc.projectArea:name,id,project_id',
+            'projectBloc.projectArea.project:name,id',
+        ])
+            ->find($id);
+        $userUnit = UserUnit::with(['user'])
+            ->where('project_unit_id', $id)
+            ->where('is_active', 1)
+            ->where('status', 'claimed')
+            ->whereHas('ownershipUnit', function ($q) {
+                $q->where('name', 'like', 'pemilik');
+            })
+            ->first();
+        return view('pages.project_units.detail', compact('unit', 'userUnit'));
+    }
 
     /**
      * Update the specified resource in storage.

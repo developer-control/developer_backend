@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ComplainController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Base\ImageController;
 use App\Http\Controllers\HomeController;
@@ -186,6 +187,7 @@ Route::group(['prefix' => 'blocs'], function () {
  */
 Route::group(['prefix' => 'units'], function () {
     Route::get('/', [UnitController::class, 'index'])->name('menu_unit');
+    Route::get('/detail/{id}', [UnitController::class, 'show'])->name('menu_detail_unit');
     Route::get('/datatable', [UnitController::class, 'unitDatatable']);
     Route::post('/create', [UnitController::class, 'store'])->name('store_unit');
     Route::post('/update/{id}', [UnitController::class, 'update'])->name('update_unit');
@@ -196,6 +198,7 @@ Route::group(['prefix' => 'units'], function () {
     Route::post('/request-unit/approve/{id}', [UserUnitController::class, 'updateApprove'])->name('approve_claim_unit');
     Route::post('/request-unit/reject/{id}', [UserUnitController::class, 'updateReject'])->name('reject_claim_unit');
 
+    Route::get('/history-request-units', [UserUnitController::class, 'indexHistoryRequest'])->name('menu_history_claim_unit');
     Route::get('/history-request-unit/datatable', [UserUnitController::class, 'historyRequestDatatable']);
 });
 /**
@@ -241,4 +244,13 @@ Route::prefix('facilities')->group(function () {
 Route::group(['prefix' => 'access-cards'], function () {
     Route::get('/', [AccessCardController::class, 'index'])->name('menu_access_card');
     Route::get('/datatable', [AccessCardController::class, 'dataTable']);
+});
+/**
+ * group route master developer
+ */
+Route::group(['prefix' => 'complains'], function () {
+    Route::get('/', [ComplainController::class, 'index'])->name('menu_complain');
+    Route::get('/detail/{id}', [ComplainController::class, 'show'])->name('menu_detail_complain');
+    Route::post('/solved-complain/{id}', [ComplainController::class, 'updateSolve'])->name('solve_complain');
+    Route::get('/datatable', [ComplainController::class, 'dataTable']);
 });

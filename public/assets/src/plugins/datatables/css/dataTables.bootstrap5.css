@@ -238,6 +238,8 @@ table.dataTable.nowrap th, table.dataTable.nowrap td {
 table.dataTable th,
 table.dataTable td {
   box-sizing: border-box;
+  white-space: normal;
+  /* max-width: 10px; */
 }
 table.dataTable th.dt-left,
 table.dataTable td.dt-left {

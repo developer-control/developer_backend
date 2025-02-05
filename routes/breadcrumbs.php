@@ -49,10 +49,22 @@ Breadcrumbs::for('menu_unit', function (BreadcrumbTrail $trail) {
     $trail->parent('home');
     $trail->push('Project Unit', route('menu_unit'));
 });
+
+// menu_unit > menu_detail_unit
+Breadcrumbs::for('menu_detail_unit', function (BreadcrumbTrail $trail, $resource) {
+    $trail->parent('menu_unit');
+    $trail->push('Detail Unit', route('menu_detail_unit', ['id' => $resource->id]));
+});
 // Home > menu_request_claim_unit
 Breadcrumbs::for('menu_request_claim_unit', function (BreadcrumbTrail $trail) {
     $trail->parent('home');
     $trail->push('Request Claim Unit', route('menu_request_claim_unit'));
+});
+
+// Home > menu_history_claim_unit
+Breadcrumbs::for('menu_history_claim_unit', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('History Claim Unit', route('menu_history_claim_unit'));
 });
 
 // Home > location_province
@@ -169,4 +181,14 @@ Breadcrumbs::for('menu_bill_type', function (BreadcrumbTrail $trail) {
 Breadcrumbs::for('menu_access_card', function (BreadcrumbTrail $trail) {
     $trail->parent('home');
     $trail->push('Access Card', route('menu_access_card'));
+});
+// Home > menu_complain
+Breadcrumbs::for('menu_complain', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Complain User', route('menu_complain'));
+});
+// menu_complain > menu_detail_complain
+Breadcrumbs::for('menu_detail_complain', function (BreadcrumbTrail $trail, $resource) {
+    $trail->parent('menu_complain');
+    $trail->push('Complain User', route('menu_detail_complain', ['id' => $resource->id]));
 });

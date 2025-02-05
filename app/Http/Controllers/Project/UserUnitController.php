@@ -45,19 +45,28 @@ class UserUnitController extends Controller
         }
         return DataTables::eloquent($units)
             ->addIndexColumn()
-            ->addColumn('evidence_file', function (UserUnit $unit) {
-                return $unit->evidence_file ? '<a href="' . storage_url($unit->evidence_file) . '" class="btn-sm text-xs btn-link" target="_blank">File Bukti <i class="fas fa-long-arrow-alt-right"></i></a>' : null;
+            ->editColumn('status', function (UserUnit $unit) {
+                if ($unit->status == 'request') {
+                    return '<span class="text-warning"><i class="fas fa-history"></i> Menunggu Konfirmasi</span>';
+                }
+                if ($unit->status == 'failed') {
+                    return '<span class="text-danger"><i class="far fa-times-circle"></i> Menunggu Konfirmasi</span>';
+                }
+                return '<span class="text-success"><i class="far fa-check-circle"></i> Disetujui</span>';
             })
-            ->addColumn('action', function (UserUnit $unit) {
-                $btn = view('datatables.projects.action', compact('unit'))->render();
-                return $btn;
-            })
+            ->rawColumns(['status'])
             ->toJson();
     }
+
     public function indexRequest()
     {
         $ownerships = OwnershipUnit::all();
         return view('pages.project_units.request', compact('ownerships'));
+    }
+
+    public function indexHistoryRequest(Request $request)
+    {
+        return view('pages.project_units.request_history', compact('request'));
     }
 
     public function requestDatatable(Request $request)

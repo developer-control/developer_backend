@@ -9,6 +9,7 @@ use App\Http\Requests\Api\ComplainRequest;
 use App\Http\Resources\Api\ComplainResource;
 use App\Models\Complain;
 use App\Models\Media;
+use App\Models\ProjectUnit;
 use App\Traits\UploadMedia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -60,35 +61,46 @@ class ComplainController extends Controller
      */
     public function store(ComplainRequest $request)
     {
-
-        DB::beginTransaction();
-
-        // $images = @$request->images ?? [];
-        $images = array_map(function ($url) {
-            return strstr($url, 'contents'); // Ambil bagian dari "contents"
-        }, @$request->images ?? []);
-        $complain = Complain::create([
-            'user_id' => $request->user()->id,
-            'developer_id' => $request->developer_id,
-            'project_id' => $request->project_id,
-            'project_area_id' => $request->project_area_id,
-            'project_unit_id' => $request->project_unit_id,
-            'title' => $request->title,
-            'address' => $request->address,
-            'description' => $request->description,
-            'type' => $request->type,
-            'images' => json_encode(@$images, true),
-            'status' => 'request',
-        ]);
-        foreach (@$images  as $item) {
-            $image_media = Media::where('url', $item)->first();
-            if (@$image_media) {
-                $complain->media()->attach($image_media, ['type' => 'image']);
+        try {
+            DB::beginTransaction();
+            //code...
+            // $images = @$request->images ?? [];
+            $images = array_map(function ($url) {
+                return strstr($url, 'contents'); // Ambil bagian dari "contents"
+            }, @$request->images ?? []);
+            if ($request->project_unit_id) {
+                $unit = ProjectUnit::with([
+                    'projectBloc:name,id,project_area_id',
+                    'projectBloc.projectArea:name,id,project_id',
+                    'projectBloc.projectArea.project:name,id',
+                ])
+                    ->find($request->project_unit_id);
             }
+            $complain = Complain::create([
+                'user_id' => $request->user()->id,
+                'developer_id' => $request->developer_id,
+                'project_id' => $request->project_id ?? @$unit?->projectBloc?->projectArea?->project_id,
+                'project_area_id' => $request->project_area_id ?? @$unit?->projectBloc?->project_area_id,
+                'project_unit_id' => $request->project_unit_id,
+                'title' => $request->title,
+                'address' => $request->address,
+                'description' => $request->description,
+                'type' => $request->type,
+                'images' => json_encode(@$images, true),
+                'status' => 'request',
+            ]);
+            foreach (@$images  as $item) {
+                $image_media = Media::where('url', $item)->first();
+                if (@$image_media) {
+                    $complain->media()->attach($image_media, ['type' => 'image']);
+                }
+            }
+
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            ApiResponse::error($th->getMessage(), 500);
         }
-
-        DB::commit();
-
         return ApiResponse::success(null, 'Create request complain success', 201);
     }
     /**
@@ -130,30 +142,51 @@ class ComplainController extends Controller
         if ($complain->status == 'finished') {
             return ApiResponse::error('The complaint request has been completed', 402);
         }
-        DB::beginTransaction();
-        $complain->developer_id = $request->developer_id;
-        $complain->project_id = $request->project_id;
-        $complain->project_area_id = $request->project_area_id;
-        $complain->project_unit_id = $request->project_unit_id;
-        $complain->title = $request->title;
-        $complain->address = $request->address;
-        $complain->description = $request->description;
-        $complain->type = $request->type;
-
-        $junk_images = array_diff($oldImages, $images);
-        foreach ($junk_images as $item) {
-            remove_file($item, $complain);
+        if ($request->project_unit_id) {
+            $unit = ProjectUnit::with([
+                'projectBloc:name,id,project_area_id',
+                'projectBloc.projectArea:name,id,project_id',
+                'projectBloc.projectArea.project:name,id',
+            ])
+                ->find($request->project_unit_id);
         }
-
-        foreach (@$images as $item) {
-            $media = Media::where('url', $item)->first();
-            if (@$media) {
-                $complain->media()->syncWithoutDetaching([$media->id => ['type' => 'image']]);
+        try {
+            DB::beginTransaction();
+            if ($request->project_unit_id) {
+                $unit = ProjectUnit::with([
+                    'projectBloc:name,id,project_area_id',
+                    'projectBloc.projectArea:name,id,project_id',
+                    'projectBloc.projectArea.project:name,id',
+                ])
+                    ->find($request->project_unit_id);
             }
+            $complain->developer_id = $request->developer_id;
+            $complain->project_id = $request->project_id ?? @$unit?->projectBloc?->projectArea?->project_id;
+            $complain->project_area_id = $request->project_area_id ?? @$unit?->projectBloc?->project_area_id;
+            $complain->project_unit_id = $request->project_unit_id;
+            $complain->title = $request->title;
+            $complain->address = $request->address;
+            $complain->description = $request->description;
+            $complain->type = $request->type;
+
+            $junk_images = array_diff($oldImages, $images);
+            foreach ($junk_images as $item) {
+                remove_file($item, $complain);
+            }
+
+            foreach (@$images as $item) {
+                $media = Media::where('url', $item)->first();
+                if (@$media) {
+                    $complain->media()->syncWithoutDetaching([$media->id => ['type' => 'image']]);
+                }
+            }
+            $complain->images = json_encode(@$images, true);
+            $complain->save();
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            ApiResponse::error($th->getMessage(), 500);
         }
-        $complain->images = json_encode(@$images, true);
-        $complain->save();
-        DB::commit();
         return ApiResponse::success(null, 'Update request complain success', 200);
     }
     /**
@@ -172,13 +205,18 @@ class ComplainController extends Controller
         if ($complain->status == 'finished') {
             return ApiResponse::error('The complaint request has been completed', 402);
         }
-        DB::beginTransaction();
-        $complain->status = 'finished';
-        $complain->solved_notes = $request->solved_notes;
-        $complain->solved_by = $request->user()->id;
-        $complain->solved_at = NOW();
-        $complain->save();
-        DB::commit();
+        try {
+            DB::beginTransaction();
+            $complain->status = 'finished';
+            $complain->solved_notes = $request->solved_notes;
+            $complain->solved_by = $request->user()->id;
+            $complain->solved_at = NOW();
+            $complain->save();
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            ApiResponse::error($th->getMessage(), 500);
+        }
         return ApiResponse::success(null, 'Update solved complain by user success', 200);
     }
 
