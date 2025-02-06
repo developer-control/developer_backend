@@ -52,12 +52,14 @@ class BillController extends Controller
             })
             ->editColumn('status', function ($row) {
                 if ($row->status == 'not_paid') {
-                    return '<span class="text-warning"><i class="fas fa-history"></i> Belum bayar</span>';
+                    return '<span class="text-info"><i class="fas fa-info-circle"></i> Belum bayar</span>';
                 }
                 if ($row->status == 'cancel') {
                     return '<span class="text-danger"><i class="far fa-times-circle"></i> Dibatalkan</span>';
                 }
-
+                if ($row->status == 'pending') {
+                    return '<span class="text-warning"><i class="fas fa-history"></i> Proses Bayar</span>';
+                }
                 return '<span class="text-success"><i class="far fa-check-circle"></i> Selesai</span>';
             })
             ->addColumn('action', function ($row) {

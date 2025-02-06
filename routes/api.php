@@ -6,6 +6,7 @@ use App\Http\Controllers\API\Auth\LoginController;
 use App\Http\Controllers\API\Auth\RegisterController;
 use App\Http\Controllers\API\Auth\ResetPasswordController;
 use App\Http\Controllers\API\Auth\UserController;
+use App\Http\Controllers\API\BillController;
 use App\Http\Controllers\API\ComplainController;
 use App\Http\Controllers\API\DeveloperController;
 use App\Http\Controllers\API\EmergencyController;
@@ -112,6 +113,12 @@ Route::middleware(['auth:sanctum', 'verified.api'])->group(function () {
     });
 
     Route::get('/emergency-number', [EmergencyController::class, 'index']);
+
+    Route::prefix('unit')->group(function () {
+        Route::get('/{unit_id}/bills', [BillController::class, 'index']);
+        Route::get('/{unit_id}/bill/total', [BillController::class, 'showTotalBill']);
+        Route::get('/{unit_id}/bill/detail', [BillController::class, 'showListBill']);
+    });
 });
 
 Route::get('/supports', [SupportController::class, 'index']);

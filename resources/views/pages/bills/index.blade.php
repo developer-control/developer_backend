@@ -28,6 +28,9 @@
                                                 <option value="not_paid" @if ($request->status == 'not_paid') selected @endif>
                                                     Belum Dibayar
                                                 </option>
+                                                <option value="pending" @if ($request->status == 'pending') selected @endif>
+                                                    Proses Bayar
+                                                </option>
                                                 <option value="paid" @if ($request->status == 'paid') selected @endif>
                                                     Dibayar
                                                 </option>
