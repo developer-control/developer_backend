@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('bills', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('developer_id')->nullable()->index();
-            $table->unsignedBigInteger('payment_id')->nullable()->index();
             $table->unsignedBigInteger('project_unit_id')->nullable()->index();
             $table->unsignedBigInteger('bill_type_id')->nullable()->index();
             $table->unsignedBigInteger('start_value')->nullable();

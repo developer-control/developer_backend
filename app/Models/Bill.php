@@ -25,4 +25,8 @@ class Bill extends Model
     {
         return $this->belongsTo(ProjectUnit::class, 'project_unit_id');
     }
+    public function payments()
+    {
+        return $this->belongsToMany(Payment::class);
+    }
 }

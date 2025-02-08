@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tags', function (Blueprint $table) {
+        Schema::create('developer_banks', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('developer_id')->nullable()->index();
             $table->string('name')->nullable()->index();
+            $table->string('account_name')->nullable();
+            $table->string('account_number')->nullable();
+            $table->text('image')->nullable();
+            $table->softDeletes();
             $table->timestamps();
-        });
-        Schema::create('article_tag', function (Blueprint $table) {
-            $table->foreignId('article_id')->constrained('articles');
-            $table->foreignId('tag_id')->constrained('tags');
-            $table->primary(['article_id', 'tag_id']);
         });
     }
 
@@ -28,7 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('article_tag');
-        Schema::dropIfExists('tags');
+        Schema::dropIfExists('developer_banks');
     }
 };

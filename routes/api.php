@@ -12,6 +12,7 @@ use App\Http\Controllers\API\DeveloperController;
 use App\Http\Controllers\API\EmergencyController;
 use App\Http\Controllers\API\LocationController;
 use App\Http\Controllers\API\MasterController;
+use App\Http\Controllers\API\PaymentController;
 use App\Http\Controllers\API\Posts\ArticleController;
 use App\Http\Controllers\API\Posts\BannerController;
 use App\Http\Controllers\API\Posts\PromotionController;
@@ -115,9 +116,15 @@ Route::middleware(['auth:sanctum', 'verified.api'])->group(function () {
     Route::get('/emergency-number', [EmergencyController::class, 'index']);
 
     Route::prefix('unit')->group(function () {
+        // api route for get bills for unit
         Route::get('/{unit_id}/bills', [BillController::class, 'index']);
         Route::get('/{unit_id}/bill/total', [BillController::class, 'showTotalBill']);
         Route::get('/{unit_id}/bill/detail', [BillController::class, 'showListBill']);
+
+        // api route for payment bill
+        Route::get('/{unit_id}/payments/histories', [PaymentController::class, 'index']);
+        Route::get('/{unit_id}/payment/history/{id}', [PaymentController::class, 'show']);
+        Route::get('/{unit_id}/payment/store', [PaymentController::class, 'store']);
     });
 });
 
