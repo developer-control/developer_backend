@@ -15,7 +15,7 @@ class DeveloperBankResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => (int)$this->id,
+            'id' => (int) $this->id,
             'name' => $this->name,
             'account_name' => $this->account_name,
             'account_number' => $this->account_number,

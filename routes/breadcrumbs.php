@@ -213,3 +213,19 @@ Breadcrumbs::for('menu_detail_bill', function (BreadcrumbTrail $trail, $resource
     $trail->parent('menu_bill');
     $trail->push('Detail Tagihan Unit', route('menu_detail_bill', ['id' => $resource->id]));
 });
+
+// Home > menu_developer_bank
+Breadcrumbs::for('menu_developer_bank', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Developer Bank', route('menu_developer_bank'));
+});
+// menu_developer_bank > create_developer_bank
+Breadcrumbs::for('create_developer_bank', function (BreadcrumbTrail $trail) {
+    $trail->parent('menu_developer_bank');
+    $trail->push('Create Developer Bank', route('create_developer_bank'));
+});
+// menu_developer_bank > edit_developer_bank
+Breadcrumbs::for('edit_developer_bank', function (BreadcrumbTrail $trail, $resource) {
+    $trail->parent('menu_developer_bank');
+    $trail->push('Edit Developer Bank', route('edit_developer_bank', ['id' => $resource->id]));
+});

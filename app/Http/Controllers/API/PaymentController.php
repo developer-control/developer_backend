@@ -112,13 +112,18 @@ class PaymentController extends Controller
 
 
     /**
-     * Show the form for editing the specified resource.
+     * Get List Bank .
+     * 
+     * api for user get list bank from developer to payment bill
+     *
+     * @param  string $unit_id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function indexBank(string $unit_id)
     {
         $unit = ProjectUnit::find($unit_id);
         $banks = DeveloperBank::where('developer_id', $unit->developer_id)->get();
-        return ApiResponse::success(new DeveloperBankResource($banks), 'Get master developer bank success', 200);
+        return ApiResponse::success(DeveloperBankResource::collection($banks), 'Get master developer bank success', 200);
     }
 
     /**

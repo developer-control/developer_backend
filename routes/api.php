@@ -125,6 +125,7 @@ Route::middleware(['auth:sanctum', 'verified.api'])->group(function () {
         Route::get('/{unit_id}/payments/histories', [PaymentController::class, 'index']);
         Route::get('/{unit_id}/payment/history/{id}', [PaymentController::class, 'show']);
         Route::get('/{unit_id}/payment/store', [PaymentController::class, 'store']);
+        Route::get('/{unit_id}/payment/banks', [PaymentController::class, 'indexBank']);
     });
 });
 

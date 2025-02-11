@@ -92,6 +92,27 @@ class ImageController extends Controller
 
         return response()->json(['url' => storage_url($image), 'path' => $image]);
     }
+
+    public function storeBankDeveloperImage(Request $request)
+    {
+        $image = null;
+        if ($request->hasFile('image')) {
+            $image = $this->uploadImage($request, 'developer-banks/contents', 600);
+
+            if ($image) {
+                Media::create([
+                    'name' => "Developer Bank",
+                    'type' => @$request->image->getMimeType(),
+                    'url' => $image,
+                    'alt' => null,
+                    'title' => "Developer Bank",
+                    'description' => null
+                ]);
+            }
+        }
+
+        return response()->json(['url' => storage_url($image), 'path' => $image]);
+    }
     /**
      * Upload image file.
      * 

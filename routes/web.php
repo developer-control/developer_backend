@@ -8,6 +8,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Location\CityController;
 use App\Http\Controllers\Location\ProvinceController;
 use App\Http\Controllers\Master\BillTypeController;
+use App\Http\Controllers\Master\DeveloperBankController;
 use App\Http\Controllers\Master\DeveloperController;
 use App\Http\Controllers\Master\EmergencyController;
 use App\Http\Controllers\Master\OwnershipUnitController;
@@ -42,6 +43,7 @@ Route::group(['prefix' => 'images'], function () {
     Route::post('/promotion-image', [ImageController::class, 'storePromotionImage']);
     Route::post('/banner-image', [ImageController::class, 'storeBannerImage']);
     Route::post('/facility-image', [ImageController::class, 'storeFacilityImage']);
+    Route::post('/developer-bank-image', [ImageController::class, 'storeBankDeveloperImage']);
 });
 
 /**
@@ -268,4 +270,14 @@ Route::group(['prefix' => 'bills'], function () {
     Route::get('/datatable', [BillController::class, 'dataTable']);
     Route::get('/detail/{id}', [BillController::class, 'show'])->name('menu_detail_bill');
     Route::delete('/delete/{id}', [BillController::class, 'destroy'])->name('delete_bill');
+});
+
+Route::prefix('developer-banks')->group(function () {
+    Route::get('/', [DeveloperBankController::class, 'index'])->name('menu_developer_bank');
+    Route::get('/datatable', [DeveloperBankController::class, 'dataTable']);
+    Route::get('/create', [DeveloperBankController::class, 'create'])->name('create_developer_bank');
+    Route::post('/store', [DeveloperBankController::class, 'store'])->name('store_developer_bank');
+    Route::get('/edit/{id}', [DeveloperBankController::class, 'edit'])->name('edit_developer_bank');
+    Route::post('/update/{id}', [DeveloperBankController::class, 'update'])->name('update_developer_bank');
+    Route::delete('/delete/{id}', [DeveloperBankController::class, 'destroy'])->name('delete_developer_bank');
 });

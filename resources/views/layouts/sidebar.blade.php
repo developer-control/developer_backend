@@ -179,6 +179,17 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link @if (@$menu == 'menu_developer_bank') active @endif"
+                    href="{{ route('menu_developer_bank') }}">
+                    <div
+                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+
+                        <span class="fas fa-money-check-alt fs-6"></span>
+                    </div>
+                    <span class="nav-link-text ms-1">Developer Bank</span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link @if (@$menu == 'master_ownership') active @endif"
                     href="{{ route('master_ownership') }}">
                     <div
