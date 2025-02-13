@@ -33,7 +33,7 @@ class PaymentQuery extends FormRequest
             /**
              * Status dari sebuah transaksi
              * 
-             * @example request, cancel, reject, paid
+             * @example pending, request, cancel, reject, paid
              */
             "status" => 'string|nullable',
 

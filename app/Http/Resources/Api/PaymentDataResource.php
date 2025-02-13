@@ -22,7 +22,7 @@ class PaymentDataResource extends JsonResource
             'account_origin_number' => $this->account_origin_number,
             'file_url' => $this->file_url ? storage_url($this->file_url) : null,
             'description' => $this->description,
-            'paid_at' => $this->paid_date->toDateTimeString()
+            'paid_at' => $this->paid_at ? $this->paid_at->toDateTimeString() : null
         ];
     }
 }

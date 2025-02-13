@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\PaymentMaster;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -20,11 +21,14 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             OwnershipUnitSeeder::class,
             ProjectSeeder::class,
-            BillTypeSeeder::class
+            BillTypeSeeder::class,
+            PaymentMaster::class
         ]);
+
         Storage::deleteDirectory(storage_path('app/public/articles'));
         Storage::deleteDirectory(storage_path('app/public/contents'));
         Storage::deleteDirectory(storage_path('app/public/facilities'));
+        Storage::deleteDirectory(storage_path('app/public/developer-banks'));
         Storage::deleteDirectory(storage_path('app/public/promotions'));
     }
 }

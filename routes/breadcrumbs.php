@@ -175,7 +175,7 @@ Breadcrumbs::for('menu_faq', function (BreadcrumbTrail $trail) {
 // Home > menu_bill_type
 Breadcrumbs::for('menu_bill_type', function (BreadcrumbTrail $trail) {
     $trail->parent('home');
-    $trail->push('FAQ', route('menu_bill_type'));
+    $trail->push('Setting Type Tagihan', route('menu_bill_type'));
 });
 // Home > menu_access_card
 Breadcrumbs::for('menu_access_card', function (BreadcrumbTrail $trail) {
@@ -228,4 +228,15 @@ Breadcrumbs::for('create_developer_bank', function (BreadcrumbTrail $trail) {
 Breadcrumbs::for('edit_developer_bank', function (BreadcrumbTrail $trail, $resource) {
     $trail->parent('menu_developer_bank');
     $trail->push('Edit Developer Bank', route('edit_developer_bank', ['id' => $resource->id]));
+});
+
+// Home > menu_payment_master
+Breadcrumbs::for('menu_payment_master', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Setting Master Payment', route('menu_payment_master'));
+});
+// Home > menu_payment
+Breadcrumbs::for('menu_payment', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Payment User', route('menu_payment'));
 });

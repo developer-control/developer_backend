@@ -36,6 +36,9 @@ class BillController extends Controller
         if ($developer_id) {
             $bills->where('developer_id', $developer_id);
         }
+        if ($request->status) {
+            $bills->where('status', $request->status);
+        }
         return DataTables::of($bills)
             ->addIndexColumn()
             ->editColumn('billtype.name', function ($row) {

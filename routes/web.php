@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\BillController;
 use App\Http\Controllers\Admin\ComplainController;
+use App\Http\Controllers\Admin\PaymentUserController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Base\ImageController;
 use App\Http\Controllers\HomeController;
@@ -25,6 +26,7 @@ use App\Http\Controllers\Project\BlocController;
 use App\Http\Controllers\Project\FacilityController;
 use App\Http\Controllers\Project\UserUnitController;
 use App\Http\Controllers\Setting\FaqController;
+use App\Http\Controllers\Setting\PaymentMasterController;
 use App\Http\Controllers\Setting\TermConditionController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -107,9 +109,7 @@ Route::group(['prefix' => 'term-conditions'], function () {
 Route::group(['prefix' => 'faqs'], function () {
     Route::get('/', [FaqController::class, 'index'])->name('menu_faq');
     Route::get('/datatable', [FaqController::class, 'faqDatatable']);
-    Route::get('/create', [FaqController::class, 'create'])->name('create_faq');
     Route::post('/store', [FaqController::class, 'store'])->name('store_faq');
-    Route::get('/edit/{id}', [FaqController::class, 'edit'])->name('edit_faq');
     Route::post('/update/{id}', [FaqController::class, 'update'])->name('update_faq');
     Route::delete('/delete/{id}', [FaqController::class, 'destroy'])->name('delete_faq');
 });
@@ -280,4 +280,17 @@ Route::prefix('developer-banks')->group(function () {
     Route::get('/edit/{id}', [DeveloperBankController::class, 'edit'])->name('edit_developer_bank');
     Route::post('/update/{id}', [DeveloperBankController::class, 'update'])->name('update_developer_bank');
     Route::delete('/delete/{id}', [DeveloperBankController::class, 'destroy'])->name('delete_developer_bank');
+});
+
+Route::group(['prefix' => 'payment-masters'], function () {
+    Route::get('/', [PaymentMasterController::class, 'index'])->name('menu_payment_master');
+    Route::get('/datatable', [PaymentMasterController::class, 'dataTable']);
+    Route::post('/store', [PaymentMasterController::class, 'store'])->name('store_payment_master');
+    Route::post('/update/{id}', [PaymentMasterController::class, 'update'])->name('update_payment_master');
+    Route::delete('/delete/{id}', [PaymentMasterController::class, 'destroy'])->name('delete_payment_master');
+});
+
+Route::group(['prefix' => 'payments'], function () {
+    Route::get('/', [PaymentUserController::class, 'index'])->name('menu_payment');
+    Route::get('/datatable', [PaymentUserController::class, 'dataTable']);
 });

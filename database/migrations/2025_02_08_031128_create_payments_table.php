@@ -18,7 +18,8 @@ return new class extends Migration
             $table->unsignedBigInteger('developer_id')->nullable()->index();
             $table->date('date')->nullable()->index();
             $table->string('invoice_code')->nullable()->index();
-            $table->string('status')->nullable()->index()->comment('request, cancel, reject, paid');
+            $table->string('status')->nullable()->index()->comment('pending, request, cancel, reject, paid');
+            $table->text('notes')->nullable();
             $table->double('total')->nullable();
             $table->softDeletes();
             $table->timestamps();

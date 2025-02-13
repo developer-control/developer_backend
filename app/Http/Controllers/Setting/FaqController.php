@@ -59,7 +59,7 @@ class FaqController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(FaqRequest $request, string $id)
     {
         $term = Faq::findOrFail($id);
 

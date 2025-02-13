@@ -17,4 +17,16 @@ class Payment extends Model
     {
         return $this->hasOne(PaymentData::class);
     }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+    public function projectUnit()
+    {
+        return $this->belongsTo(ProjectUnit::class, 'project_unit_id');
+    }
+    public function developer()
+    {
+        return $this->belongsTo(Developer::class, 'developer_id');
+    }
 }

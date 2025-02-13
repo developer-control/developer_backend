@@ -124,8 +124,10 @@ Route::middleware(['auth:sanctum', 'verified.api'])->group(function () {
         // api route for payment bill
         Route::get('/{unit_id}/payments/histories', [PaymentController::class, 'index']);
         Route::get('/{unit_id}/payment/history/{id}', [PaymentController::class, 'show']);
-        Route::get('/{unit_id}/payment/store', [PaymentController::class, 'store']);
+        Route::post('/{unit_id}/payment/store', [PaymentController::class, 'store']);
         Route::get('/{unit_id}/payment/banks', [PaymentController::class, 'indexBank']);
+        Route::post('/{unit_id}/payment/data/store', [PaymentController::class, 'storeData']);
+        Route::get('/{unit_id}/payment/info', [PaymentController::class, 'showInfoPayment']);
     });
 });
 

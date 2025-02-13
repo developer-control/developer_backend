@@ -10,7 +10,10 @@ use App\Http\Resources\Api\DeveloperBankResource;
 use App\Http\Resources\Api\PaymentResource;
 use App\Http\Resources\Api\StorePaymentResource;
 use App\Models\DeveloperBank;
+use App\Models\Media;
 use App\Models\Payment;
+use App\Models\PaymentData;
+use App\Models\PaymentMaster;
 use App\Models\ProjectUnit;
 use App\Services\PaymentService;
 use Illuminate\Http\Request;
@@ -83,6 +86,10 @@ class PaymentController extends Controller
     public function store(string $unit_id, Request $request)
     {
         $request->validate(['billed_at' => 'required|array']);
+        $bill =  $this->paymentService->getBill($unit_id, $request->billed_at)->first();
+        if (!$bill) {
+            return ApiResponse::success(null, 'Bill not found', 200);
+        }
         try {
             DB::beginTransaction();
             $unit = ProjectUnit::find($unit_id);
@@ -94,12 +101,13 @@ class PaymentController extends Controller
                 'developer_id' => $unit->developer_id,
                 'invoice_code' => $invoice_code,
                 'date' => date('Y-m-d'),
-                'status' => 'request',
+                'status' => 'pending',
                 'total' => $this->paymentService->getBill($unit_id, $request->billed_at)->sum('total'),
             ]);
             $bills = $this->paymentService->getBill($unit_id, $request->billed_at)->pluck('id');
             $payment->bills()->sync($bills);
 
+            $payment->bills()->update(['status' => 'pending']);
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -127,18 +135,65 @@ class PaymentController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Store Payment Data.
+     * 
+     * api for user store payment unit to validation request data
+     *
+     * @param  string $unit_id
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, string $id)
+    public function storeData(string $unit_id, Request $request)
     {
-        //
+        $request->validate([
+            'invoice_code' => 'required',
+            'developer_bank_id' => 'required',
+            'bank_origin_name' => 'required',
+            'account_origin_name' => 'required',
+            'account_origin_number' => 'required',
+            'description' => 'string',
+            'file_url' => 'required',
+        ]);
+        try {
+            DB::beginTransaction();
+            $payment = Payment::where('invoice_code', $request->invoice_code)
+                ->where('status', 'pending')
+                ->where('project_unit_id', $unit_id)
+                ->first();
+            if (!$payment) {
+                return ApiResponse::success(null, 'Payment not found', 200);
+            }
+            $request->merge([
+                'file_url' => $request->file_url ? path_image($request->file_url) : null,
+                'paid_at' => now(),
+            ]);
+            $input = $request->except(['invoice_code']);
+            $paymentData = $payment->paymentData()->create($input);
+            $file = Media::where('url', @$input['file_url'])->first();
+            if ($file) {
+                $paymentData->media()->attach($file, ['type' => 'image']);
+            }
+            $payment->status = 'request';
+            $payment->save();
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return ApiResponse::error($th->getMessage(), 500);
+        }
+        return ApiResponse::success(null, 'Create payment data success', 200);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Get Payment Info.
+     * 
+     * api for user get payment information
+     *
+     * @param  string $unit_id
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(string $id)
+    public function showInfoPayment(string $unit_id)
     {
-        //
+        $info = PaymentMaster::where('type', 'payment-info')->first();
+        return ApiResponse::success($info->only(['title', 'description']), 'Get payment info data success', 200);
     }
 }
