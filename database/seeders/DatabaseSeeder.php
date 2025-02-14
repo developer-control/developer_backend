@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
             OwnershipUnitSeeder::class,
             ProjectSeeder::class,
             BillTypeSeeder::class,
-            PaymentMaster::class
+            PaymentMasterSeeder::class
         ]);
 
         Storage::deleteDirectory(storage_path('app/public/articles'));
