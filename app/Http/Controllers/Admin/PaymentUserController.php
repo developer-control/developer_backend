@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Payment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
 class PaymentUserController extends Controller
@@ -56,50 +57,60 @@ class PaymentUserController extends Controller
                 return $file ? '<a href="' . storage_url($file) . '" class="btn-sm text-xs btn-link" target="_blank">File Bukti <i class="fas fa-long-arrow-alt-right"></i></a>' : null;;
             })
             ->addColumn('action', function ($row) {
-                // $btn = view('datatables.bills.action', compact('row'))->render();
+                return view('datatables.payments.action', compact('row'))->render();
                 return 'tes';
             })
-            ->rawColumns(['status', 'action'])
+            ->rawColumns(['status', 'action', 'file_payment'])
             ->toJson();
     }
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
-        //
+        $payment = Payment::find($id);
+        return view('pages.payments.detail', compact('payment'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function updateApprove(Request $request, string $id)
     {
-        //
+        $payment = Payment::findOrFail($id);
+        try {
+            DB::beginTransaction();
+            $payment->bills()->update(['status' => 'paid']);
+            $payment->update(['status' => 'paid']);
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+        }
+        toast('Pembayaran berhasil di selesaikan', 'success');
+        return back();
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function updateReject(Request $request, string $id)
     {
-        //
+        $payment = Payment::findOrFail($id);
+        try {
+            DB::beginTransaction();
+            $payment->bills()->update(['status' => 'not_paid']);
+            $payment->update([
+                'status' => 'reject',
+                'notes' => $request->notes
+            ]);
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+        }
+        toast('Pembayaran berhasil di tolak', 'success');
+        return back();
     }
 
     /**

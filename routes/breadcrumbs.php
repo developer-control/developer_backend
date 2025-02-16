@@ -240,3 +240,8 @@ Breadcrumbs::for('menu_payment', function (BreadcrumbTrail $trail) {
     $trail->parent('home');
     $trail->push('Payment User', route('menu_payment'));
 });
+// menu_payment > detail_payment
+Breadcrumbs::for('detail_payment', function (BreadcrumbTrail $trail, $resource) {
+    $trail->parent('menu_payment');
+    $trail->push('Payment User', route('detail_payment', ['id' => $resource->id]));
+});

@@ -293,4 +293,7 @@ Route::group(['prefix' => 'payment-masters'], function () {
 Route::group(['prefix' => 'payments'], function () {
     Route::get('/', [PaymentUserController::class, 'index'])->name('menu_payment');
     Route::get('/datatable', [PaymentUserController::class, 'dataTable']);
+    Route::get('/detail/{id}', [PaymentUserController::class, 'show'])->name('detail_payment');
+    Route::post('/approve/{id}', [PaymentUserController::class, 'updateApprove'])->name('approve_payment');
+    Route::post('/reject/{id}', [PaymentUserController::class, 'updateReject'])->name('reject_payment');
 });

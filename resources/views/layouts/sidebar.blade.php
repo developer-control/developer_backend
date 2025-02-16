@@ -37,6 +37,15 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link @if (@$menu == 'menu_payment') active @endif" href="{{ route('menu_payment') }}">
+                    <div
+                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <span class="fas fa-money-check fs-6"></span>
+                    </div>
+                    <span class="nav-link-text ms-1">Pembayaran Tagihan</span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link @if (@$menu == 'menu_article') active @endif" href="{{ route('menu_article') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
