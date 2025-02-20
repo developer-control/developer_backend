@@ -72,6 +72,10 @@ Route::group(['prefix' => 'developers'], function () {
     Route::post('/create', [DeveloperController::class, 'store'])->name('store_developer');
     Route::post('/update/{id}', [DeveloperController::class, 'update'])->name('update_developer');
     Route::delete('/delete/{id}', [DeveloperController::class, 'destroy'])->name('delete_developer');
+    Route::get('/subscriptions/{id}', [DeveloperController::class, 'showSubscription'])->name('developer_subscription');
+    Route::get('/subscriptions/{id}/datatable', [DeveloperController::class, 'dataTableSubscription']);
+    Route::post('/subscription/store/{id}', [DeveloperController::class, 'storeSubscription'])->name('store_developer_subscription');
+    Route::delete('/subscription/delete/{id}', [DeveloperController::class, 'destroySubscription'])->name('delete_developer_subscription');
 });
 /**
  * group route master bill

@@ -24,6 +24,11 @@ Breadcrumbs::for('master_developer', function (BreadcrumbTrail $trail) {
     $trail->parent('home');
     $trail->push('Setting Master Developer', route('master_developer'));
 });
+// master_developer > developer_subscription
+Breadcrumbs::for('developer_subscription', function (BreadcrumbTrail $trail, $resource) {
+    $trail->parent('master_developer');
+    $trail->push('Subscription Developer', route('developer_subscription', ['id', $resource->id]));
+});
 // Home > master_ownership
 Breadcrumbs::for('master_ownership', function (BreadcrumbTrail $trail) {
     $trail->parent('home');

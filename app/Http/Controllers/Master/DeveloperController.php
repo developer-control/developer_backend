@@ -6,6 +6,9 @@ use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DeveloperRequest;
 use App\Models\Developer;
+use App\Models\DeveloperSubscription;
+use App\Models\Subscription;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -104,5 +107,51 @@ class DeveloperController extends Controller
         }
         $results = $developers->get();
         return ApiResponse::success($results, 'Get developers success.');
+    }
+
+    public function showSubscription($id)
+    {
+        $developer = Developer::findOrFail($id);
+        $subscriptions = Subscription::all();
+        return view('pages.master.developers.subscription', compact('developer', 'subscriptions'));
+    }
+
+    public function dataTableSubscription(string $id, Request $request)
+    {
+        $subscriptions = DeveloperSubscription::with(['subscription:id,name'])
+            ->select('developer_subscriptions.*')
+            ->where('developer_id', $id);
+        return DataTables::eloquent($subscriptions)
+            ->editColumn('status', function ($row) {
+                return strtoupper($row->status);
+            })->editColumn('expired_at', function ($row) {
+                return date_format(date_create($row->expired_at), 'd F Y');
+            })
+            ->addColumn('action', function ($row) {
+                return view('datatables.developers.subscription-action', compact('row'))->render();
+            })
+            ->addIndexColumn()
+            ->rawColumns(['action'])
+            ->toJson();
+    }
+    public function storeSubscription($id, Request $request)
+    {
+        $developer = Developer::findOrFail($id);
+        $subscription = Subscription::findOrFail($request->subscription_id);
+        $expired_at = Carbon::now()->addMonths($subscription->duration)->toDateString();
+        $developer->developerSubscriptions()->create([
+            'subscription_id' => $request->subscription_id,
+            'expired_at' => $expired_at,
+            'paid_at' => now(),
+            'status' => 'active'
+        ]);
+        toast('new subscription has been added', 'success');
+        return back();
+    }
+    public function destroySubscription($id)
+    {
+        DeveloperSubscription::destroy($id);
+        toast('Subscription has been deleted', 'success');
+        return back();
     }
 }
