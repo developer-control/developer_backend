@@ -12,8 +12,10 @@ use App\Http\Controllers\Master\BillTypeController;
 use App\Http\Controllers\Master\DeveloperBankController;
 use App\Http\Controllers\Master\DeveloperController;
 use App\Http\Controllers\Master\EmergencyController;
+use App\Http\Controllers\Master\FeatureController;
 use App\Http\Controllers\Master\OwnershipUnitController;
 use App\Http\Controllers\Master\RolePermissionController;
+use App\Http\Controllers\Master\SubscriptionController;
 use App\Http\Controllers\Master\SupportController;
 use App\Http\Controllers\Post\ArticleController;
 use App\Http\Controllers\Post\BannerController;
@@ -296,4 +298,27 @@ Route::group(['prefix' => 'payments'], function () {
     Route::get('/detail/{id}', [PaymentUserController::class, 'show'])->name('detail_payment');
     Route::post('/approve/{id}', [PaymentUserController::class, 'updateApprove'])->name('approve_payment');
     Route::post('/reject/{id}', [PaymentUserController::class, 'updateReject'])->name('reject_payment');
+});
+
+/**
+ * group route master features
+ */
+Route::group(['prefix' => 'features'], function () {
+    Route::get('/', [FeatureController::class, 'index'])->name('menu_feature');
+    Route::get('/datatable', [FeatureController::class, 'dataTable']);
+    Route::post('/create', [FeatureController::class, 'store'])->name('store_feature');
+    Route::post('/update/{id}', [FeatureController::class, 'update'])->name('update_feature');
+    Route::delete('/delete/{id}', [FeatureController::class, 'destroy'])->name('delete_feature');
+});
+/**
+ * group route master subscription
+ */
+Route::group(['prefix' => 'subscriptions'], function () {
+    Route::get('/', [SubscriptionController::class, 'index'])->name('menu_subscription');
+    Route::get('/datatable', [SubscriptionController::class, 'dataTable']);
+    Route::get('/detail/{id}', [SubscriptionController::class, 'show'])->name('detail_subscription');
+    Route::post('/subscription-feature/{id}', [SubscriptionController::class, 'subscribeFeature'])->name('subscription_feature');
+    Route::post('/create', [SubscriptionController::class, 'store'])->name('store_subscription');
+    Route::post('/update/{id}', [SubscriptionController::class, 'update'])->name('update_subscription');
+    Route::delete('/delete/{id}', [SubscriptionController::class, 'destroy'])->name('delete_subscription');
 });

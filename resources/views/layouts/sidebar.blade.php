@@ -261,9 +261,29 @@
                 <a class="nav-link @if (@$menu == 'menu_faq') active @endif" href="{{ route('menu_faq') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fas fa-question-circle fs-6"></i>
+                        <span class="fas fa-question-circle fs-6"></span>
                     </div>
                     <span class="nav-link-text ms-1">Setting Faqs</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link @if (@$menu == 'menu_feature') active @endif"
+                    href="{{ route('menu_feature') }}">
+                    <div
+                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <span class="fab fa-elementor fs-6"></span>
+                    </div>
+                    <span class="nav-link-text ms-1">Setting Feature</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link @if (@$menu == 'menu_subscription') active @endif"
+                    href="{{ route('menu_subscription') }}">
+                    <div
+                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <span class="fab fa-hubspot fs-6"></span>
+                    </div>
+                    <span class="nav-link-text ms-1">Setting Subscription</span>
                 </a>
             </li>
             <li class="nav-item">

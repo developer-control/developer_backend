@@ -58,7 +58,7 @@ class PaymentUserController extends Controller
             })
             ->addColumn('action', function ($row) {
                 return view('datatables.payments.action', compact('row'))->render();
-                return 'tes';
+                // return 'tes';
             })
             ->rawColumns(['status', 'action', 'file_payment'])
             ->toJson();

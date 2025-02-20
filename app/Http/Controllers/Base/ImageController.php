@@ -134,7 +134,7 @@ class ImageController extends Controller
         ]);
         $image = null;
         if ($request->hasFile('image')) {
-            $image = $this->uploadImage($request, 'contents/images', 600);
+            $image = $this->uploadImage($request, 'contents/images', 720);
 
             if ($image) {
                 Media::create([

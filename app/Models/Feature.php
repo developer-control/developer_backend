@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Developer extends Model
+class Feature extends Model
 {
     use SoftDeletes;
     protected $guarded = [];
-    public function developerSubscriptions()
+    public function subscriptions()
     {
-        return $this->hasMany(DeveloperSubscription::class, 'developer_id');
+        return $this->belongsToMany(Subscription::class);
     }
 }

@@ -12,6 +12,7 @@ use App\Http\Controllers\API\DeveloperController;
 use App\Http\Controllers\API\EmergencyController;
 use App\Http\Controllers\API\LocationController;
 use App\Http\Controllers\API\MasterController;
+use App\Http\Controllers\API\MenuController;
 use App\Http\Controllers\API\PaymentController;
 use App\Http\Controllers\API\Posts\ArticleController;
 use App\Http\Controllers\API\Posts\BannerController;
@@ -54,6 +55,8 @@ Route::post('/reset-password', [ResetPasswordController::class, 'reset']);
 |
  */
 
+
+
 Route::middleware(['auth:sanctum', 'verified.api'])->group(function () {
     Route::post('/auth/logout', [LoginController::class, 'logout']);
     Route::post('/media/store-image', [ImageController::class, 'storeImage']);
@@ -70,6 +73,7 @@ Route::middleware(['auth:sanctum', 'verified.api'])->group(function () {
     });
 
     Route::get('/developers', [DeveloperController::class, 'index']);
+    Route::get('developer/{developer_id}/menus', [MenuController::class, 'index']);
     Route::prefix('projects')->group(function () {
         Route::get('/', [ProjectController::class, 'index']);
         Route::get('/areas', [AreaController::class, 'index']);

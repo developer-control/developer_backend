@@ -245,3 +245,19 @@ Breadcrumbs::for('detail_payment', function (BreadcrumbTrail $trail, $resource) 
     $trail->parent('menu_payment');
     $trail->push('Payment User', route('detail_payment', ['id' => $resource->id]));
 });
+
+// Home > menu_feature
+Breadcrumbs::for('menu_feature', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Master Feature', route('menu_feature'));
+});
+// Home > menu_subscription
+Breadcrumbs::for('menu_subscription', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Master Subscription', route('menu_subscription'));
+});
+// menu_subscription > detail_subscription
+Breadcrumbs::for('detail_subscription', function (BreadcrumbTrail $trail, $resource) {
+    $trail->parent('menu_subscription');
+    $trail->push('Detail Subscription', route('detail_subscription', ['id' => $resource->id]));
+});
