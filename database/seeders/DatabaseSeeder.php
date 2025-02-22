@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Feature;
 use App\Models\PaymentMaster;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -22,7 +23,9 @@ class DatabaseSeeder extends Seeder
             OwnershipUnitSeeder::class,
             ProjectSeeder::class,
             BillTypeSeeder::class,
-            PaymentMasterSeeder::class
+            PaymentMasterSeeder::class,
+            SubscriptionSeeder::class,
+            FeatureSeeder::class
         ]);
 
         Storage::deleteDirectory(storage_path('app/public/articles'));
