@@ -2,13 +2,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
 import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-messaging.js";
 
-//   import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-
 const firebaseConfig = {
     apiKey: "AIzaSyDCeMHKDn6mra3TwPeN4mZoi2PpsqMe7Kk",
     authDomain: "developer-control-c98e0.firebaseapp.com",
@@ -38,3 +31,28 @@ getToken(messaging, { vapidKey })
     .catch((err) => {
         console.error("Error mendapatkan token:", err);
     });
+
+
+if (Notification.permission === "granted") {
+    // console.log("Izin notifikasi sudah diberikan.");
+    firebaseInit();
+} else if (Notification.permission === "denied") {
+    // console.log("Izin notifikasi telah ditolak.");
+} else {
+    $("#notificationPermission").modal("show");
+}
+
+$("#btn-request-notification-permission").on("click", function () {
+    // Pengguna belum memberikan izin, atau izin belum diketahui
+    // Anda dapat meminta izin notifikasi dengan menggunakan requestPermission
+    Notification.requestPermission().then(async function (permission) {
+        if (permission === "granted") {
+            // console.log("Izin notifikasi diberikan.");
+            await firebaseInit();
+            location.reload();
+        } else {
+            $("#notificationPermission").modal("hide");
+            // console.log("Izin notifikasi ditolak.");
+        }
+    });
+});
