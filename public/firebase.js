@@ -9,6 +9,15 @@ import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/11.0.
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
+const firebaseConfig = {
+    apiKey: "AIzaSyDCeMHKDn6mra3TwPeN4mZoi2PpsqMe7Kk",
+    authDomain: "developer-control-c98e0.firebaseapp.com",
+    projectId: "developer-control-c98e0",
+    storageBucket: "developer-control-c98e0.firebasestorage.app",
+    messagingSenderId: "717310348669",
+    appId: "1:717310348669:web:013e322b118e6f36e11014",
+    measurementId: "G-DD70ZNCKS3"
+};
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const messaging = getMessaging(app);
@@ -17,9 +26,7 @@ const messaging = getMessaging(app);
 const vapidKey = "BKvEzzB-zmoFpmbBZclwZX9yVQ049oo8kcxbTm2SoPJTMKK0OwEa1x6by6El1fXdyXMwl2EvNcy_whLY7yPA3d4";
 
 // Meminta izin dan mendapatkan token perangkat
-messaging
-    .requestPermission()
-    .then(() => getToken(messaging, { vapidKey }))
+getToken(messaging, { vapidKey })
     .then((currentToken) => {
         if (currentToken) {
             console.log("Token perangkat:", currentToken);

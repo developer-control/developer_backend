@@ -13,6 +13,7 @@ use App\Http\Controllers\API\EmergencyController;
 use App\Http\Controllers\API\LocationController;
 use App\Http\Controllers\API\MasterController;
 use App\Http\Controllers\API\MenuController;
+use App\Http\Controllers\API\NotificationController;
 use App\Http\Controllers\API\PaymentController;
 use App\Http\Controllers\API\Posts\ArticleController;
 use App\Http\Controllers\API\Posts\BannerController;
@@ -60,6 +61,11 @@ Route::post('/reset-password', [ResetPasswordController::class, 'reset']);
 Route::middleware(['auth:sanctum', 'verified.api'])->group(function () {
     Route::post('/auth/logout', [LoginController::class, 'logout']);
     Route::post('/media/store-image', [ImageController::class, 'storeImage']);
+
+    Route::prefix('notifications')->group(function () {
+        Route::post('/send-notification-user', [NotificationController::class, 'sendNotificationUser']);
+        Route::post('/send-notification-topic', [NotificationController::class, 'sendNotificationChannel']);
+    });
     /**
      * Devices
      * 
