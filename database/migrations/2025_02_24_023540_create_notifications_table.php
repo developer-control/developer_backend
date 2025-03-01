@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('type')->index();
             $table->morphs('notifiable');
-            $table->text('data');
+            $table->text('data')->index();
             $table->timestamp('read_at')->nullable();
             $table->timestamps();
         });

@@ -25,4 +25,9 @@ class ProjectUnit extends Model
     {
         return $this->hasOne(UserUnit::class, 'project_unit_id')->where('is_active', 1)->where('status', 'claimed');
     }
+
+    public function renovationPermits()
+    {
+        return $this->hasMany(RenovationPermit::class, 'project_unit_id');
+    }
 }

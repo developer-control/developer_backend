@@ -4,6 +4,8 @@ namespace App\Http\Controllers\API;
 
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Api\NotificationResource;
+use App\Models\User;
 use App\Notifications\AppNotification;
 use App\Services\NotificationService;
 use Illuminate\Http\Request;
@@ -67,5 +69,57 @@ class NotificationController extends Controller
         ];
         $this->notificationService->sendNotification($payload);
         return ApiResponse::success(null, 'notification has been sended');
+    }
+
+    /**
+     * Get Type Notifications.
+     * 
+     * api for get type of notifications from database
+     * 
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function indexType(Request $request)
+    {
+        $user_id = @$request->user()->id;
+        $user = User::find($user_id);
+        $notificationTypes = $user->notifications()
+            ->select('type')
+            ->distinct()
+            ->pluck('type');
+        return ApiResponse::success($notificationTypes->all(), 'Get notification type success');
+    }
+
+    /**
+     * Get Notifications.
+     * 
+     * api for get notifications from database
+     * 
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function index(Request $request)
+    {
+        $request->validate([
+            'search' => 'string|nullable',
+            'limit' => 'int|nullable',
+            /**
+             * Page number
+             * 
+             * @example 1
+             */
+            'page' => 'int|nullable',
+        ]);
+        $limit = $request->limit ?? 10;
+        $user_id = @$request->user()->id;
+        $user = User::find($user_id);
+        $notifications = @$user->notifications()->select('id', 'type', 'data', 'created_at');
+
+        if (@$request->type && $request->type != 'all') {
+            $notifications->where('type', $request->type);
+        }
+        if ($request->search) {
+            $notifications->where('data->msg', "like", "%$request->search%");
+        }
+        $notifications = $notifications->paginate($limit);
+        return ApiResponse::success(NotificationResource::collection($notifications), 'get notifications success');
     }
 }

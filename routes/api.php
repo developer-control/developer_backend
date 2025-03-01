@@ -24,6 +24,7 @@ use App\Http\Controllers\API\Project\FacilityController;
 use App\Http\Controllers\API\Project\OwnershipUnitController;
 use App\Http\Controllers\API\Project\ProjectController;
 use App\Http\Controllers\API\Project\UnitController;
+use App\Http\Controllers\API\RenovationPermitController;
 use App\Http\Controllers\API\SupportController;
 use App\Http\Controllers\Base\ImageController;
 use App\Http\Controllers\Setting\FaqController;
@@ -61,8 +62,11 @@ Route::post('/reset-password', [ResetPasswordController::class, 'reset']);
 Route::middleware(['auth:sanctum', 'verified.api'])->group(function () {
     Route::post('/auth/logout', [LoginController::class, 'logout']);
     Route::post('/media/store-image', [ImageController::class, 'storeImage']);
+    Route::post('/media/store-file', [ImageController::class, 'storeMedia']);
 
     Route::prefix('notifications')->group(function () {
+        Route::get('/', [NotificationController::class, 'index']);
+        Route::get('/notification-types', [NotificationController::class, 'indexType']);
         Route::post('/send-notification-user', [NotificationController::class, 'sendNotificationUser']);
         Route::post('/send-notification-topic', [NotificationController::class, 'sendNotificationChannel']);
     });
@@ -138,6 +142,13 @@ Route::middleware(['auth:sanctum', 'verified.api'])->group(function () {
         Route::get('/{unit_id}/payment/banks', [PaymentController::class, 'indexBank']);
         Route::post('/{unit_id}/payment/data/store', [PaymentController::class, 'storeData']);
         Route::get('/{unit_id}/payment/info', [PaymentController::class, 'showInfoPayment']);
+
+
+        Route::get('/{unit_id}/renovation-permits', [RenovationPermitController::class, 'index']);
+        Route::post('/{unit_id}/renovation-permit/create', [RenovationPermitController::class, 'store']);
+        Route::get('/{unit_id}/renovation-permit/detail/{id}', [RenovationPermitController::class, 'show']);
+        Route::post('/{unit_id}/renovation-permit/update/{id}', [RenovationPermitController::class, 'update']);
+        Route::delete('/{unit_id}/renovation-permit/delete/{id}', [RenovationPermitController::class, 'destroy']);
     });
 });
 

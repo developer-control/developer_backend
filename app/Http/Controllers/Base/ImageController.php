@@ -150,4 +150,46 @@ class ImageController extends Controller
         $data = ['full_url' => storage_url($image), 'url' => $image];
         return ApiResponse::success($data, 'Upload image file success.');
     }
+
+
+    /**
+     * Upload file to database meda storage.
+     * 
+     * api to upload an file to database
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function storeMedia(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file',
+            /**
+             * type
+             * 
+             * @example complains, evidences
+             */
+            'type' => ['string', 'required']
+        ]);
+        $file = null;
+        if ($request->hasFile('file')) {
+            $option = [
+                // 'disk' => diskAWS(),
+                'ContentType' => $request->file('file')->getClientMimeType(),
+            ];
+            $file = @$request->file('file')->store('contents/file', $option);
+            if ($file) {
+                Media::create([
+                    'name' => "File " . @$request->type,
+                    'type' => @$request->file->getMimeType(),
+                    'url' => $file,
+                    'alt' => null,
+                    'title' => "File " . @$request->type,
+                    'description' => null
+                ]);
+            }
+        }
+        $data = ['full_url' => storage_url($file), 'url' => $file];
+        return ApiResponse::success($data, 'Upload file success.');
+    }
 }
