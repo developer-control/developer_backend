@@ -28,10 +28,10 @@ class DatabaseSeeder extends Seeder
             FeatureSeeder::class
         ]);
 
-        Storage::deleteDirectory(storage_path('app/public/articles'));
-        Storage::deleteDirectory(storage_path('app/public/contents'));
-        Storage::deleteDirectory(storage_path('app/public/facilities'));
-        Storage::deleteDirectory(storage_path('app/public/developer-banks'));
-        Storage::deleteDirectory(storage_path('app/public/promotions'));
+        Storage::disk('public')->deleteDirectory('articles');
+        Storage::disk('public')->deleteDirectory('contents');
+        Storage::disk('public')->deleteDirectory('facilities');
+        Storage::disk('public')->deleteDirectory('developer-banks');
+        Storage::disk('public')->deleteDirectory('promotions');
     }
 }

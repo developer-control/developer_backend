@@ -35,11 +35,20 @@ class RenovationPermitController extends Controller
              * @example 1
              */
             'page' => 'int|nullable',
+            /**
+             * Status
+             * 
+             * @example request,reject,approved
+             */
+            'status' => 'string|nullable',
         ]);
         $limit = $request->limit ?? 10;
-        $permits = RenovationPermit::where('project_unit_id', $unit_id)
-            ->latest()->paginate($limit);
-        return ApiResponse::success(RenovationPermitResource::collection($permits), 'Get renovation permits success.');
+        $permits = RenovationPermit::where('project_unit_id', $unit_id);
+        if ($request->status) {
+            $permits->where('status', $request->status);
+        }
+        $results = $permits->latest()->paginate($limit);
+        return ApiResponse::success(RenovationPermitResource::collection($results), 'Get renovation permits success.');
     }
 
 
@@ -71,9 +80,10 @@ class RenovationPermitController extends Controller
                 'permit_letter' => $request->permit_letter ? path_image($request->permit_letter) : null,
                 'deposit_statement' => $request->deposit_statement ? path_image($request->deposit_statement) : null,
                 'neighbor_information' => $request->neighbor_information ? path_image($request->neighbor_information) : null,
+                'status' => 'request'
             ]);
             $permit = $unit->renovationPermits()->create($request->all());
-            $this->setMedia($request, $permit, null);
+            $this->setMedia($request, null, $permit);
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -137,6 +147,7 @@ class RenovationPermitController extends Controller
             return ApiResponse::error('Unit Not Found', 404);
         }
         $permit = RenovationPermit::find($id);
+
         if (!$permit) {
             return ApiResponse::error('Renovation permit not found', 404);
         }
@@ -163,6 +174,9 @@ class RenovationPermitController extends Controller
         $permit = RenovationPermit::find($id);
         if (!$permit) {
             return ApiResponse::error('Renovation permit not found', 404);
+        }
+        if ($permit->status != 'request') {
+            return ApiResponse::error('Renovation permit not request', 400);
         }
         try {
             DB::beginTransaction();
@@ -203,6 +217,7 @@ class RenovationPermitController extends Controller
         if (!$permit) {
             return ApiResponse::error('Renovation permit not found', 404);
         }
+
         if ($permit->id_card_photo) {
             remove_file($permit->id_card_photo, $permit);
         }
@@ -226,5 +241,9 @@ class RenovationPermitController extends Controller
         }
         $permit->delete();
         return ApiResponse::success(null, 'Delete renovation permit user success', 200);
+    }
+    public function inputNotFile()
+    {
+        return  ['id', 'user_id', 'project_unit_id', 'developer_id', 'title', 'status', 'notes', 'created_at', 'updated_at'];
     }
 }

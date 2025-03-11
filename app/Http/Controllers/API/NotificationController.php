@@ -102,6 +102,12 @@ class NotificationController extends Controller
             'search' => 'string|nullable',
             'limit' => 'int|nullable',
             /**
+             * type
+             * 
+             * @example all, type-notification
+             */
+            'type' => 'string|nullable',
+            /**
              * Page number
              * 
              * @example 1

@@ -18,6 +18,8 @@ class RenovationPermit extends Model
         'permit_letter',
         'deposit_statement',
         'neighbor_information',
+        'status',
+        'notes'
     ];
     public function user()
     {

@@ -24,6 +24,8 @@ return new class extends Migration
             $table->text('permit_letter')->nullable(); // Surat Izin
             $table->text('deposit_statement')->nullable(); // Surat Pernyataan Deposit
             $table->text('neighbor_information')->nullable(); // Surat Informasi Tetangga
+            $table->string('status')->nullable()->index()->comment('request, reject, approved');
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }

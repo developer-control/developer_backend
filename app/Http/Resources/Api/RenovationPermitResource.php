@@ -24,6 +24,8 @@ class RenovationPermitResource extends JsonResource
             'permit_letter' => $this->permit_letter ? storage_url($this->permit_letter) : null,
             'deposit_statement' => $this->deposit_statement ? storage_url($this->deposit_statement) : null,
             'neighbor_information' => $this->neighbor_information ? storage_url($this->neighbor_information) : null,
+            'status' => $this->status,
+            'notes' => $this->notes
         ];
     }
 }

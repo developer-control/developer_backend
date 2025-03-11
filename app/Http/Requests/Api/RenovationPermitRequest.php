@@ -24,7 +24,7 @@ class RenovationPermitRequest extends FormRequest
         return [
             'title' => 'required',
             'id_card_photo' => 'required',
-            'unit_layout' => 'string|nullabe',
+            'unit_layout' => 'string|nullable',
             'neighborhood_certificate' => 'string|nullable',
             'power_of_attorney' => 'string|nullable',
             'permit_letter' => 'string|nullable',
