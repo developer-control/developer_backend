@@ -76,6 +76,12 @@
                                     id="title" name="title" placeholder="Input title"
                                     value="{{ old('title') ?? $bill->title }}">
                             </div>
+                            <div class="form-group mb-3 d-none" id="group-start-value">
+                                <label for="start_value" class="form-control-label">Meter Awal</label>
+                                <input type="text" class="form-control @error('start_value') is-invalid @enderror"
+                                    id="start_value" name="start_value" placeholder=""
+                                    value="{{ old('start_value') ?? $bill->start_value }}">
+                            </div>
                             <div class="form-group mb-3 d-none" id="group-end-value">
                                 <label for="end_value" class="form-control-label">Meter Terakhir</label>
                                 <input type="text" class="form-control @error('end_value') is-invalid @enderror"
@@ -186,6 +192,7 @@
         function showInput() {
             // Sembunyikan semua input
             document.getElementById('group-title').classList.add('d-none');
+            document.getElementById('group-start-value').classList.add('d-none');
             document.getElementById('group-end-value').classList.add('d-none');
             // Ambil elemen opsi yang dipilih
             var selectedOption = document.getElementById('bill_type_id').selectedOptions[0];
@@ -197,6 +204,7 @@
                 document.getElementById('group-title').classList.remove('d-none');
             }
             if (startValue === "1") {
+                document.getElementById('group-start-value').classList.remove('d-none');
                 document.getElementById('group-end-value').classList.remove('d-none');
             }
         }

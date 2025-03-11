@@ -16,7 +16,7 @@ class RolePermissionController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['auth', 'role_or_permission:superadmin|manage roles']);
+        $this->middleware(['auth']);
     }
 
     /**

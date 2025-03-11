@@ -54,14 +54,12 @@ Route::group(['prefix' => 'images'], function () {
  * group route for access user setting
  */
 
-Route::group(['prefix' => 'access-users'], function () {
-    Route::middleware(['permission:manage roles'])->group(function () {
-        Route::get('/role', [RolePermissionController::class, 'index'])->name('master_role');
-        Route::get('/role-datatable', [RolePermissionController::class, 'roleDatatable']);
-        Route::post('/role/create', [RolePermissionController::class, 'store'])->name('store_role');
-        Route::post('/role/update/{id}', [RolePermissionController::class, 'update'])->name('update_role');
-        Route::delete('/role/delete/{id}', [RolePermissionController::class, 'destroy'])->name('delete_role');
-    });
+Route::group(['prefix' => 'access-users', 'middleware' => 'permission:manage roles'], function () {
+    Route::get('/role', [RolePermissionController::class, 'index'])->name('master_role');
+    Route::get('/role-datatable', [RolePermissionController::class, 'roleDatatable']);
+    Route::post('/role/create', [RolePermissionController::class, 'store'])->name('store_role');
+    Route::post('/role/update/{id}', [RolePermissionController::class, 'update'])->name('update_role');
+    Route::delete('/role/delete/{id}', [RolePermissionController::class, 'destroy'])->name('delete_role');
 });
 
 /**
@@ -269,7 +267,7 @@ Route::group(['prefix' => 'complains'], function () {
 /**
  * group route master developer
  */
-Route::group(['prefix' => 'bills'], function () {
+Route::group(['prefix' => 'bills', 'middleware' => 'permission:manage bill'], function () {
     Route::get('/', [BillController::class, 'index'])->name('menu_bill');
     Route::get('/create', [BillController::class, 'create'])->name('create_bill');
     Route::post('/store', [BillController::class, 'store'])->name('store_bill');
