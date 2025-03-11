@@ -15,7 +15,8 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('type')->index();
             $table->morphs('notifiable');
-            $table->text('data')->index();
+            $table->text('data')->nullable();
+            $table->fullText('data'); // Tambahkan FULLTEXT Index
             $table->timestamp('read_at')->nullable();
             $table->timestamps();
         });

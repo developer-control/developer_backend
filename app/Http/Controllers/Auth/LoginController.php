@@ -54,11 +54,6 @@ class LoginController extends Controller
             toast('you don\'t have acces this page', 'error');
             return back();
         }
-
-        if ($user->agent && @$user->agent->status != 'approve') {
-            $this->doLogout($request);
-            return redirect('/');
-        }
         return redirect()->intended();
         // return redirect()->route('home');
     }

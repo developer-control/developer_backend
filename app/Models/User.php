@@ -17,7 +17,9 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasApiTokens, HasFactory, Notifiable;
-    use HasRoles;
+    use HasRoles {
+        hasPermissionTo as spatieHasPermissionTo;
+    }
     use SoftDeletes;
 
     /**
@@ -46,6 +48,10 @@ class User extends Authenticatable implements MustVerifyEmail
             'password' => 'hashed',
         ];
     }
+    public function developer()
+    {
+        return $this->belongsTo(Developer::class, 'developer_id');
+    }
     public function devices()
     {
         return $this->morphMany(Device::class, 'user');
@@ -62,5 +68,16 @@ class User extends Authenticatable implements MustVerifyEmail
     public function media()
     {
         return $this->morphToMany(Media::class, 'sourceable', 'model_has_media')->withPivot('type');
+    }
+    public function hasPermissionTo($permission, $guardName = null): bool
+    {
+        // Cek permission berdasarkan fitur yang dimiliki Developer
+        $developer = $this->developer;
+        if (!$developer) return false;
+        if (!$developer->features()->contains('key', $permission)) {
+            return false;
+        }
+        // Cek izin langsung dari Spatie Laravel Permission menggunakan parent::
+        return $this->spatieHasPermissionTo($permission, $guardName);
     }
 }

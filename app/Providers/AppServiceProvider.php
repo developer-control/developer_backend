@@ -33,7 +33,10 @@ class AppServiceProvider extends ServiceProvider
             );
         });
         Gate::before(function ($user, $ability) {
-            return $user->hasRole('superadmin') ? true : null;
+            if ($user->hasRole('superadmin')) {
+                return true;
+            }
+            return null;
         });
     }
 }

@@ -14,13 +14,15 @@ class BillController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth', 'role_or_permission:superadmin|manage bill']);
+        $this->middleware(['auth']);
+        $this->middleware(['permission:manage bill']);
     }
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
+
         return view('pages.bills.index', compact('request'));
     }
 

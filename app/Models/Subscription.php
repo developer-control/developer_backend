@@ -17,4 +17,13 @@ class Subscription extends Model
     {
         return $this->hasMany(DeveloperSubscription::class, 'subscription_id');
     }
+    public function developers()
+    {
+        return $this->belongsToMany(
+            Subscription::class,
+            'developer_subscriptions',
+            'subscription_id', // Foreign key di tabel pivot yang mengacu ke Subscription
+            'developer_id', // Foreign key di tabel pivot yang mengacu ke Developer
+        );
+    }
 }

@@ -123,7 +123,8 @@ class NotificationController extends Controller
             $notifications->where('type', $request->type);
         }
         if ($request->search) {
-            $notifications->where('data->msg', "like", "%$request->search%");
+            $notifications->whereRaw("MATCH(content) AGAINST(? IN BOOLEAN MODE)", [$request->search]);
+            // $notifications->where('data->msg', "like", "%$request->search%");
         }
         $notifications = $notifications->paginate($limit);
         return ApiResponse::success(NotificationResource::collection($notifications), 'get notifications success');
