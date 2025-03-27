@@ -31,7 +31,9 @@ class ArticleController extends Controller
             $articles->where('title', 'LIKE', '%' . $request->search . '%');
         }
         if ($request->developer_id) {
-            $articles->where('developer_id', $request->developer_id);
+            $articles->where(function ($q) use ($request) {
+                $q->whereNull('developer_id')->orWhere('developer_id', $request->developer_id);
+            });
         }
         if ($request->tag_id) {
             $articles->whereHas('tags', function ($query) use ($request) {
@@ -57,7 +59,7 @@ class ArticleController extends Controller
         $tags = Tag::has('articles');
         if ($request->developer_id) {
             $tags->whereHas('articles', function ($q) use ($request) {
-                $q->where('developer_id', $request->developer_id);
+                $q->whereNull('developer_id')->orWhere('developer_id', $request->developer_id);
             });
         }
         if ($request->search) {

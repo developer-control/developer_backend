@@ -54,7 +54,7 @@ class PaymentUserController extends Controller
             })
             ->addColumn('file_payment', function ($row) {
                 $file = @$row->paymentdata->file_url;
-                return $file ? '<a href="' . storage_url($file) . '" class="btn-sm text-xs btn-link" target="_blank">File Bukti <i class="fas fa-long-arrow-alt-right"></i></a>' : null;;
+                return $file ? '<a href="' . storage_url($file) . '" class="btn-sm text-xs btn-link" target="_blank">File Bukti <i class="fas fa-long-arrow-alt-right"></i></a>' : null;
             })
             ->addColumn('action', function ($row) {
                 return view('datatables.payments.action', compact('row'))->render();

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\BillController;
 use App\Http\Controllers\Admin\ComplainController;
 use App\Http\Controllers\Admin\PaymentUserController;
+use App\Http\Controllers\Admin\RenovationPermitController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Base\ImageController;
 use App\Http\Controllers\HomeController;
@@ -14,6 +15,7 @@ use App\Http\Controllers\Master\DeveloperController;
 use App\Http\Controllers\Master\EmergencyController;
 use App\Http\Controllers\Master\FeatureController;
 use App\Http\Controllers\Master\OwnershipUnitController;
+use App\Http\Controllers\Master\PermissionController;
 use App\Http\Controllers\Master\RolePermissionController;
 use App\Http\Controllers\Master\SubscriptionController;
 use App\Http\Controllers\Master\SupportController;
@@ -60,6 +62,12 @@ Route::group(['prefix' => 'access-users', 'middleware' => 'permission:manage rol
     Route::post('/role/create', [RolePermissionController::class, 'store'])->name('store_role');
     Route::post('/role/update/{id}', [RolePermissionController::class, 'update'])->name('update_role');
     Route::delete('/role/delete/{id}', [RolePermissionController::class, 'destroy'])->name('delete_role');
+
+    Route::get('/permissions', [PermissionController::class, 'index'])->name('master_permission');
+    Route::get('/permission-datatable', [PermissionController::class, 'permissionDatatable']);
+    Route::post('/permission/create', [PermissionController::class, 'store'])->name('store_permission');
+    Route::post('/permission/update/{id}', [PermissionController::class, 'update'])->name('update_permission');
+    Route::delete('/permission/delete/{id}', [PermissionController::class, 'destroy'])->name('delete_permission');
 });
 
 /**
@@ -263,6 +271,16 @@ Route::group(['prefix' => 'complains'], function () {
     Route::get('/detail/{id}', [ComplainController::class, 'show'])->name('menu_detail_complain');
     Route::post('/solved-complain/{id}', [ComplainController::class, 'updateSolve'])->name('solve_complain');
     Route::get('/datatable', [ComplainController::class, 'dataTable']);
+});
+
+/**
+ * group route master developer
+ */
+Route::group(['prefix' => 'renovation-permits'], function () {
+    Route::get('/', [RenovationPermitController::class, 'index'])->name('menu_renovation_permit');
+    Route::get('/detail/{id}', [RenovationPermitController::class, 'show'])->name('menu_detail_renovation_permit');
+    Route::post('/validation-permit/{id}', [RenovationPermitController::class, 'updateValidate'])->name('validate_renovation_permit');
+    Route::get('/datatable', [RenovationPermitController::class, 'dataTable']);
 });
 /**
  * group route master developer

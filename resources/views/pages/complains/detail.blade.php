@@ -1,8 +1,5 @@
 @extends('layouts.main', ['menu' => 'menu_complain'])
-@section('style')
-    <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/dataTables.bootstrap5.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/responsive.bootstrap5.css') }}">
-@endsection
+
 @section('breadcrumb')
     {{ Breadcrumbs::render('menu_detail_complain', $complain) }}
 @endsection
@@ -145,12 +142,4 @@
         </div>
     </div>
     <!-- End Modal Solved Complain-->
-@endsection
-@section('scripts')
-    <script src="{{ asset('assets/js/custom-datatable.js') }}"></script>
-    <script src="{{ asset('assets/src/plugins/datatables/js/dataTables.min.js') }}"></script>
-    <script src="{{ asset('assets/src/plugins/datatables/js/dataTables.bootstrap5.js') }}"></script>
-    <script src="{{ asset('assets/src/plugins/datatables/js/dataTables.responsive.js') }}"></script>
-    <script src="{{ asset('assets/src/plugins/datatables/js/responsive.bootstrap5.js') }}"></script>
-    <script></script>
 @endsection

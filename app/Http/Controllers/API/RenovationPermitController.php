@@ -83,7 +83,7 @@ class RenovationPermitController extends Controller
                 'status' => 'request'
             ]);
             $permit = $unit->renovationPermits()->create($request->all());
-            $this->setMedia($request, null, $permit);
+            $this->setMedia($request, $permit, null);
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollBack();

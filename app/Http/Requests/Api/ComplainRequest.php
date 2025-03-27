@@ -28,17 +28,17 @@ class ComplainRequest extends FormRequest
              * required jika type adalah lingkungan
              * 
              */
-            'project_id' => ['int'],
+            'project_id' => 'int|nullable',
             /**
              * required jika type adalah lingkungan
              * 
              */
-            'project_area_id' => ['int'],
+            'project_area_id' => 'int|nullable',
             /**
              * required jika type adalah unit
              * 
              */
-            'project_unit_id' => ['int'],
+            'project_unit_id' => 'int|nullable',
             'title' => ['required', 'string'],
             'images' => 'array|nullable',
             /**

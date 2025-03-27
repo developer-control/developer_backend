@@ -46,27 +46,27 @@ class UserController extends Controller
         }
         $request->validate([
             'name' => 'required',
-            'identity_number' => 'string',
+            'identity_number' => 'string|nullable',
             /**
              * url from image id_card
              * 
              * @example contents/image/..sds.png
              */
-            'id_card_image' => 'string',
+            'id_card_image' => 'string|nullable',
             /**
              * date of birth user format date
              * 
              * @example Y-m-d
              */
-            'date_of_birth' => 'string',
-            'phone_number' => 'string',
-            'address' => 'string',
+            'date_of_birth' => 'string|nullable',
+            'phone_number' => 'string|nullable',
+            'address' => 'string|nullable',
             /**
              * url from image profile image
              * 
              * @example contents/image/..sds.png
              */
-            'image' => 'string',
+            'image' => 'string|nullable',
         ]);
         $user->name = $request->name;
         $user->identity_number = $request->identity_number;

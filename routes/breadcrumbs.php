@@ -19,6 +19,12 @@ Breadcrumbs::for('master_role', function (BreadcrumbTrail $trail) {
     $trail->push('Setting Role Access', route('master_role'));
 });
 
+// Home > master_permission
+Breadcrumbs::for('master_permission', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Setting Permission Access', route('master_permission'));
+});
+
 // Home > master_developer
 Breadcrumbs::for('master_developer', function (BreadcrumbTrail $trail) {
     $trail->parent('home');
@@ -195,7 +201,7 @@ Breadcrumbs::for('menu_complain', function (BreadcrumbTrail $trail) {
 // menu_complain > menu_detail_complain
 Breadcrumbs::for('menu_detail_complain', function (BreadcrumbTrail $trail, $resource) {
     $trail->parent('menu_complain');
-    $trail->push('Complain User', route('menu_detail_complain', ['id' => $resource->id]));
+    $trail->push('Detail Complain User', route('menu_detail_complain', ['id' => $resource->id]));
 });
 
 // Home > menu_bill
@@ -265,4 +271,15 @@ Breadcrumbs::for('menu_subscription', function (BreadcrumbTrail $trail) {
 Breadcrumbs::for('detail_subscription', function (BreadcrumbTrail $trail, $resource) {
     $trail->parent('menu_subscription');
     $trail->push('Detail Subscription', route('detail_subscription', ['id' => $resource->id]));
+});
+
+// Home > menu_renovation_permit
+Breadcrumbs::for('menu_renovation_permit', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Izin Renovasi', route('menu_renovation_permit'));
+});
+// menu_renovation_permit > menu_detail_renovation_permit
+Breadcrumbs::for('menu_detail_renovation_permit', function (BreadcrumbTrail $trail, $resource) {
+    $trail->parent('menu_renovation_permit');
+    $trail->push('Complain User', route('menu_detail_renovation_permit', ['id' => $resource->id]));
 });

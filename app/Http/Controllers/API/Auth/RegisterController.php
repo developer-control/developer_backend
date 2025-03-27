@@ -34,7 +34,7 @@ class RegisterController extends Controller
             'password' => 'required|confirmed',
             'password_confirmation' => 'required',
             'device_name' => 'required',
-            'phone_number' => 'string',
+            'phone_number' => 'string|nullable',
         ]);
 
 
@@ -102,8 +102,8 @@ class RegisterController extends Controller
         $request->validate([
             'email' => 'required|email',
             'verification_code' => 'required|size:6',
-            'device_name' => 'string',
-            'device_token' => 'string',
+            'device_name' => 'string|nullable',
+            'device_token' => 'string|nullable',
         ]);
         $user = User::where('email', $request->email)
             ->where('verification_code', $request->verification_code)

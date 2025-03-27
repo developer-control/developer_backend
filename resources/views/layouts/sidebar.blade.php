@@ -308,9 +308,16 @@
                                     <span class="nav-link-text ms-1">Master Role</span>
                                 </a>
                             </li>
-
+                            <li class="nav-item">
+                                <a class="nav-link @if (@$submenu == 'master_permission') active @endif"
+                                    href="{{ route('master_permission') }}">
+                                    <span class="fas fa-dot-circle ms-2 me-4"></span>
+                                    <span class="nav-link-text ms-1">Master Permission</span>
+                                </a>
+                            </li>
                         </ul>
                     @endcan
+
                     {{-- <a class="nav-link dropdown-toggle" href="{{ route('home') }}" data-bs-toggle="dropdown"
                     aria-expanded="false">
                     <div

@@ -12,4 +12,4 @@
     //     }
     // });
 </script>
-<script type="module" src="{{ asset('firebase.js') }}"></script>
+{{-- <script type="module" src="{{ asset('firebase.js') }}"></script> --}}
