@@ -18,15 +18,21 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
         $this->call([
+            LocationSeeder::class,
             RoleSeeder::class,
             PermissionSeeder::class,
             UserSeeder::class,
+            SubscriptionSeeder::class,
+            FeatureSeeder::class,
             OwnershipUnitSeeder::class,
-            ProjectSeeder::class,
             BillTypeSeeder::class,
             PaymentMasterSeeder::class,
-            SubscriptionSeeder::class,
-            FeatureSeeder::class
+            ProjectSeeder::class,
+            ArticleSeeder::class,
+            BannerSeeder::class,
+            PromotionSeeder::class,
+            BankDeveloperSeeder::class,
+            FaqSeeder::class,
         ]);
 
         Storage::disk('public')->deleteDirectory('articles');

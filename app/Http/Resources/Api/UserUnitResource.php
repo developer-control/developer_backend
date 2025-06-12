@@ -46,7 +46,7 @@ class UserUnitResource extends JsonResource
             ],
             'evidence_file' => $this->evidence_file ? storage_url($this->evidence_file) : null,
             'status' => $this->status,
-            'is_active' => $this->is_active,
+            'is_active' => (int)$this->is_active,
             'created_at' => $this->created_at->toDateTimeString()
         ];
     }

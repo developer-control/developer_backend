@@ -53,7 +53,7 @@ class BannerController extends Controller
     {
         DB::beginTransaction();
         $developer_id = $request->user()->hasRole('superadmin') ? null : $request->user()->developer_id;
-        $promtion = Banner::create([
+        $banner = Banner::create([
             'developer_id' => @$developer_id,
             'title' => $request->title,
             'image' => $request->image,
@@ -64,7 +64,7 @@ class BannerController extends Controller
         //get media
         $image = Media::where('url', $request->image)->first();
         if ($image) {
-            $promtion->media()->attach($image, ['type' => 'image']);
+            $banner->media()->attach($image, ['type' => 'image']);
         }
         DB::commit();
         toast('New Banner has been created', 'success');

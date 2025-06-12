@@ -70,7 +70,7 @@ class FacilityController extends Controller
         DB::transaction(function () use ($request) {
             $project = Project::find($request->project_id);
             $developer_id = $request->user()->hasRole('superadmin') ? $project->developer_id : $request->user()->developer_id;
-            $promtion = Facility::create([
+            $facility = Facility::create([
                 'developer_id' => @$developer_id,
                 'project_id' => @$project->id,
                 'title' => $request->title,
@@ -82,7 +82,7 @@ class FacilityController extends Controller
             //get media
             $image = Media::where('url', $request->image)->first();
             if ($image) {
-                $promtion->media()->attach($image, ['type' => 'image']);
+                $facility->media()->attach($image, ['type' => 'image']);
             }
         });
         toast('New Facility has been created', 'success');
