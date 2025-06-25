@@ -12,9 +12,13 @@ use Yajra\DataTables\DataTables;
 
 class BillController extends Controller
 {
+    const ROUTE = 'bill.';
+    const PERMISSION = 'bill>';
     public function __construct()
     {
         $this->middleware(['auth']);
+        view()->share('this_route', self::ROUTE);
+        view()->share('this_perm', self::PERMISSION);
     }
     /**
      * Display a listing of the resource.
@@ -98,7 +102,7 @@ class BillController extends Controller
         ]);
         Bill::create($request->all());
         toast('New bill has been created', 'success');
-        return redirect()->route('menu_bill');
+        return redirect()->route(self::ROUTE . 'index');
     }
 
     /**
@@ -120,7 +124,7 @@ class BillController extends Controller
         }
         if ($bill->status != 'not_paid') {
             toast('Tagihan tidak bisa di edit karena status tidak sesuai', 'error');
-            return redirect()->route('menu_bill');
+            return redirect()->route(self::ROUTE . 'index');
         }
         $data = [
             'billTypes' => BillType::all(),
@@ -144,7 +148,7 @@ class BillController extends Controller
         $bill = Bill::find($id);
         $bill->update($request->all());
         toast('Bill has been updated', 'success');
-        return redirect()->route('menu_bill');
+        return redirect()->route(self::ROUTE . 'index');
     }
 
     /**
@@ -158,7 +162,7 @@ class BillController extends Controller
         }
         if ($bill->status == 'paid') {
             toast('Tagihan tidak bisa di hapus karena sudah dibayarkan', 'error');
-            return redirect()->route('menu_bill');
+            return redirect()->route(self::ROUTE . 'index');
         }
         $bill->delete();
         toast('Bill has been deleted', 'success');

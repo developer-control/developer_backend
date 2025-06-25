@@ -7,6 +7,7 @@ use Dedoc\Scramble\Scramble;
 use Dedoc\Scramble\Support\Generator\OpenApi;
 use Dedoc\Scramble\Support\Generator\SecurityScheme;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -32,11 +33,8 @@ class AppServiceProvider extends ServiceProvider
                 SecurityScheme::http('bearer')
             );
         });
-        Gate::before(function ($user, $ability) {
-            if ($user->hasRole('superadmin')) {
-                return true;
-            }
-            return null;
+        Blade::if('officeCan', function ($permission) {
+            return auth()->user()->hasOfficePermissionTo($permission);
         });
     }
 }

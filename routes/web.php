@@ -41,6 +41,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
 
+
 /**
  * group route for image
  */
@@ -53,208 +54,252 @@ Route::group(['prefix' => 'images'], function () {
 });
 
 /**
- * group route for access user setting
- */
-
-Route::group(['prefix' => 'access-users', 'middleware' => 'permission:manage roles'], function () {
-    Route::get('/role', [RolePermissionController::class, 'index'])->name('master_role');
-    Route::get('/role-datatable', [RolePermissionController::class, 'roleDatatable']);
-    Route::post('/role/create', [RolePermissionController::class, 'store'])->name('store_role');
-    Route::post('/role/update/{id}', [RolePermissionController::class, 'update'])->name('update_role');
-    Route::delete('/role/delete/{id}', [RolePermissionController::class, 'destroy'])->name('delete_role');
-
-    Route::get('/permissions', [PermissionController::class, 'index'])->name('master_permission');
-    Route::get('/permission-datatable', [PermissionController::class, 'permissionDatatable']);
-    Route::post('/permission/create', [PermissionController::class, 'store'])->name('store_permission');
-    Route::post('/permission/update/{id}', [PermissionController::class, 'update'])->name('update_permission');
-    Route::delete('/permission/delete/{id}', [PermissionController::class, 'destroy'])->name('delete_permission');
-});
-
-/**
  * group route master developer
  */
-Route::group(['prefix' => 'developers'], function () {
-    Route::get('/', [DeveloperController::class, 'index'])->name('master_developer');
-    Route::get('/datatable', [DeveloperController::class, 'developerDatatable']);
-    Route::get('/option-developers', [DeveloperController::class, 'optionDeveloper']);
-    Route::post('/create', [DeveloperController::class, 'store'])->name('store_developer');
-    Route::post('/update/{id}', [DeveloperController::class, 'update'])->name('update_developer');
-    Route::delete('/delete/{id}', [DeveloperController::class, 'destroy'])->name('delete_developer');
-    Route::get('/subscriptions/{id}', [DeveloperController::class, 'showSubscription'])->name('developer_subscription');
-    Route::get('/subscriptions/{id}/datatable', [DeveloperController::class, 'dataTableSubscription']);
-    Route::post('/subscription/store/{id}', [DeveloperController::class, 'storeSubscription'])->name('store_developer_subscription');
-    Route::delete('/subscription/delete/{id}', [DeveloperController::class, 'destroySubscription'])->name('delete_developer_subscription');
-});
-/**
- * group route master bill
- */
-Route::group(['prefix' => 'bill-types'], function () {
-    Route::get('/', [BillTypeController::class, 'index'])->name('menu_bill_type');
-    Route::get('/datatable', [BillTypeController::class, 'billTypeDatatable']);
-    Route::get('/option-bill-types', [BillTypeController::class, 'optionBillType']);
-    Route::post('/create', [BillTypeController::class, 'store'])->name('store_bill_type');
-    Route::post('/update/{id}', [BillTypeController::class, 'update'])->name('update_bill_type');
-    Route::delete('/delete/{id}', [BillTypeController::class, 'destroy'])->name('delete_bill_type');
+Route::prefix('bills')->name('bill.')->group(function () {
+    Route::get('/', [BillController::class, 'index'])->name('index')->middleware('office.permission:read');
+    Route::get('/datatable', [BillController::class, 'dataTable'])->name('data')->middleware('office.permission:read');
+    Route::get('/detail/{id}', [BillController::class, 'show'])->name('detail')->middleware('office.permission:read');
+    Route::get('/create', [BillController::class, 'create'])->name('create')->middleware('office.permission:create');
+    Route::post('/store', [BillController::class, 'store'])->name('store')->middleware('office.permission:create');
+    Route::get('/edit/{id}', [BillController::class, 'edit'])->name('edit')->middleware('office.permission:edit');
+    Route::post('/update/{id}', [BillController::class, 'update'])->name('update')->middleware('office.permission:edit');
+    Route::delete('/delete/{id}', [BillController::class, 'destroy'])->name('delete')->middleware('office.permission:delete');
+
+    Route::prefix('types')->name('type.')->group(function () {
+        Route::get('/', [BillTypeController::class, 'index'])->name('index')->middleware('office.permission:read');
+        Route::get('/datatable', [BillTypeController::class, 'billTypeDatatable'])->name('data')->middleware('office.permission:read');
+        Route::post('/create', [BillTypeController::class, 'store'])->name('store')->middleware('office.permission:create');
+        Route::post('/update/{id}', [BillTypeController::class, 'update'])->name('update')->middleware('office.permission:edit');
+        Route::delete('/delete/{id}', [BillTypeController::class, 'destroy'])->name('delete')->middleware('office.permission:delete');
+        Route::get('/option-bill-types', [BillTypeController::class, 'optionBillType'])->name('option');
+    });
 });
 
-Route::group(['prefix' => 'supports'], function () {
-    Route::get('/', [SupportController::class, 'index'])->name('menu_support');
-    Route::get('/datatable', [SupportController::class, 'supportDatatable']);
-    Route::post('/create', [SupportController::class, 'store'])->name('store_support');
-    Route::post('/update/{id}', [SupportController::class, 'update'])->name('update_support');
-    Route::delete('/delete/{id}', [SupportController::class, 'destroy'])->name('delete_support');
-});
-Route::group(['prefix' => 'emergency-numbers'], function () {
-    Route::get('/', [EmergencyController::class, 'index'])->name('menu_emergency');
-    Route::get('/datatable', [EmergencyController::class, 'emergencyDatatable']);
-    Route::post('/create', [EmergencyController::class, 'store'])->name('store_emergency');
-    Route::post('/update/{id}', [EmergencyController::class, 'update'])->name('update_emergency');
-    Route::delete('/delete/{id}', [EmergencyController::class, 'destroy'])->name('delete_emergency');
-});
-
-Route::group(['prefix' => 'term-conditions'], function () {
-    Route::get('/', [TermConditionController::class, 'index'])->name('menu_term_condition');
-    Route::get('/create', [TermConditionController::class, 'create'])->name('create_term_condition');
-    Route::post('/store', [TermConditionController::class, 'store'])->name('store_term_condition');
-    Route::get('/edit/{id}', [TermConditionController::class, 'edit'])->name('edit_term_condition');
-    Route::post('/update/{id}', [TermConditionController::class, 'update'])->name('update_term_condition');
-    Route::delete('/delete/{id}', [TermConditionController::class, 'destroy'])->name('delete_term_condition');
-});
-Route::group(['prefix' => 'faqs'], function () {
-    Route::get('/', [FaqController::class, 'index'])->name('menu_faq');
-    Route::get('/datatable', [FaqController::class, 'faqDatatable']);
-    Route::post('/store', [FaqController::class, 'store'])->name('store_faq');
-    Route::post('/update/{id}', [FaqController::class, 'update'])->name('update_faq');
-    Route::delete('/delete/{id}', [FaqController::class, 'destroy'])->name('delete_faq');
+Route::prefix('payments')->name('payment.')->group(function () {
+    Route::get('/', [PaymentUserController::class, 'index'])->name('index')->middleware('office.permission:read');
+    Route::get('/datatable', [PaymentUserController::class, 'dataTable'])->name('data')->middleware('office.permission:read');
+    Route::get('/detail/{id}', [PaymentUserController::class, 'show'])->name('detail')->middleware('office.permission:read');
+    Route::post('/approve/{id}', [PaymentUserController::class, 'updateApprove'])->name('approve')->middleware('office.permission:action');
+    Route::post('/reject/{id}', [PaymentUserController::class, 'updateReject'])->name('reject')->middleware('office.permission:action');
 });
 
 Route::group(['prefix' => 'posts'], function () {
-    Route::prefix('articles')->group(function () {
-        Route::get('/', [ArticleController::class, 'index'])->name('menu_article');
-        Route::get('/create', [ArticleController::class, 'create'])->name('create_article');
-        Route::post('/store', [ArticleController::class, 'store'])->name('store_article');
-        Route::get('/edit/{id}', [ArticleController::class, 'edit'])->name('edit_article');
-        Route::post('/update/{id}', [ArticleController::class, 'update'])->name('update_article');
-        Route::delete('/delete/{id}', [ArticleController::class, 'destroy'])->name('delete_article');
+    Route::prefix('articles')->name('article.')->group(function () {
+        Route::get('/', [ArticleController::class, 'index'])->name('index')->middleware('office.permission:read');
+        Route::get('/create', [ArticleController::class, 'create'])->name('create')->middleware('office.permission:create');
+        Route::post('/store', [ArticleController::class, 'store'])->name('store')->middleware('office.permission:create');
+        Route::get('/edit/{id}', [ArticleController::class, 'edit'])->name('edit')->middleware('office.permission:edit');
+        Route::post('/update/{id}', [ArticleController::class, 'update'])->name('update')->middleware('office.permission:edit');
+        Route::delete('/delete/{id}', [ArticleController::class, 'destroy'])->name('delete')->middleware('office.permission:delete');
     });
-    Route::prefix('promotions')->group(function () {
-        Route::get('/', [PromotionController::class, 'index'])->name('menu_promotion');
-        Route::get('/create', [PromotionController::class, 'create'])->name('create_promotion');
-        Route::post('/store', [PromotionController::class, 'store'])->name('store_promotion');
-        Route::get('/edit/{id}', [PromotionController::class, 'edit'])->name('edit_promotion');
-        Route::post('/update/{id}', [PromotionController::class, 'update'])->name('update_promotion');
-        Route::delete('/delete/{id}', [PromotionController::class, 'destroy'])->name('delete_promotion');
+    Route::prefix('promotions')->name('promotion.')->group(function () {
+        Route::get('/', [PromotionController::class, 'index'])->name('index')->middleware('office.permission:read');
+        Route::get('/create', [PromotionController::class, 'create'])->name('create')->middleware('office.permission:create');
+        Route::post('/store', [PromotionController::class, 'store'])->name('store')->middleware('office.permission:create');
+        Route::get('/edit/{id}', [PromotionController::class, 'edit'])->name('edit')->middleware('office.permission:edit');
+        Route::post('/update/{id}', [PromotionController::class, 'update'])->name('update')->middleware('office.permission:edit');
+        Route::delete('/delete/{id}', [PromotionController::class, 'destroy'])->name('delete')->middleware('office.permission:delete');
     });
-    Route::prefix('banners')->group(function () {
-        Route::get('/', [BannerController::class, 'index'])->name('menu_banner');
-        Route::get('/create', [BannerController::class, 'create'])->name('create_banner');
-        Route::post('/store', [BannerController::class, 'store'])->name('store_banner');
-        Route::get('/edit/{id}', [BannerController::class, 'edit'])->name('edit_banner');
-        Route::post('/update/{id}', [BannerController::class, 'update'])->name('update_banner');
-        Route::delete('/delete/{id}', [BannerController::class, 'destroy'])->name('delete_banner');
+    Route::prefix('banners')->name('banner.')->group(function () {
+        Route::get('/', [BannerController::class, 'index'])->name('index')->middleware('office.permission:read');
+        Route::get('/create', [BannerController::class, 'create'])->name('create')->middleware('office.permission:create');
+        Route::post('/store', [BannerController::class, 'store'])->name('store')->middleware('office.permission:create');
+        Route::get('/edit/{id}', [BannerController::class, 'edit'])->name('edit')->middleware('office.permission:edit');
+        Route::post('/update/{id}', [BannerController::class, 'update'])->name('update')->middleware('office.permission:edit');
+        Route::delete('/delete/{id}', [BannerController::class, 'destroy'])->name('delete')->middleware('office.permission:delete');
     });
 });
-/**
- * group route master ownership unit
- */
-Route::group(['prefix' => 'ownership-units'], function () {
-    Route::get('/', [OwnershipUnitController::class, 'index'])->name('master_ownership');
-    Route::get('/datatable', [OwnershipUnitController::class, 'ownershipDatatable']);
-    Route::get('/option-ownerships', [OwnershipUnitController::class, 'optionOwnership']);
-    Route::post('/create', [OwnershipUnitController::class, 'store'])->name('store_ownership');
-    Route::post('/update/{id}', [OwnershipUnitController::class, 'update'])->name('update_ownership');
-    Route::delete('/delete/{id}', [OwnershipUnitController::class, 'destroy'])->name('delete_ownership');
+Route::prefix('complains')->name('complain.')->group(function () {
+    Route::get('/', [ComplainController::class, 'index'])->name('index')->middleware('office.permission:read');
+    Route::get('/datatable', [ComplainController::class, 'dataTable'])->name('data')->middleware('office.permission:read');
+    Route::get('/detail/{id}', [ComplainController::class, 'show'])->name('detail')->middleware('office.permission:read');
+    Route::post('/solved-complain/{id}', [ComplainController::class, 'updateSolve'])->name('solve')->middleware('office.permission:action');
 });
-/**
- * group route master projects
- */
-Route::group(['prefix' => 'projects'], function () {
-    Route::get('/', [ProjectController::class, 'index'])->name('menu_project');
-    Route::get('/option-projects', [ProjectController::class, 'optionProject']);
-    Route::get('/datatable', [ProjectController::class, 'projectDatatable']);
-    Route::post('/create', [ProjectController::class, 'store'])->name('store_project');
-    Route::post('/update/{id}', [ProjectController::class, 'update'])->name('update_project');
-    Route::delete('/delete/{id}', [ProjectController::class, 'destroy'])->name('delete_project');
+Route::prefix('projects')->name('project.')->group(function () {
+    Route::get('/', [ProjectController::class, 'index'])->name('index')->middleware('office.permission:read');
+    Route::get('/datatable', [ProjectController::class, 'projectDatatable'])->name('data')->middleware('office.permission:read');
+    Route::post('/create', [ProjectController::class, 'store'])->name('store')->middleware('office.permission:create');
+    Route::post('/update/{id}', [ProjectController::class, 'update'])->name('update')->middleware('office.permission:edit');
+    Route::delete('/delete/{id}', [ProjectController::class, 'destroy'])->name('delete')->middleware('office.permission:delete');
+    Route::get('/option-projects', [ProjectController::class, 'optionProject'])->name('option');
 });
 
 /**
  * group route master areas
  */
-Route::group(['prefix' => 'areas'], function () {
-    Route::get('/', [AreaController::class, 'index'])->name('menu_area');
-    Route::get('/option-areas', [AreaController::class, 'optionArea']);
-    Route::get('/datatable', [AreaController::class, 'areaDatatable']);
-    Route::post('/create', [AreaController::class, 'store'])->name('store_area');
-    Route::post('/update/{id}', [AreaController::class, 'update'])->name('update_area');
-    Route::delete('/delete/{id}', [AreaController::class, 'destroy'])->name('delete_area');
+Route::prefix('areas')->name('area.')->group(function () {
+    Route::get('/', [AreaController::class, 'index'])->name('index')->middleware('office.permission:read');
+    Route::get('/datatable', [AreaController::class, 'areaDatatable'])->name('data')->middleware('office.permission:read');
+    Route::post('/create', [AreaController::class, 'store'])->name('store')->middleware('office.permission:create');
+    Route::post('/update/{id}', [AreaController::class, 'update'])->name('update')->middleware('office.permission:edit');
+    Route::delete('/delete/{id}', [AreaController::class, 'destroy'])->name('delete')->middleware('office.permission:delete');
+    Route::get('/option-areas', [AreaController::class, 'optionArea'])->name('option');
 });
 /**
  * group route master project bloc
  */
-Route::group(['prefix' => 'blocs'], function () {
-    Route::get('/', [BlocController::class, 'index'])->name('menu_bloc');
-    Route::get('/option-blocs', [BlocController::class, 'optionBloc']);
-    Route::get('/datatable', [BlocController::class, 'blocDatatable']);
-    Route::post('/create', [BlocController::class, 'store'])->name('store_bloc');
-    Route::post('/update/{id}', [BlocController::class, 'update'])->name('update_bloc');
-    Route::delete('/delete/{id}', [BlocController::class, 'destroy'])->name('delete_bloc');
+Route::prefix('blocs')->name('bloc.')->group(function () {
+    Route::get('/', [BlocController::class, 'index'])->name('index')->middleware('office.permission:read');
+    Route::get('/datatable', [BlocController::class, 'blocDatatable'])->name('data')->middleware('office.permission:read');
+    Route::post('/create', [BlocController::class, 'store'])->name('store')->middleware('office.permission:create');
+    Route::post('/update/{id}', [BlocController::class, 'update'])->name('update')->middleware('office.permission:edit');
+    Route::delete('/delete/{id}', [BlocController::class, 'destroy'])->name('delete')->middleware('office.permission:delete');
+    Route::get('/option-blocs', [BlocController::class, 'optionBloc'])->name('option');
 });
 /**
  * group route master project units
  */
-Route::group(['prefix' => 'units'], function () {
-    Route::get('/', [UnitController::class, 'index'])->name('menu_unit');
-    Route::get('/detail/{id}', [UnitController::class, 'show'])->name('menu_detail_unit');
-    Route::get('/datatable', [UnitController::class, 'unitDatatable']);
-    Route::get('/option-units', [UnitController::class, 'optionUnit']);
-    Route::post('/create', [UnitController::class, 'store'])->name('store_unit');
-    Route::post('/update/{id}', [UnitController::class, 'update'])->name('update_unit');
-    Route::delete('/delete/{id}', [UnitController::class, 'destroy'])->name('delete_unit');
+Route::prefix('units')->name('unit.')->group(function () {
+    Route::get('/', [UnitController::class, 'index'])->name('index')->middleware('office.permission:read');
+    Route::get('/datatable', [UnitController::class, 'unitDatatable'])->name('data')->middleware('office.permission:read');
+    Route::get('/detail/{id}', [UnitController::class, 'show'])->name('detail')->middleware('office.permission:read');
+    Route::post('/create', [UnitController::class, 'store'])->name('store')->middleware('office.permission:create');
+    Route::post('/update/{id}', [UnitController::class, 'update'])->name('update')->middleware('office.permission:edit');
+    Route::delete('/delete/{id}', [UnitController::class, 'destroy'])->name('delete')->middleware('office.permission:delete');
+    Route::get('/option-units', [UnitController::class, 'optionUnit'])->name('option');
 
-    Route::get('/request-units', [UserUnitController::class, 'indexRequest'])->name('menu_request_claim_unit');
-    Route::get('/request-units/datatable', [UserUnitController::class, 'requestDatatable']);
-    Route::post('/request-unit/approve/{id}', [UserUnitController::class, 'updateApprove'])->name('approve_claim_unit');
-    Route::post('/request-unit/reject/{id}', [UserUnitController::class, 'updateReject'])->name('reject_claim_unit');
-
-    Route::get('/history-request-units', [UserUnitController::class, 'indexHistoryRequest'])->name('menu_history_claim_unit');
-    Route::get('/history-request-unit/datatable', [UserUnitController::class, 'historyRequestDatatable']);
+    Route::prefix('request')->name('request.')->group(function () {
+        Route::get('/', [UserUnitController::class, 'indexRequest'])->name('index')->middleware('office.permission:read');
+        Route::get('/datatable', [UserUnitController::class, 'requestDatatable'])->name('data')->middleware('office.permission:read');
+        Route::post('/approve/{id}', [UserUnitController::class, 'updateApprove'])->name('approve')->middleware('office.permission:action');
+        Route::post('/reject/{id}', [UserUnitController::class, 'updateReject'])->name('reject')->middleware('office.permission:action');
+        Route::get('/history', [UserUnitController::class, 'indexHistoryRequest'])->name('history.index')->middleware('office.permission:read');
+        Route::get('/history/datatable', [UserUnitController::class, 'historyRequestDatatable'])->name('history.data')->middleware('office.permission:read');
+    });
+    Route::prefix('ownerships')->name('ownership.')->group(function () {
+        Route::get('/', [OwnershipUnitController::class, 'index'])->name('index')->middleware('office.permission:read');
+        Route::get('/datatable', [OwnershipUnitController::class, 'ownershipDatatable'])->name('data')->middleware('office.permission:read');
+        Route::post('/create', [OwnershipUnitController::class, 'store'])->name('store')->middleware('office.permission:create');
+        Route::post('/update/{id}', [OwnershipUnitController::class, 'update'])->name('update')->middleware('office.permission:edit');
+        Route::delete('/delete/{id}', [OwnershipUnitController::class, 'destroy'])->name('delete')->middleware('office.permission:delete');
+        Route::get('/option-ownerships', [OwnershipUnitController::class, 'optionOwnership'])->name('option');
+    });
 });
+Route::prefix('facilities')->name('facility.')->group(function () {
+    Route::get('/', [FacilityController::class, 'index'])->name('index')->middleware('office.permission:read');
+    Route::get('/datatable', [FacilityController::class, 'facilityDatatable'])->name('data')->middleware('office.permission:read');
+    Route::get('/create', [FacilityController::class, 'create'])->name('create')->middleware('office.permission:create');
+    Route::post('/store', [FacilityController::class, 'store'])->name('store')->middleware('office.permission:create');
+    Route::get('/edit/{id}', [FacilityController::class, 'edit'])->name('edit')->middleware('office.permission:edit');
+    Route::post('/update/{id}', [FacilityController::class, 'update'])->name('update')->middleware('office.permission:edit');
+    Route::delete('/delete/{id}', [FacilityController::class, 'destroy'])->name('delete')->middleware('office.permission:delete');
+});
+
 /**
- * group route for location settings
+ * group route master developer
+ */
+Route::prefix('developers')->name('developer.')->group(function () {
+    Route::get('/', [DeveloperController::class, 'index'])->name('index')->middleware('office.permission:read');
+    Route::get('/datatable', [DeveloperController::class, 'developerDatatable'])->name('data')->middleware('office.permission:read');
+    Route::post('/create', [DeveloperController::class, 'store'])->name('store')->middleware('office.permission:create');
+    Route::post('/update/{id}', [DeveloperController::class, 'update'])->name('update')->middleware('office.permission:edit');
+    Route::delete('/delete/{id}', [DeveloperController::class, 'destroy'])->name('delete')->middleware('office.permission:delete');
+    Route::get('/option-developers', [DeveloperController::class, 'optionDeveloper'])->name('option');
+    Route::prefix('banks')->name('bank.')->group(function () {
+        Route::get('/', [DeveloperBankController::class, 'index'])->name('index')->middleware('office.permission:read');
+        Route::get('/datatable', [DeveloperBankController::class, 'dataTable'])->name('data')->middleware('office.permission:read');
+        Route::get('/create', [DeveloperBankController::class, 'create'])->name('create')->middleware('office.permission:create');
+        Route::post('/store', [DeveloperBankController::class, 'store'])->name('store')->middleware('office.permission:create');
+        Route::get('/edit/{id}', [DeveloperBankController::class, 'edit'])->name('edit')->middleware('office.permission:edit');
+        Route::post('/update/{id}', [DeveloperBankController::class, 'update'])->name('update')->middleware('office.permission:edit');
+        Route::delete('/delete/{id}', [DeveloperBankController::class, 'destroy'])->name('delete')->middleware('office.permission:delete');
+    });
+    // tutup dulu karena beda flow sistem
+    Route::get('/subscriptions/{id}', [DeveloperController::class, 'showSubscription'])->name('developer_subscription');
+    Route::get('/subscriptions/{id}/datatable', [DeveloperController::class, 'dataTableSubscription']);
+    Route::post('/subscription/store/{id}', [DeveloperController::class, 'storeSubscription'])->name('store_developer_subscription');
+    Route::delete('/subscription/delete/{id}', [DeveloperController::class, 'destroySubscription'])->name('delete_developer_subscription');
+});
+
+Route::prefix('supports')->name('support.')->group(function () {
+    Route::get('/', [SupportController::class, 'index'])->name('index')->middleware('office.permission:read');
+    Route::get('/datatable', [SupportController::class, 'supportDatatable'])->name('data')->middleware('office.permission:read');
+    Route::post('/create', [SupportController::class, 'store'])->name('store')->middleware('office.permission:create');
+    Route::post('/update/{id}', [SupportController::class, 'update'])->name('update')->middleware('office.permission:edit');
+    Route::delete('/delete/{id}', [SupportController::class, 'destroy'])->name('delete')->middleware('office.permission:delete');
+});
+
+Route::prefix('emergency-numbers')->name('emergency.')->group(function () {
+    Route::get('/', [EmergencyController::class, 'index'])->name('index')->middleware('office.permission:read');
+    Route::get('/datatable', [EmergencyController::class, 'emergencyDatatable'])->name('data')->middleware('office.permission:read');
+    Route::post('/create', [EmergencyController::class, 'store'])->name('store')->middleware('office.permission:create');
+    Route::post('/update/{id}', [EmergencyController::class, 'update'])->name('update')->middleware('office.permission:edit');
+    Route::delete('/delete/{id}', [EmergencyController::class, 'destroy'])->name('delete')->middleware('office.permission:delete');
+});
+
+Route::prefix('term-conditions')->name('term-condition.')->group(function () {
+    Route::get('/', [TermConditionController::class, 'index'])->name('index')->middleware('office.permission:read');
+    Route::get('/create', [TermConditionController::class, 'create'])->name('create')->middleware('office.permission:create');
+    Route::post('/store', [TermConditionController::class, 'store'])->name('store')->middleware('office.permission:create');
+    Route::get('/edit/{id}', [TermConditionController::class, 'edit'])->name('edit')->middleware('office.permission:edit');
+    Route::post('/update/{id}', [TermConditionController::class, 'update'])->name('update')->middleware('office.permission:edit');
+    Route::delete('/delete/{id}', [TermConditionController::class, 'destroy'])->name('delete')->middleware('office.permission:delete');
+});
+
+Route::prefix('faqs')->name('faq.')->group(function () {
+    Route::get('/', [FaqController::class, 'index'])->name('index')->middleware('office.permission:read');
+    Route::get('/datatable', [FaqController::class, 'faqDatatable'])->name('data')->middleware('office.permission:read');
+    Route::post('/store', [FaqController::class, 'store'])->name('store')->middleware('office.permission:create');
+    Route::post('/update/{id}', [FaqController::class, 'update'])->name('update')->middleware('office.permission:edit');
+    Route::delete('/delete/{id}', [FaqController::class, 'destroy'])->name('delete')->middleware('office.permission:delete');
+});
+
+/**
+ * group route master features
+ */
+Route::prefix('features')->name('feature.')->group(function () {
+    Route::get('/', [FeatureController::class, 'index'])->name('index')->middleware('office.permission:read');
+    Route::get('/datatable', [FeatureController::class, 'dataTable'])->name('data')->middleware('office.permission:read');
+    Route::post('/create', [FeatureController::class, 'store'])->name('store')->middleware('office.permission:create');
+    Route::post('/update/{id}', [FeatureController::class, 'update'])->name('update')->middleware('office.permission:edit');
+    Route::delete('/delete/{id}', [FeatureController::class, 'destroy'])->name('delete')->middleware('office.permission:delete');
+});
+
+/**
+ * group route for access user setting
  */
 
-Route::group(['prefix' => 'locations'], function () {
+Route::prefix('access-users')->group(function () {
+    Route::prefix('role')->name('role.')->group(function () {
+        Route::get('/', [RolePermissionController::class, 'index'])->name('index')->middleware('office.permission:read');
+        Route::get('/datatable', [RolePermissionController::class, 'roleDatatable'])->name('data')->middleware('office.permission:read');
+        Route::post('/create', [RolePermissionController::class, 'store'])->name('store')->middleware('office.permission:create');
+        Route::post('/update/{id}', [RolePermissionController::class, 'update'])->name('update')->middleware('office.permission:edit');
+        Route::delete('/delete/{id}', [RolePermissionController::class, 'destroy'])->name('delete')->middleware('office.permission:delete');
+    });
+    Route::prefix('permission')->name('permission.')->group(function () {
+        Route::get('/', [PermissionController::class, 'index'])->name('index')->middleware('office.permission:read');
+        Route::get('/datatable', [PermissionController::class, 'permissionDatatable'])->name('data')->middleware('office.permission:read');
+        Route::post('/create', [PermissionController::class, 'store'])->name('store')->middleware('office.permission:create');
+        Route::post('/update/{id}', [PermissionController::class, 'update'])->name('update')->middleware('office.permission:edit');
+        Route::delete('/delete/{id}', [PermissionController::class, 'destroy'])->name('delete')->middleware('office.permission:delete');
+    });
+});
+
+Route::prefix('locations')->name('location.')->group(function () {
     // route group for provinces 
-    Route::group(['prefix' => 'provinces'], function () {
-        Route::get('/', [ProvinceController::class, 'index'])->name('location_province');
-        Route::get('/option-provinces', [ProvinceController::class, 'indexOption']);
-        Route::get('/initialize', [ProvinceController::class, 'initializeProvince'])->name('initialize_province');
-        Route::get('/datatable', [ProvinceController::class, 'provinceDatatable']);
-        Route::post('/create', [ProvinceController::class, 'store'])->name('store_province');
-        Route::post('/update/{id}', [ProvinceController::class, 'update'])->name('update_province');
-        Route::delete('/delete/{id}', [ProvinceController::class, 'destroy'])->name('delete_province');
+    Route::prefix('provinces')->name('province.')->group(function () {
+        Route::get('/', [ProvinceController::class, 'index'])->name('index')->middleware('office.permission:read');
+        Route::get('/datatable', [ProvinceController::class, 'provinceDatatable'])->name('data')->middleware('office.permission:read');
+        Route::post('/create', [ProvinceController::class, 'store'])->name('store')->middleware('office.permission:create');
+        Route::get('/initialize', [ProvinceController::class, 'initializeProvince'])->name('initialize')->middleware('office.permission:create');
+        Route::post('/update/{id}', [ProvinceController::class, 'update'])->name('update')->middleware('office.permission:edit');
+        Route::delete('/delete/{id}', [ProvinceController::class, 'destroy'])->name('delete')->middleware('office.permission:delete');
+        Route::get('/option-provinces', [ProvinceController::class, 'indexOption'])->name('option');
     });
 
-    Route::group(['prefix' => 'cities'], function () {
-        Route::get('/', [CityController::class, 'index'])->name('location_city');
-        Route::get('/option-cities', [CityController::class, 'indexOption']);
-        Route::get('/initialize', [CityController::class, 'initializeCity'])->name('initialize_city');
-        Route::get('/datatable', [CityController::class, 'cityDatatable']);
-        Route::post('/create', [CityController::class, 'store'])->name('store_city');
-        Route::post('/update/{id}', [CityController::class, 'update'])->name('update_city');
-        Route::delete('/delete/{id}', [CityController::class, 'destroy'])->name('delete_city');
+    Route::prefix('cities')->name('city.')->group(function () {
+        Route::get('/', [CityController::class, 'index'])->name('index')->middleware('office.permission:read');
+        Route::get('/datatable', [CityController::class, 'cityDatatable'])->name('data')->middleware('office.permission:read');
+        Route::get('/initialize', [CityController::class, 'initializeCity'])->name('initialize')->middleware('office.permission:create');
+        Route::post('/create', [CityController::class, 'store'])->name('store')->middleware('office.permission:create');
+        Route::post('/update/{id}', [CityController::class, 'update'])->name('update')->middleware('office.permission:edit');
+        Route::delete('/delete/{id}', [CityController::class, 'destroy'])->name('delete')->middleware('office.permission:delete');
+        Route::get('/option-cities', [CityController::class, 'indexOption'])->name('option');
     });
 });
 
-Route::prefix('facilities')->group(function () {
-    Route::get('/', [FacilityController::class, 'index'])->name('menu_facility');
-    Route::get('/datatable', [FacilityController::class, 'facilityDatatable']);
-    Route::get('/create', [FacilityController::class, 'create'])->name('create_facility');
-    Route::post('/store', [FacilityController::class, 'store'])->name('store_facility');
-    Route::get('/edit/{id}', [FacilityController::class, 'edit'])->name('edit_facility');
-    Route::post('/update/{id}', [FacilityController::class, 'update'])->name('update_facility');
-    Route::delete('/delete/{id}', [FacilityController::class, 'destroy'])->name('delete_facility');
-});
 
 /**
  * group route master developer
@@ -262,15 +307,6 @@ Route::prefix('facilities')->group(function () {
 Route::group(['prefix' => 'access-cards'], function () {
     Route::get('/', [AccessCardController::class, 'index'])->name('menu_access_card');
     Route::get('/datatable', [AccessCardController::class, 'dataTable']);
-});
-/**
- * group route master developer
- */
-Route::group(['prefix' => 'complains'], function () {
-    Route::get('/', [ComplainController::class, 'index'])->name('menu_complain');
-    Route::get('/detail/{id}', [ComplainController::class, 'show'])->name('menu_detail_complain');
-    Route::post('/solved-complain/{id}', [ComplainController::class, 'updateSolve'])->name('solve_complain');
-    Route::get('/datatable', [ComplainController::class, 'dataTable']);
 });
 
 /**
@@ -282,29 +318,7 @@ Route::group(['prefix' => 'renovation-permits'], function () {
     Route::post('/validation-permit/{id}', [RenovationPermitController::class, 'updateValidate'])->name('validate_renovation_permit');
     Route::get('/datatable', [RenovationPermitController::class, 'dataTable']);
 });
-/**
- * group route master developer
- */
-Route::group(['prefix' => 'bills', 'middleware' => 'permission:manage bill'], function () {
-    Route::get('/', [BillController::class, 'index'])->name('menu_bill');
-    Route::get('/create', [BillController::class, 'create'])->name('create_bill');
-    Route::post('/store', [BillController::class, 'store'])->name('store_bill');
-    Route::get('/edit/{id}', [BillController::class, 'edit'])->name('edit_bill');
-    Route::post('/update/{id}', [BillController::class, 'update'])->name('update_bill');
-    Route::get('/datatable', [BillController::class, 'dataTable']);
-    Route::get('/detail/{id}', [BillController::class, 'show'])->name('menu_detail_bill');
-    Route::delete('/delete/{id}', [BillController::class, 'destroy'])->name('delete_bill');
-});
 
-Route::prefix('developer-banks')->group(function () {
-    Route::get('/', [DeveloperBankController::class, 'index'])->name('menu_developer_bank');
-    Route::get('/datatable', [DeveloperBankController::class, 'dataTable']);
-    Route::get('/create', [DeveloperBankController::class, 'create'])->name('create_developer_bank');
-    Route::post('/store', [DeveloperBankController::class, 'store'])->name('store_developer_bank');
-    Route::get('/edit/{id}', [DeveloperBankController::class, 'edit'])->name('edit_developer_bank');
-    Route::post('/update/{id}', [DeveloperBankController::class, 'update'])->name('update_developer_bank');
-    Route::delete('/delete/{id}', [DeveloperBankController::class, 'destroy'])->name('delete_developer_bank');
-});
 
 Route::group(['prefix' => 'payment-masters'], function () {
     Route::get('/', [PaymentMasterController::class, 'index'])->name('menu_payment_master');
@@ -314,26 +328,12 @@ Route::group(['prefix' => 'payment-masters'], function () {
     Route::delete('/delete/{id}', [PaymentMasterController::class, 'destroy'])->name('delete_payment_master');
 });
 
-Route::group(['prefix' => 'payments'], function () {
-    Route::get('/', [PaymentUserController::class, 'index'])->name('menu_payment');
-    Route::get('/datatable', [PaymentUserController::class, 'dataTable']);
-    Route::get('/detail/{id}', [PaymentUserController::class, 'show'])->name('detail_payment');
-    Route::post('/approve/{id}', [PaymentUserController::class, 'updateApprove'])->name('approve_payment');
-    Route::post('/reject/{id}', [PaymentUserController::class, 'updateReject'])->name('reject_payment');
-});
+
+
 
 /**
- * group route master features
- */
-Route::group(['prefix' => 'features'], function () {
-    Route::get('/', [FeatureController::class, 'index'])->name('menu_feature');
-    Route::get('/datatable', [FeatureController::class, 'dataTable']);
-    Route::post('/create', [FeatureController::class, 'store'])->name('store_feature');
-    Route::post('/update/{id}', [FeatureController::class, 'update'])->name('update_feature');
-    Route::delete('/delete/{id}', [FeatureController::class, 'destroy'])->name('delete_feature');
-});
-/**
- * group route master subscription
+ * route subscription di tutup dulu karena flow diganti ke per developer diakses permission berbeda saja
+ * 
  */
 Route::group(['prefix' => 'subscriptions'], function () {
     Route::get('/', [SubscriptionController::class, 'index'])->name('menu_subscription');

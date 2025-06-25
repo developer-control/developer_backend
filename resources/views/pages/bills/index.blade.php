@@ -1,4 +1,4 @@
-@extends('layouts.main', ['menu' => 'menu_bill'])
+@extends('layouts.main')
 @section('style')
     <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/dataTables.bootstrap5.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/responsive.bootstrap5.css') }}">
@@ -18,7 +18,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <h6>Tagihan Unit</h6>
-                                <form action="{{ route('menu_bill') }}" method="get">
+                                <form action="{{ route('bill.index') }}" method="get">
                                     <div class="row">
                                         <div class="form-group mb-1 col-8">
                                             <select class="rounded form-select @error('status') is-invalid @enderror"
@@ -49,9 +49,11 @@
                             </div>
 
                             <div class="col-md-6 text-end">
-                                {{-- <a href="{{ route('create_bill') }}" class="btn bg-gradient-primary"><i
-                                        class="fas fa-plus me-sm-2"></i> Add
-                                    Tagihan</a> --}}
+                                @officeCan($this_perm . 'create')
+                                    <a href="{{ route($this_route . 'create') }}" class="btn bg-gradient-primary"><i
+                                            class="fas fa-plus me-sm-2"></i> Add
+                                        Tagihan</a>
+                                @endofficeCan
                             </div>
                         </div>
                     </div>

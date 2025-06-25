@@ -4,6 +4,7 @@
 <head>
     @include('layouts.header', ['title' => @$title ?? config('app.name', 'Developer Control')])
     @yield('style')
+    @stack('css')
 </head>
 
 <body class="g-sidenav-show bg-gray-100">
@@ -20,7 +21,7 @@
     @include('layouts.footer')
     @include('layouts.script')
     @yield('scripts')
-
+    @stack('js')
 </body>
 
 </html>

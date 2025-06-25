@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Traits\HasOfficePermission;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,9 +18,8 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasApiTokens, HasFactory, Notifiable;
-    use HasRoles {
-        hasPermissionTo as spatieHasPermissionTo;
-    }
+    use HasRoles;
+    use HasOfficePermission;
     use SoftDeletes;
 
     /**
@@ -68,16 +68,5 @@ class User extends Authenticatable implements MustVerifyEmail
     public function media()
     {
         return $this->morphToMany(Media::class, 'sourceable', 'model_has_media')->withPivot('type');
-    }
-    public function hasPermissionTo($permission, $guardName = null): bool
-    {
-        // Cek permission berdasarkan fitur yang dimiliki Developer
-        $developer = $this->developer;
-        if (!$developer) return false;
-        if (!$developer->features()->contains('key', $permission)) {
-            return false;
-        }
-        // Cek izin langsung dari Spatie Laravel Permission menggunakan parent::
-        return $this->spatieHasPermissionTo($permission, $guardName);
     }
 }

@@ -12,7 +12,8 @@
 <!-- Font Awesome -->
 <link rel="stylesheet" href="{{ asset('assets/fontawesome/css/all.min.css') }}">
 <script src="{{ asset('assets/fontawesome/js/all.min.js') }}"></script>
-
+{{-- icon bootstrap --}}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 <!-- CSS Files -->
 <link id="pagestyle" href="{{ asset('assets/soft-ui/css/soft-ui-dashboard.min.css') }}" rel="stylesheet" />
 <!-- Nepcha Analytics (nepcha.com) -->
