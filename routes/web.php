@@ -72,7 +72,7 @@ Route::prefix('bills')->name('bill.')->group(function () {
         Route::post('/create', [BillTypeController::class, 'store'])->name('store')->middleware('office.permission:create');
         Route::post('/update/{id}', [BillTypeController::class, 'update'])->name('update')->middleware('office.permission:edit');
         Route::delete('/delete/{id}', [BillTypeController::class, 'destroy'])->name('delete')->middleware('office.permission:delete');
-        Route::get('/option-bill-types', [BillTypeController::class, 'optionBillType'])->name('option');
+        Route::get('/option', [BillTypeController::class, 'optionBillType'])->name('option');
     });
 });
 

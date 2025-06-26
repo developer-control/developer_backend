@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Utils\PermissionDictionary;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
@@ -13,16 +14,20 @@ class PermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        $permissions = [
-            "manage article",
-            "manage bill",
-            "manage roles"
-        ];
-        foreach ($permissions as $permission) {
-            Permission::create([
-                'name' => $permission,
-                'guard_name' => 'web'
-            ]);
+        $permissions = PermissionDictionary::allPermissions();
+
+        foreach ($permissions as $perm) {
+            Permission::updateOrCreate(
+                [
+                    "name" => $perm["name"],
+                    "guard_name" => "web",
+                ],
+                [
+                    "menu" => $perm["menu"],
+                    "group" => $perm["group"],
+                    "type" => $perm["type"],
+                ]
+            );
         }
     }
 }
