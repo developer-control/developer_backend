@@ -1,4 +1,4 @@
-<a class="btn-approve-modal btn btn-sm btn-info px-2 my-1" href="{{ route('menu_detail_complain', ['id' => $row->id]) }}">
+<a class="btn-approve-modal btn btn-sm btn-info px-2 my-1" href="{{ route($this_route . 'detail', ['id' => $row->id]) }}">
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle-fill"
         viewBox="0 0 16 16">
         <path

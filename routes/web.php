@@ -114,15 +114,16 @@ Route::prefix('complains')->name('complain.')->group(function () {
     Route::get('/', [ComplainController::class, 'index'])->name('index')->middleware('office.permission:read');
     Route::get('/datatable', [ComplainController::class, 'dataTable'])->name('data')->middleware('office.permission:read');
     Route::get('/detail/{id}', [ComplainController::class, 'show'])->name('detail')->middleware('office.permission:read');
-    Route::post('/solved-complain/{id}', [ComplainController::class, 'updateSolve'])->name('solve')->middleware('office.permission:action');
+    Route::post('/solved/{id}', [ComplainController::class, 'updateSolve'])->name('solve')->middleware('office.permission:action');
 });
+
 Route::prefix('projects')->name('project.')->group(function () {
     Route::get('/', [ProjectController::class, 'index'])->name('index')->middleware('office.permission:read');
     Route::get('/datatable', [ProjectController::class, 'projectDatatable'])->name('data')->middleware('office.permission:read');
     Route::post('/create', [ProjectController::class, 'store'])->name('store')->middleware('office.permission:create');
     Route::post('/update/{id}', [ProjectController::class, 'update'])->name('update')->middleware('office.permission:edit');
     Route::delete('/delete/{id}', [ProjectController::class, 'destroy'])->name('delete')->middleware('office.permission:delete');
-    Route::get('/option-projects', [ProjectController::class, 'optionProject'])->name('option');
+    Route::get('/option', [ProjectController::class, 'optionProject'])->name('option');
 });
 
 /**
@@ -134,7 +135,7 @@ Route::prefix('areas')->name('area.')->group(function () {
     Route::post('/create', [AreaController::class, 'store'])->name('store')->middleware('office.permission:create');
     Route::post('/update/{id}', [AreaController::class, 'update'])->name('update')->middleware('office.permission:edit');
     Route::delete('/delete/{id}', [AreaController::class, 'destroy'])->name('delete')->middleware('office.permission:delete');
-    Route::get('/option-areas', [AreaController::class, 'optionArea'])->name('option');
+    Route::get('/option', [AreaController::class, 'optionArea'])->name('option');
 });
 /**
  * group route master project bloc
@@ -145,7 +146,7 @@ Route::prefix('blocs')->name('bloc.')->group(function () {
     Route::post('/create', [BlocController::class, 'store'])->name('store')->middleware('office.permission:create');
     Route::post('/update/{id}', [BlocController::class, 'update'])->name('update')->middleware('office.permission:edit');
     Route::delete('/delete/{id}', [BlocController::class, 'destroy'])->name('delete')->middleware('office.permission:delete');
-    Route::get('/option-blocs', [BlocController::class, 'optionBloc'])->name('option');
+    Route::get('/option', [BlocController::class, 'optionBloc'])->name('option');
 });
 /**
  * group route master project units
@@ -195,7 +196,7 @@ Route::prefix('developers')->name('developer.')->group(function () {
     Route::post('/create', [DeveloperController::class, 'store'])->name('store')->middleware('office.permission:create');
     Route::post('/update/{id}', [DeveloperController::class, 'update'])->name('update')->middleware('office.permission:edit');
     Route::delete('/delete/{id}', [DeveloperController::class, 'destroy'])->name('delete')->middleware('office.permission:delete');
-    Route::get('/option-developers', [DeveloperController::class, 'optionDeveloper'])->name('option');
+    Route::get('/option', [DeveloperController::class, 'optionDeveloper'])->name('option');
     Route::prefix('banks')->name('bank.')->group(function () {
         Route::get('/', [DeveloperBankController::class, 'index'])->name('index')->middleware('office.permission:read');
         Route::get('/datatable', [DeveloperBankController::class, 'dataTable'])->name('data')->middleware('office.permission:read');

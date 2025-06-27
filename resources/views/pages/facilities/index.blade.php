@@ -1,4 +1,4 @@
-@extends('layouts.main', ['menu' => 'menu_facility'])
+@extends('layouts.main')
 @section('style')
     <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/dataTables.bootstrap5.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/responsive.bootstrap5.css') }}">
@@ -7,6 +7,7 @@
         .choices__inner {
             border-radius: 8px;
             padding: .5rem .75rem;
+            background-color: #fff !important;
         }
 
         .choices__list--multiple .choices__item {
@@ -29,7 +30,7 @@
                         <h4 class="ps-0">Filter Facility Project</h4>
                         <hr class="horizontal gray-light">
                     </div>
-                    <form action="{{ route('menu_facility') }}" method="get">
+                    <form action="{{ route($this_route . 'index') }}" method="get">
                         <div class="card-body row px-4 pt-0">
                             <div class="col-md-9">
                                 <div class="form-group">
@@ -57,9 +58,11 @@
                                 <h6>Data Facility</h6>
                             </div>
                             <div class="col-md-6 text-end">
-                                <a href="{{ route('create_facility') }}" class="btn bg-gradient-primary"><i
-                                        class="fas fa-plus me-sm-2"></i> Add
-                                    Facility</a>
+                                @officeCan($this_perm . 'create')
+                                    <a href="{{ route($this_route . 'create') }}" class="btn bg-gradient-primary"><i
+                                            class="fas fa-plus me-sm-2"></i> Add
+                                        Facility</a>
+                                @endofficeCan
                             </div>
                         </div>
                     </div>
@@ -133,7 +136,7 @@
     <script>
         let optionProject;
         document.addEventListener('DOMContentLoaded', function() {
-            setInputChoices('/projects/option-projects').then(choices => {
+            setInputChoices("{{ route('project.option') }}").then(choices => {
                 // set input for filter project for get area
                 const filterProject = document.getElementById('filter-project');
                 const project_id = parseInt(document.getElementById('project').value);
@@ -165,7 +168,7 @@
                 }
             ];
             let url = {
-                url: "/facilities/datatable",
+                url: "{{ route($this_route . 'data') }}",
                 data: function(d) {
                     d.project_id = document.getElementById('project').value;
                 }

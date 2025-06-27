@@ -10,6 +10,14 @@ use Yajra\DataTables\DataTables;
 
 class PaymentUserController extends Controller
 {
+    const ROUTE = 'payment.';
+    const PERMISSION = 'payment>';
+    public function __construct()
+    {
+        $this->middleware(['auth']);
+        view()->share('this_route', self::ROUTE);
+        view()->share('this_perm', self::PERMISSION);
+    }
     /**
      * Display a listing of the resource.
      */

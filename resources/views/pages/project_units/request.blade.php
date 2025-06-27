@@ -1,4 +1,4 @@
-@extends('layouts.main', ['menu' => 'menu_request_claim_unit'])
+@extends('layouts.main')
 @section('style')
     <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/dataTables.bootstrap5.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/responsive.bootstrap5.css') }}">
@@ -206,7 +206,7 @@
                 }
             ];
             let url = {
-                url: "/units/request-units/datatable",
+                url: "{{ route($this_route . 'data') }}",
                 data: function(d) {
                     d.status = 'request';
                 }

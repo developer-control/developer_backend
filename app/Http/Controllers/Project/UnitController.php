@@ -13,9 +13,13 @@ use Yajra\DataTables\Facades\DataTables;
 
 class UnitController extends Controller
 {
+    const ROUTE = 'unit.';
+    const PERMISSION = 'unit>';
     public function __construct()
     {
-        $this->middleware(['auth', 'role_or_permission:superadmin|manage unit']);
+        $this->middleware(['auth']);
+        view()->share('this_route', self::ROUTE);
+        view()->share('this_perm', self::PERMISSION);
     }
     /**
      * Display a listing of the resource.

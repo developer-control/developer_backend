@@ -11,10 +11,15 @@ use Illuminate\Support\Facades\DB;
 
 class BannerController extends Controller
 {
+    const ROUTE = 'banner.';
+    const PERMISSION = 'banner>';
     public function __construct()
     {
-        $this->middleware(['auth', 'role_or_permission:superadmin|manage banner']);
+        $this->middleware(['auth']);
+        view()->share('this_route', self::ROUTE);
+        view()->share('this_perm', self::PERMISSION);
     }
+
     /**
      * Display a listing of the resource.
      */
@@ -68,7 +73,7 @@ class BannerController extends Controller
         }
         DB::commit();
         toast('New Banner has been created', 'success');
-        return redirect()->route('menu_banner');
+        return redirect()->route(self::ROUTE . 'index');
     }
 
 
@@ -105,7 +110,7 @@ class BannerController extends Controller
         $banner->is_active = $request->is_active ? 1 : 0;
         $banner->save();
         toast('Banner has been updated', 'success');
-        return redirect()->route('menu_banner');
+        return redirect()->route(self::ROUTE . 'index');
     }
 
     /**

@@ -11,9 +11,13 @@ use Illuminate\Support\Facades\DB;
 
 class PromotionController extends Controller
 {
+    const ROUTE = 'promotion.';
+    const PERMISSION = 'promotion>';
     public function __construct()
     {
-        $this->middleware(['auth', 'role_or_permission:superadmin|manage promotion']);
+        $this->middleware(['auth']);
+        view()->share('this_route', self::ROUTE);
+        view()->share('this_perm', self::PERMISSION);
     }
     /**
      * Display a listing of the resource.
@@ -68,7 +72,7 @@ class PromotionController extends Controller
         }
         DB::commit();
         toast('New Promotion has been created', 'success');
-        return redirect()->route('menu_promotion');
+        return redirect()->route(self::ROUTE . 'index');
     }
 
 
@@ -101,7 +105,7 @@ class PromotionController extends Controller
         $promotion->is_active = $request->is_active ? 1 : 0;
         $promotion->save();
         toast('Promotion has been updated', 'success');
-        return redirect()->route('menu_promotion');
+        return redirect()->route(self::ROUTE . 'index');
     }
 
     /**

@@ -12,9 +12,13 @@ use Yajra\DataTables\Facades\DataTables;
 
 class BlocController extends Controller
 {
+    const ROUTE = 'bloc.';
+    const PERMISSION = 'bloc>';
     public function __construct()
     {
-        $this->middleware(['auth', 'role_or_permission:superadmin|manage bloc']);
+        $this->middleware(['auth']);
+        view()->share('this_route', self::ROUTE);
+        view()->share('this_perm', self::PERMISSION);
     }
     /**
      * Display a listing of the resource.

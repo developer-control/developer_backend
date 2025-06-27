@@ -1,4 +1,4 @@
-@extends('layouts.main', ['menu' => 'menu_banner'])
+@extends('layouts.main')
 @section('style')
 @endsection
 @section('breadcrumb')
@@ -16,7 +16,7 @@
                         <div class="col-md-6">
                             <h6 class="mb-1">Banners</h6>
                             <p class="text-sm">Latest Banners</p>
-                            <form action="{{ route('menu_banner') }}" method="GET" class="">
+                            <form action="{{ route($this_route . 'index') }}" method="GET" class="">
                                 <div class="row">
                                     <div class="col-9">
                                         <div class="input-group">
@@ -34,9 +34,11 @@
                             </form>
                         </div>
                         <div class="col-md-6 text-end">
-                            <a href="{{ route('create_banner') }}" class="btn bg-gradient-primary"><i
-                                    class="fas fa-plus me-sm-2"></i> Add
-                                Banner</a>
+                            @officeCan($this_perm . 'create')
+                                <a href="{{ route($this_route . 'create') }}" class="btn bg-gradient-primary"><i
+                                        class="fas fa-plus me-sm-2"></i> Add
+                                    Banner</a>
+                            @endofficeCan
                         </div>
                     </div>
 
@@ -59,15 +61,19 @@
                                                 class="shadow border-radius-md object-fit-cover">
                                         </a>
                                         <div class="position-absolute top-100 end-0 btn-group">
-                                            <a href="{{ route('edit_banner', ['id' => $banner->id]) }}"
-                                                class="btn btn-link text-dark btn-sm mb-0 px-1"><span
-                                                    class="fas fs-5 fa-edit"></span></a>
-                                            <button type="button"
-                                                class="btn btn-link text-dark btn-sm mb-0 px-1 delete-modal"
-                                                data-bs-toggle="modal" data-bs-target="#modal-delete"
-                                                data-url="{{ route('delete_banner', ['id' => $banner->id]) }}"
-                                                data-name="{{ $banner->title }}"><span
-                                                    class="fas fs-5 fa-trash"></span></button>
+                                            @officeCan($this_perm . 'edit')
+                                                <a href="{{ route($this_route . 'edit', ['id' => $banner->id]) }}"
+                                                    class="btn btn-link text-dark btn-sm mb-0 px-1"><span
+                                                        class="fas fs-5 fa-edit"></span></a>
+                                            @endofficeCan
+                                            @officeCan($this_perm . 'delete')
+                                                <button type="button"
+                                                    class="btn btn-link text-dark btn-sm mb-0 px-1 delete-modal"
+                                                    data-bs-toggle="modal" data-bs-target="#modal-delete"
+                                                    data-url="{{ route($this_route . 'delete', ['id' => $banner->id]) }}"
+                                                    data-name="{{ $banner->title }}"><span
+                                                        class="fas fs-5 fa-trash"></span></button>
+                                            @endofficeCan
                                         </div>
                                     </div>
                                     <div class="card-body px-1 pb-0">

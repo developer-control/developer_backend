@@ -1,4 +1,4 @@
-@extends('layouts.main', ['menu' => 'menu_complain'])
+@extends('layouts.main')
 
 @section('breadcrumb')
     {{ Breadcrumbs::render('menu_detail_complain', $complain) }}
@@ -94,14 +94,15 @@
                             </table>
                         </div>
                         <div class="col-md-12 d-flex justify-content-between">
-                            <a class="btn btn-warning px-2 my-1" href="{{ route('menu_complain') }}">
+                            <a class="btn btn-warning px-2 my-1" href="{{ route($this_route . 'index') }}">
                                 Kembali
                             </a>
-                            <button type="button" class="btn btn-success px-2 my-1" data-bs-target="#modal-solved"
-                                data-bs-toggle="modal" @if ($complain->status == 'finished') disabled @endif>
-                                {{ $complain->status == 'finished' ? 'Komplain Telah Selesai' : 'Selesaikan Komplain' }}
-                            </button>
-
+                            @officeCan($this_perm . 'action')
+                                <button type="button" class="btn btn-success px-2 my-1" data-bs-target="#modal-solved"
+                                    data-bs-toggle="modal" @if ($complain->status == 'finished') disabled @endif>
+                                    {{ $complain->status == 'finished' ? 'Komplain Telah Selesai' : 'Selesaikan Komplain' }}
+                                </button>
+                            @endofficeCan
                         </div>
                     </div>
                 </div>
@@ -119,7 +120,7 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <form action="{{ route('solve_complain', ['id' => $complain->id]) }}" id="solved-form" method="POST">
+                <form action="{{ route($this_route . 'solve', ['id' => $complain->id]) }}" id="solved-form" method="POST">
                     <div class="modal-body">
                         @csrf
                         <div class="form-group">

@@ -13,9 +13,13 @@ use Yajra\DataTables\Facades\DataTables;
 
 class FacilityController extends Controller
 {
+    const ROUTE = 'facility.';
+    const PERMISSION = 'facility>';
     public function __construct()
     {
-        $this->middleware(['auth', 'role_or_permission:superadmin|manage facility']);
+        $this->middleware(['auth']);
+        view()->share('this_route', self::ROUTE);
+        view()->share('this_perm', self::PERMISSION);
     }
     /**
      * Display a listing of the resource.
@@ -86,7 +90,7 @@ class FacilityController extends Controller
             }
         });
         toast('New Facility has been created', 'success');
-        return redirect()->route('menu_facility');
+        return redirect()->route(self::ROUTE . 'index');
     }
 
 
@@ -120,7 +124,7 @@ class FacilityController extends Controller
         $facility->is_active = $request->is_active ? 1 : 0;
         $facility->save();
         toast('Facility has been updated', 'success');
-        return redirect()->route('menu_facility');
+        return redirect()->route(self::ROUTE . 'index');
     }
 
     /**

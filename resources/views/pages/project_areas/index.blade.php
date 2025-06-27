@@ -1,4 +1,4 @@
-@extends('layouts.main', ['menu' => 'menu_area'])
+@extends('layouts.main')
 @section('style')
     <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/dataTables.bootstrap5.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/responsive.bootstrap5.css') }}">
@@ -7,6 +7,7 @@
         .choices__inner {
             border-radius: 8px;
             padding: .5rem .75rem;
+            background-color: #fff !important;
         }
 
         .choices__list--multiple .choices__item {
@@ -29,7 +30,7 @@
                         <h4 class="ps-0">Filter Project Area</h4>
                         <hr class="horizontal gray-light">
                     </div>
-                    <form action="{{ route('menu_area') }}" method="get">
+                    <form action="{{ route($this_route . 'index') }}" method="get">
                         <div class="card-body row px-4 pt-0">
                             <div class="col-md-9">
                                 <div class="form-group">
@@ -57,9 +58,11 @@
                                 <h6>Data Area</h6>
                             </div>
                             <div class="col-md-6 text-end">
-                                <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal"
-                                    data-bs-target="#modal-create"><i class="fas fa-plus me-sm-2"></i> Add
-                                    Area</button>
+                                @officeCan($this_perm . 'create')
+                                    <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal"
+                                        data-bs-target="#modal-create"><i class="fas fa-plus me-sm-2"></i> Add
+                                        Area</button>
+                                @endofficeCan
                             </div>
                         </div>
                     </div>
@@ -100,7 +103,7 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <form action="{{ route('store_area') }}" method="POST">
+                <form action="{{ route($this_route . 'store') }}" method="POST">
                     <div class="modal-body">
                         @csrf
                         <div class="form-group">
@@ -228,7 +231,7 @@
     <script>
         let optionProject, projectCreate, projectEdit;
         document.addEventListener('DOMContentLoaded', function() {
-            setInputChoices('/projects/option-projects').then(choices => {
+            setInputChoices("{{ route('project.option') }}").then(choices => {
                 // set input for filter project for get area
                 const filterProject = document.getElementById('filter-project');
                 const project_id = parseInt(document.getElementById('project').value);
@@ -266,7 +269,7 @@
                 }
             ];
             let url = {
-                url: "/areas/datatable",
+                url: "{{ route($this_route . 'data') }}",
                 data: function(d) {
                     d.project_id = document.getElementById('project').value;
                 }

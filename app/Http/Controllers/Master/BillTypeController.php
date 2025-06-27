@@ -10,9 +10,13 @@ use Yajra\DataTables\DataTables;
 
 class BillTypeController extends Controller
 {
+    const ROUTE = 'bill.type.';
+    const PERMISSION = 'bill>type>';
     public function __construct()
     {
-        $this->middleware(['auth', 'role_or_permission:superadmin|manage bill type']);
+        $this->middleware(['auth']);
+        view()->share('this_route', self::ROUTE);
+        view()->share('this_perm', self::PERMISSION);
     }
     /**
      * Display a listing of the resource.

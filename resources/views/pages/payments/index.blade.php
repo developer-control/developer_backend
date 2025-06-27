@@ -1,4 +1,4 @@
-@extends('layouts.main', ['menu' => 'menu_payment'])
+@extends('layouts.main')
 @section('style')
     <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/dataTables.bootstrap5.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/responsive.bootstrap5.css') }}">
@@ -18,7 +18,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <h6>Pembayaran Tagihan Unit</h6>
-                                <form action="{{ route('menu_payment') }}" method="get">
+                                <form action="{{ route($this_route . 'index') }}" method="get">
                                     <div class="row">
                                         <div class="form-group mb-1 col-8">
                                             <select class="rounded form-select @error('status') is-invalid @enderror"
@@ -169,7 +169,7 @@
                 },
             ];
             let url = {
-                url: "/payments/datatable",
+                url: "{{ route($this_route . 'data') }}",
                 data: function(d) {
                     d.status = document.getElementById('filter-status').value;
                 }

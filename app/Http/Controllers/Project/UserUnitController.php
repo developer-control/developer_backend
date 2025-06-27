@@ -12,9 +12,13 @@ use Yajra\DataTables\Facades\DataTables;
 
 class UserUnitController extends Controller
 {
+    const ROUTE = 'unit.request.';
+    const PERMISSION = 'unit>request>';
     public function __construct()
     {
         $this->middleware(['auth']);
+        view()->share('this_route', self::ROUTE);
+        view()->share('this_perm', self::PERMISSION);
     }
     public function queryUserUnit(Request $request)
     {

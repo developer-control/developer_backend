@@ -1,4 +1,4 @@
-@extends('layouts.main', ['menu' => 'menu_payment'])
+@extends('layouts.main')
 @section('style')
 @endsection
 @section('breadcrumb')
@@ -22,14 +22,16 @@
                             <div class="col-md-6 text-end">
                                 <h4>
                                     @if (in_array($payment->status, ['request', 'pending']))
-                                        <a class="btn-approve-modal btn btn-primary my-1" data-bs-target="#modal-approve"
-                                            data-bs-toggle="modal">
-                                            Approve
-                                        </a>
-                                        <a class="btn-reject-modal btn btn-warning my-1" data-bs-target="#modal-reject"
-                                            data-bs-toggle="modal">
-                                            Reject
-                                        </a>
+                                        @officeCan($this_perm . 'action')
+                                            <a class="btn-approve-modal btn btn-primary my-1" data-bs-target="#modal-approve"
+                                                data-bs-toggle="modal">
+                                                Approve
+                                            </a>
+                                            <a class="btn-reject-modal btn btn-warning my-1" data-bs-target="#modal-reject"
+                                                data-bs-toggle="modal">
+                                                Reject
+                                            </a>
+                                        @endofficeCan
                                     @endif
                                     @if ($payment->status == 'paid')
                                         <a class="btn btn-success my-1">
@@ -307,7 +309,8 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <form action="{{ route('approve_payment', ['id' => $payment->id]) }}" id="approve-form" method="POST">
+                <form action="{{ route($this_route . 'approve', ['id' => $payment->id]) }}" id="approve-form"
+                    method="POST">
                     <div class="modal-body">
                         @csrf
                         <div class="form-group">
@@ -353,7 +356,8 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <form action="{{ route('reject_payment', ['id' => $payment->id]) }}" id="reject-form" method="POST">
+                <form action="{{ route($this_route . 'reject', ['id' => $payment->id]) }}" id="reject-form"
+                    method="POST">
                     <div class="modal-body">
                         @csrf
                         <div class="form-group">

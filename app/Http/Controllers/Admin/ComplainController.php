@@ -10,9 +10,13 @@ use Yajra\DataTables\DataTables;
 
 class ComplainController extends Controller
 {
+    const ROUTE = 'complain.';
+    const PERMISSION = 'complain>';
     public function __construct()
     {
-        $this->middleware(['auth', 'role_or_permission:superadmin|manage complain']);
+        $this->middleware(['auth']);
+        view()->share('this_route', self::ROUTE);
+        view()->share('this_perm', self::PERMISSION);
     }
 
     /**

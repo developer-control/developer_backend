@@ -13,10 +13,15 @@ use Yajra\DataTables\Facades\DataTables;
 class AreaController extends Controller
 {
 
+    const ROUTE = 'area.';
+    const PERMISSION = 'area>';
     public function __construct()
     {
-        $this->middleware(['auth', 'role_or_permission:superadmin|manage area']);
+        $this->middleware(['auth']);
+        view()->share('this_route', self::ROUTE);
+        view()->share('this_perm', self::PERMISSION);
     }
+
     /**
      * Display a listing of the resource.
      * 

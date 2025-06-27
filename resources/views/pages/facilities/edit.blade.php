@@ -17,6 +17,7 @@
         .choices__inner {
             border-radius: 8px;
             padding: .5rem .75rem;
+            background-color: #fff !important;
         }
 
         .choices__list--multiple .choices__item {
@@ -39,8 +40,8 @@
                         <h6 class="mb-1">Edit Facility</h6>
                     </div>
                     <div class="card-body p-3">
-                        <form action="{{ route('update_facility', ['id' => $facility->id]) }}" enctype="multipart/form-data"
-                            method="POST">
+                        <form action="{{ route($this_route . 'update', ['id' => $facility->id]) }}"
+                            enctype="multipart/form-data" method="POST">
                             @csrf
                             <div class="form-group mb-3">
                                 <label for="" class="col-form-label">Project:</label>
@@ -122,7 +123,7 @@
     <script>
         let projectOption;
         document.addEventListener('DOMContentLoaded', function() {
-            setInputChoices('/projects/option-projects').then(choices => {
+            setInputChoices({{ route('project.option') }}).then(choices => {
                 // set input for filter project for get area
                 // set option for create and update area for get option projects
                 const optionProject = document.getElementById('project_id');

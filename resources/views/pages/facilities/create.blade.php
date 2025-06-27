@@ -1,4 +1,4 @@
-@extends('layouts.main', ['menu' => 'menu_facility'])
+@extends('layouts.main')
 @section('style')
     <link rel="stylesheet" href="{{ asset('assets/choices/css/choices.min.css') }}">
     <style>
@@ -17,6 +17,7 @@
         .choices__inner {
             border-radius: 8px;
             padding: .5rem .75rem;
+            background-color: #fff !important;
         }
 
         .choices__list--multiple .choices__item {
@@ -39,7 +40,7 @@
                         <h6 class="mb-1">Create Facility</h6>
                     </div>
                     <div class="card-body p-3">
-                        <form action="{{ route('store_facility') }}" enctype="multipart/form-data" method="POST">
+                        <form action="{{ route($this_route . 'store') }}" enctype="multipart/form-data" method="POST">
                             @csrf
                             <div class="form-group mb-3">
                                 <label for="" class="col-form-label">Project:</label>
@@ -116,7 +117,7 @@
     <script>
         let projectCreate;
         document.addEventListener('DOMContentLoaded', function() {
-            setInputChoices('/projects/option-projects').then(choices => {
+            setInputChoices("{{ route('project.option') }}").then(choices => {
                 // set input for filter project for get area
                 // set option for create and update area for get option projects
                 const optionProjectCreate = document.getElementById('project_id');

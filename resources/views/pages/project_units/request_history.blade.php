@@ -1,7 +1,7 @@
 <div>
     <!-- Simplicity is an acquired taste. - Katharine Gerould -->
 </div>
-@extends('layouts.main', ['menu' => 'menu_history_claim_unit'])
+@extends('layouts.main')
 @section('style')
     <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/dataTables.bootstrap5.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/responsive.bootstrap5.css') }}">
@@ -24,7 +24,7 @@
                                 <h6>History Claim Unit</h6>
                             </div>
                             <div class="col-md-6">
-                                <form action="{{ route('menu_history_claim_unit') }}" method="get">
+                                <form action="{{ route($this_route . 'history.index') }}" method="get">
                                     <div class="row">
                                         <div class="form-group mb-1 col-8">
                                             <select class="rounded form-select @error('status') is-invalid @enderror"
@@ -146,7 +146,7 @@
                 }
             ];
             let url = {
-                url: "/units/history-request-unit/datatable",
+                url: "{{ route($this_route . 'history.data') }}",
                 data: function(d) {
                     d.status = document.getElementById('filter-status').value;
                 }

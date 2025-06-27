@@ -20,9 +20,11 @@
                                 <h6>Master Type Tagihan</h6>
                             </div>
                             <div class="col-md-6 text-end">
-                                <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal"
-                                    data-bs-target="#modal-create"><i class="fas fa-plus me-sm-2"></i> Add
-                                    Type Tagihan</button>
+                                @officeCan($this_perm . 'create')
+                                    <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal"
+                                        data-bs-target="#modal-create"><i class="fas fa-plus me-sm-2"></i> Add
+                                        Type Tagihan</button>
+                                @endofficeCan
                             </div>
                         </div>
                     </div>
@@ -69,7 +71,7 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <form action="{{ route('store_bill_type') }}" method="POST">
+                <form action="{{ route($this_route . 'store') }}" method="POST">
                     <div class="modal-body">
                         @csrf
                         <div class="form-group">
@@ -254,7 +256,7 @@
                 }
             ];
             let url = {
-                url: "/bill-types/datatable"
+                url: "{{ route($this_route . 'data') }}"
             };
             initializeDatatable('.datatable', url, columnData)
 
