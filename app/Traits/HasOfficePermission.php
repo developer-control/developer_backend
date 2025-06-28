@@ -13,7 +13,7 @@ trait HasOfficePermission
             return true;
         }
 
-        if (! $this->office) return false;
+        if (! $this->developer) return false;
 
         if (is_string($permission)) {
             $permission = Permission::where('name', $permission)->first();
@@ -21,6 +21,7 @@ trait HasOfficePermission
 
         if (! $permission) return false;
 
-        return $this->office->hasPermissionTo($permission);
+
+        return $this->developer->hasPermissionTo($permission);
     }
 }

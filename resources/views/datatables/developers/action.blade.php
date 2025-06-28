@@ -2,6 +2,12 @@
     {{-- <a href="{{ route('developer_subscription', ['id' => $developer->id]) }}" class="nav-link">
         <span class="fas fa-eye text-secondary mx-2"></span>
     </a> --}}
+    @officeCan($this_perm . 'permission.edit')
+        <a class="nav-link" role="button" data-bs-placement="bottom" title="Permission"
+            href="{{ route($this_route . 'permission.edit', $developer->id) }}">
+            <span class="bi bi-person-fill-lock text-secondary mx-2 fw-bold"></span>
+        </a>
+    @endofficeCan
     @officeCan($this_perm . 'edit')
         <a class="nav-link edit-modal" role="button" data-bs-target="#modal-edit" data-bs-toggle="modal"
             data-bs-placement="bottom" title="Edit developer"
@@ -15,4 +21,5 @@
             <span class="fas fa-trash text-secondary mx-2"></span>
         </a>
     @endofficeCan
+
 </div>

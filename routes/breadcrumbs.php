@@ -158,7 +158,11 @@ Breadcrumbs::for('master_developer', function (BreadcrumbTrail $trail) {
     $trail->parent('home');
     $trail->push('Setting Master Developer', route('developer.index'));
 });
-
+// master_developer > developer_subscription
+Breadcrumbs::for('developer_permission', function (BreadcrumbTrail $trail, $resource) {
+    $trail->parent('master_developer');
+    $trail->push('Permission Developer', route('developer.permission.edit', ['id', $resource->id]));
+});
 // Home > menu_developer_bank
 Breadcrumbs::for('menu_developer_bank', function (BreadcrumbTrail $trail) {
     $trail->parent('home');

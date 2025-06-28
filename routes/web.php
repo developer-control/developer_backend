@@ -12,6 +12,7 @@ use App\Http\Controllers\Location\ProvinceController;
 use App\Http\Controllers\Master\BillTypeController;
 use App\Http\Controllers\Master\DeveloperBankController;
 use App\Http\Controllers\Master\DeveloperController;
+use App\Http\Controllers\Master\DeveloperPermissionController;
 use App\Http\Controllers\Master\EmergencyController;
 use App\Http\Controllers\Master\FeatureController;
 use App\Http\Controllers\Master\OwnershipUnitController;
@@ -197,6 +198,10 @@ Route::prefix('developers')->name('developer.')->group(function () {
     Route::post('/update/{id}', [DeveloperController::class, 'update'])->name('update')->middleware('office.permission:edit');
     Route::delete('/delete/{id}', [DeveloperController::class, 'destroy'])->name('delete')->middleware('office.permission:delete');
     Route::get('/option', [DeveloperController::class, 'optionDeveloper'])->name('option');
+    Route::prefix('/{developer:id}/permission')->name('permission.')->group(function () {
+        Route::get('/edit', [DeveloperPermissionController::class, 'edit'])->name('edit')->middleware('office.permission:edit');
+        Route::post('/update', [DeveloperPermissionController::class, 'update'])->name('update')->middleware('office.permission:edit');
+    });
     Route::prefix('banks')->name('bank.')->group(function () {
         Route::get('/', [DeveloperBankController::class, 'index'])->name('index')->middleware('office.permission:read');
         Route::get('/datatable', [DeveloperBankController::class, 'dataTable'])->name('data')->middleware('office.permission:read');
