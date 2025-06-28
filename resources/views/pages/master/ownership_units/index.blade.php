@@ -1,4 +1,4 @@
-@extends('layouts.main', ['menu' => 'master_ownership'])
+@extends('layouts.main')
 @section('style')
     <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/dataTables.bootstrap5.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/responsive.bootstrap5.css') }}">
@@ -20,9 +20,11 @@
                                 <h6>Setting Ownership Unit</h6>
                             </div>
                             <div class="col-md-6 text-end">
-                                <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal"
-                                    data-bs-target="#modal-create"><i class="fas fa-plus me-sm-2"></i> Add
-                                    Ownership Unit</button>
+                                @officeCan($this_perm . 'create')
+                                    <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal"
+                                        data-bs-target="#modal-create"><i class="fas fa-plus me-sm-2"></i> Add
+                                        Ownership Unit</button>
+                                @endofficeCan
                             </div>
                         </div>
                     </div>
@@ -31,7 +33,6 @@
                             <table class="table align-items-center mb-0 datatable">
                                 <thead>
                                     <tr>
-
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             No.
                                         </th>
@@ -60,7 +61,7 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <form action="{{ route('store_ownership') }}" method="POST">
+                <form action="{{ route($this_route . 'store') }}" method="POST">
                     <div class="modal-body">
                         @csrf
 
@@ -183,7 +184,7 @@
                     searchable: false
                 }
             ];
-            initializeDatatable('.datatable', "/ownership-units/datatable", columnData)
+            initializeDatatable('.datatable', "{{ route($this_route . 'data') }}", columnData)
 
         });
         $(document).on("click", ".edit-modal", function() {

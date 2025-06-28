@@ -1,4 +1,4 @@
-@extends('layouts.main', ['menu' => 'location', 'submenu' => 'location_city'])
+@extends('layouts.main')
 @section('style')
     <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/dataTables.bootstrap5.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/responsive.bootstrap5.css') }}">
@@ -31,11 +31,13 @@
                                 <h6>Setting Location City</h6>
                             </div>
                             <div class="col-md-6 text-end">
-                                <button type="button" class="btn bg-gradient-primary mx-1" data-bs-toggle="modal"
-                                    data-bs-target="#modal-create"><i class="fas fa-plus me-sm-2"></i> Add
-                                    City</button>
-                                <a href="{{ route('initialize_city') }}" class="btn bg-gradient-primary mx-1"><i
-                                        class="fas fa-location-arrow me-sm-2"></i> Initialize City</a>
+                                @officeCan($this_perm . 'create')
+                                    <button type="button" class="btn bg-gradient-primary mx-1" data-bs-toggle="modal"
+                                        data-bs-target="#modal-create"><i class="fas fa-plus me-sm-2"></i> Add
+                                        City</button>
+                                    <a href="{{ route($this_route . 'initialize') }}" class="btn bg-gradient-primary mx-1"><i
+                                            class="fas fa-location-arrow me-sm-2"></i> Initialize City</a>
+                                @endofficeCan
                             </div>
                         </div>
                     </div>
@@ -73,7 +75,7 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <form action="{{ route('store_city') }}" method="POST">
+                <form action="{{ route($this_route . 'store') }}" method="POST">
                     <div class="modal-body">
                         @csrf
                         <div class="form-group">
@@ -201,7 +203,7 @@
     <script>
         let choiceCreate, choiceEdit;
         document.addEventListener('DOMContentLoaded', function() {
-            setInputChoices('/locations/provinces/option-provinces').then(choices => {
+            setInputChoices("{{ route('location.province.option') }}").then(choices => {
                 const optionCreate = document.getElementById('province_id');
                 const optionEdit = document.getElementById('province_id-edit');
                 choiceCreate = initializeChoice(optionCreate, choices);
@@ -228,7 +230,7 @@
                     searchable: false
                 }
             ];
-            initializeDatatable('.datatable', "/locations/cities/datatable", columnData)
+            initializeDatatable('.datatable', "{{ route($this_route . 'data') }}", columnData)
 
         });
         $(document).on("click", ".edit-modal", function() {

@@ -12,9 +12,13 @@ use Yajra\DataTables\Facades\DataTables;
 
 class OwnershipUnitController extends Controller
 {
+    const ROUTE = 'unit.ownership.';
+    const PERMISSION = 'unit>ownership>';
     public function __construct()
     {
-        $this->middleware(['auth', 'role_or_permission:superadmin|manage ownership unit']);
+        $this->middleware(['auth']);
+        view()->share('this_route', self::ROUTE);
+        view()->share('this_perm', self::PERMISSION);
     }
     /**
      * Display a listing of the resource.

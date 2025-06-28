@@ -1,4 +1,4 @@
-@extends('layouts.main', ['menu' => 'menu_support'])
+@extends('layouts.main')
 @section('style')
     <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/dataTables.bootstrap5.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/responsive.bootstrap5.css') }}">
@@ -7,6 +7,7 @@
         .choices__inner {
             border-radius: 8px;
             padding: .5rem .75rem;
+            background-color: #fff !important;
         }
 
         .choices__list--multiple .choices__item {
@@ -31,9 +32,11 @@
                                 <h6>Data Kontak Bantuan</h6>
                             </div>
                             <div class="col-md-6 text-end">
-                                <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal"
-                                    data-bs-target="#modal-create"><i class="fas fa-plus me-sm-2"></i> Add
-                                    Bantuan</button>
+                                @officeCan($this_perm . 'create')
+                                    <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal"
+                                        data-bs-target="#modal-create"><i class="fas fa-plus me-sm-2"></i> Add
+                                        Bantuan</button>
+                                @endofficeCan
                             </div>
                         </div>
                     </div>
@@ -79,7 +82,7 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <form action="{{ route('store_support') }}" method="POST">
+                <form action="{{ route($this_route . 'store') }}" method="POST">
                     <div class="modal-body">
                         @csrf
                         @hasrole('superadmin')
@@ -273,7 +276,7 @@
             const optionDeveloperCreate = document.getElementById('developer_id');
             const optionDeveloperEdit = document.getElementById('developer_id-edit');
             if (optionDeveloperCreate && optionDeveloperEdit) {
-                setInputChoices('/developers/option-developers').then(choices => {
+                setInputChoices("{{ route('developer.option') }}").then(choices => {
                     developerCreate = initializeChoice(optionDeveloperCreate, choices);
                     developerEdit = initializeChoice(optionDeveloperEdit, choices);
                 }).catch(error => {
@@ -311,7 +314,7 @@
                     searchable: false
                 }
             ];
-            initializeDatatable('.datatable', "/supports/datatable", columnData)
+            initializeDatatable('.datatable', "{{ route($this_route . 'data') }}", columnData)
 
         });
         $(document).on("click", ".edit-modal", function() {

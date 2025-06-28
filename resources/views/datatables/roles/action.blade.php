@@ -1,13 +1,15 @@
-@canany(['manage roles'])
-    <div class="btn-group" aria-label="button action">
+<div class="btn-group" aria-label="button action">
+    @officeCan($this_perm . 'edit')
         <a class="nav-link edit-modal" role="button" data-bs-target="#modal-edit" data-bs-toggle="modal"
-            data-bs-placement="bottom" title="Edit role " data-url="{{ route('update_role', ['id' => $role->id]) }}"
+            data-bs-placement="bottom" title="Edit role " data-url="{{ route($this_route . 'update', ['id' => $role->id]) }}"
             data-name="{{ $role->name }}" data-developer_id="{{ $role->developer_id }}">
             <span class="fas fa-edit text-secondary mx-2"></span>
         </a>
+    @endofficeCan
+    @officeCan($this_perm . 'delete')
         <a class="nav-link delete-modal" href="" data-bs-toggle="modal" data-bs-target="#modal-delete"
-            data-url="{{ route('delete_role', ['id' => $role->id]) }}" data-name="{{ $role->name }}">
+            data-url="{{ route($this_route . 'delete', ['id' => $role->id]) }}" data-name="{{ $role->name }}">
             <span class="fas fa-trash text-secondary mx-2"></span>
         </a>
-    </div>
-@endcanany
+    @endofficeCan
+</div>

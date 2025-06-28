@@ -1,4 +1,4 @@
-@extends('layouts.main', ['menu' => 'menu_term_condition'])
+@extends('layouts.main')
 @section('style')
 @endsection
 @section('breadcrumb')
@@ -18,9 +18,11 @@
                         </div>
                         @if ($term)
                             <div class="col-md-6 text-end">
-                                <a href="{{ route('edit_term_condition', ['id' => $term->id]) }}"
-                                    class="btn btn-outline-primary btn-sm px-2"><span class="fas fs-5 fa-edit"></span> Edit
-                                </a>
+                                @officeCan($this_perm . 'edit')
+                                    <a href="{{ route($this_route . 'edit', ['id' => $term->id]) }}"
+                                        class="btn btn-outline-primary btn-sm px-2"><span class="fas fs-5 fa-edit"></span> Edit
+                                    </a>
+                                @endofficeCan
                             </div>
                         @endif
                     </div>
@@ -34,9 +36,11 @@
                                     alt="404" />
                             </div>
                             <div class="col-12 d-flex justify-content-center">
-                                <a href="{{ route('create_term_condition') }}" class="btn bg-gradient-primary"><i
-                                        class="fas fa-plus me-sm-2"></i> Add
-                                    Term & Condition</a>
+                                @officeCan($this_perm . 'create')
+                                    <a href="{{ route($this_route . 'create') }}" class="btn bg-gradient-primary"><i
+                                            class="fas fa-plus me-sm-2"></i> Add
+                                        Term & Condition</a>
+                                @endofficeCan
                             </div>
                         @endif
                         @if ($term)

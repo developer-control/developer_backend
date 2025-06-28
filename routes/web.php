@@ -158,7 +158,7 @@ Route::prefix('units')->name('unit.')->group(function () {
     Route::post('/create', [UnitController::class, 'store'])->name('store')->middleware('office.permission:create');
     Route::post('/update/{id}', [UnitController::class, 'update'])->name('update')->middleware('office.permission:edit');
     Route::delete('/delete/{id}', [UnitController::class, 'destroy'])->name('delete')->middleware('office.permission:delete');
-    Route::get('/option-units', [UnitController::class, 'optionUnit'])->name('option');
+    Route::get('/option', [UnitController::class, 'optionUnit'])->name('option');
 
     Route::prefix('request')->name('request.')->group(function () {
         Route::get('/', [UserUnitController::class, 'indexRequest'])->name('index')->middleware('office.permission:read');
@@ -174,7 +174,7 @@ Route::prefix('units')->name('unit.')->group(function () {
         Route::post('/create', [OwnershipUnitController::class, 'store'])->name('store')->middleware('office.permission:create');
         Route::post('/update/{id}', [OwnershipUnitController::class, 'update'])->name('update')->middleware('office.permission:edit');
         Route::delete('/delete/{id}', [OwnershipUnitController::class, 'destroy'])->name('delete')->middleware('office.permission:delete');
-        Route::get('/option-ownerships', [OwnershipUnitController::class, 'optionOwnership'])->name('option');
+        Route::get('/option', [OwnershipUnitController::class, 'optionOwnership'])->name('option');
     });
 });
 Route::prefix('facilities')->name('facility.')->group(function () {

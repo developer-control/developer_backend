@@ -14,9 +14,13 @@ use Yajra\DataTables\Facades\DataTables;
 
 class DeveloperController extends Controller
 {
+    const ROUTE = 'developer.';
+    const PERMISSION = 'developer>';
     public function __construct()
     {
-        $this->middleware(['auth', 'role_or_permission:superadmin|manage developer']);
+        $this->middleware(['auth']);
+        view()->share('this_route', self::ROUTE);
+        view()->share('this_perm', self::PERMISSION);
     }
     /**
      * Display a listing of the resource.

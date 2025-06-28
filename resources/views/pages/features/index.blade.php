@@ -1,4 +1,4 @@
-@extends('layouts.main', ['menu' => 'menu_feature'])
+@extends('layouts.main')
 @section('style')
     <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/dataTables.bootstrap5.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/responsive.bootstrap5.css') }}">
@@ -20,9 +20,11 @@
                                 <h6>Data Master Feature</h6>
                             </div>
                             <div class="col-md-6 text-end">
-                                <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal"
-                                    data-bs-target="#modal-create"><i class="fas fa-plus me-sm-2"></i> Add
-                                    Feature</button>
+                                @officeCan($this_perm . 'create')
+                                    <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal"
+                                        data-bs-target="#modal-create"><i class="fas fa-plus me-sm-2"></i> Add
+                                        Feature</button>
+                                @endofficeCan
                             </div>
                         </div>
                     </div>
@@ -71,7 +73,7 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <form action="{{ route('store_feature') }}" method="POST">
+                <form action="{{ route($this_route . 'store') }}" method="POST">
                     <div class="modal-body">
                         @csrf
                         <div class="form-group">
@@ -299,7 +301,7 @@
                     searchable: false
                 }
             ];
-            initializeDatatable('.datatable', "/features/datatable", columnData)
+            initializeDatatable('.datatable', "{{ route($this_route . 'data') }}", columnData)
 
         });
         $(document).on("click", ".edit-modal", function() {

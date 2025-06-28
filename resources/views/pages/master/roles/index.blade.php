@@ -1,4 +1,4 @@
-@extends('layouts.main', ['menu' => 'access_user', 'submenu' => 'master_role'])
+@extends('layouts.main')
 @section('style')
     <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/dataTables.bootstrap5.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/responsive.bootstrap5.css') }}">
@@ -7,6 +7,7 @@
         .choices__inner {
             border-radius: 8px;
             padding: .5rem .75rem;
+
         }
 
         .choices__list--multiple .choices__item {
@@ -31,9 +32,11 @@
                                 <h6>Setting Role Access</h6>
                             </div>
                             <div class="col-md-6 text-end">
-                                <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal"
-                                    data-bs-target="#modal-create"><i class="fas fa-plus me-sm-2"></i> Add
-                                    Role</button>
+                                @officeCan($this_perm . 'create')
+                                    <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal"
+                                        data-bs-target="#modal-create"><i class="fas fa-plus me-sm-2"></i> Add
+                                        Role</button>
+                                @endofficeCan
                             </div>
                         </div>
                     </div>
@@ -71,7 +74,7 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <form action="{{ route('store_role') }}" method="POST">
+                <form action="{{ route($this_route . 'store') }}" method="POST">
                     <div class="modal-body">
                         @csrf
                         <div class="form-group">
@@ -199,7 +202,7 @@
         let choiceCreate, choiceEdit;
         document.addEventListener('DOMContentLoaded', function() {
             // list for developers options
-            setInputChoices('/developers/option-developers').then(choices => {
+            setInputChoices("{{ route('developer.option') }}").then(choices => {
                 // console.log(choices); // Bisa digunakan di sini
                 const optionCreate = document.getElementById('developer_id');
                 const optionEdit = document.getElementById('developer_id-edit');
@@ -226,7 +229,7 @@
                     searchable: false
                 }
             ];
-            initializeDatatable('.datatable', "/access-users/role-datatable", columnData)
+            initializeDatatable('.datatable', "{{ route($this_route . 'data') }}", columnData)
 
         });
         $(document).on("click", ".edit-modal", function() {

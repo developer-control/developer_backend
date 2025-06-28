@@ -1,4 +1,4 @@
-@extends('layouts.main', ['menu' => 'menu_developer_bank'])
+@extends('layouts.main')
 @section('style')
     <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/dataTables.bootstrap5.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/responsive.bootstrap5.css') }}">
@@ -21,9 +21,11 @@
                                 <h6>Data Bank for Developer</h6>
                             </div>
                             <div class="col-md-6 text-end">
-                                <a href="{{ route('create_developer_bank') }}" class="btn bg-gradient-primary"><i
-                                        class="fas fa-plus me-sm-2"></i> Add
-                                    Bank </a>
+                                @officeCan($this_perm . 'create')
+                                    <a href="{{ route($this_route . 'create') }}" class="btn bg-gradient-primary"><i
+                                            class="fas fa-plus me-sm-2"></i> Add
+                                        Bank </a>
+                                @endofficeCan
                             </div>
                         </div>
                     </div>
@@ -115,7 +117,7 @@
                 }
             ];
             let url = {
-                url: "/developer-banks/datatable",
+                url: "{{ route($this_route . 'data') }}",
             };
             initializeDatatable('.datatable', url, columnData)
 

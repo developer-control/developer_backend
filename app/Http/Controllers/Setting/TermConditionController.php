@@ -11,11 +11,14 @@ use Illuminate\Http\Request;
 
 class TermConditionController extends Controller
 {
+    const ROUTE = 'term-condition.';
+    const PERMISSION = 'term-condition>';
     public function __construct()
     {
-        $this->middleware(['auth', 'role_or_permission:superadmin|manage term condition']);
+        $this->middleware(['auth']);
+        view()->share('this_route', self::ROUTE);
+        view()->share('this_perm', self::PERMISSION);
     }
-
     /**
      * Display a listing of the resource.
      */
@@ -42,7 +45,7 @@ class TermConditionController extends Controller
         $validatedData = $request->validated();
         TermCondition::create($validatedData);
         toast('New Term Condition has been created', 'success');
-        return redirect()->route('menu_term_condition');
+        return redirect()->route(self::ROUTE . 'index');
     }
 
 
@@ -69,7 +72,7 @@ class TermConditionController extends Controller
         // Mengupdate data term
         $term->update($validatedData);
         toast('Term Condition has been updated', 'success');
-        return redirect()->route('menu_term_condition');
+        return redirect()->route(self::ROUTE . 'index');
     }
 
     /**

@@ -12,6 +12,14 @@ use Yajra\DataTables\Facades\DataTables;
 
 class FaqController extends Controller
 {
+    const ROUTE = 'faq.';
+    const PERMISSION = 'faq>';
+    public function __construct()
+    {
+        // $this->middleware(['auth']);
+        view()->share('this_route', self::ROUTE);
+        view()->share('this_perm', self::PERMISSION);
+    }
     /**
      * Get Faqs.
      * 

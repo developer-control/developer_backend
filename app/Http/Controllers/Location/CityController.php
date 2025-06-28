@@ -15,9 +15,13 @@ use Yajra\DataTables\Facades\DataTables;
 
 class CityController extends Controller
 {
+    const ROUTE = 'location.city.';
+    const PERMISSION = 'location>city>';
     public function __construct()
     {
-        $this->middleware(['auth', 'role_or_permission:superadmin|manage city']);
+        $this->middleware(['auth']);
+        view()->share('this_route', self::ROUTE);
+        view()->share('this_perm', self::PERMISSION);
     }
     /**
      * Display a listing of the resource.
@@ -29,8 +33,6 @@ class CityController extends Controller
 
     public function indexOption(Request $request)
     {
-
-
         $cities = City::select('id', 'province_id', 'name');
         if ($request->search) {
             $cities->where('name', 'LIKE', '%' . $request->search . '%');

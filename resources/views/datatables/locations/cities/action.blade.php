@@ -4,16 +4,20 @@
     </button>
 
     <ul class="dropdown-menu">
-        <li>
-            <button class="dropdown-item edit-modal" data-bs-toggle="modal" data-bs-target="#modal-edit"
-                data-url="{{ route('update_city', ['id' => $city->id]) }}" data-name="{{ $city->name }}"
-                data-province_id="{{ $city->province_id }}"><i class="fas fa-edit me-3"></i> Edit</button>
-        </li>
-        <li>
-            <button class="dropdown-item delete-modal" data-bs-toggle="modal" data-bs-target="#modal-delete"
-                data-url="{{ route('delete_city', ['id' => $city->id]) }}" data-name="{{ $city->name }}"> <i
-                    class="fas fa-trash me-3"></i>
-                Delete</button>
-        </li>
+        @officeCan($this_perm . 'edit')
+            <li>
+                <button class="dropdown-item edit-modal" data-bs-toggle="modal" data-bs-target="#modal-edit"
+                    data-url="{{ route($this_route . 'update', ['id' => $city->id]) }}" data-name="{{ $city->name }}"
+                    data-province_id="{{ $city->province_id }}"><i class="fas fa-edit me-3"></i> Edit</button>
+            </li>
+        @endofficeCan
+        @officeCan($this_perm . 'delete')
+            <li>
+                <button class="dropdown-item delete-modal" data-bs-toggle="modal" data-bs-target="#modal-delete"
+                    data-url="{{ route($this_route . 'delete', ['id' => $city->id]) }}" data-name="{{ $city->name }}"> <i
+                        class="fas fa-trash me-3"></i>
+                    Delete</button>
+            </li>
+        @endofficeCan
     </ul>
 </div>

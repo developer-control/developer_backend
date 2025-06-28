@@ -11,6 +11,14 @@ use Yajra\DataTables\Facades\DataTables;
 
 class PermissionController extends Controller
 {
+    const ROUTE = 'permission.';
+    const PERMISSION = 'permission>';
+    public function __construct()
+    {
+        $this->middleware(['auth']);
+        view()->share('this_route', self::ROUTE);
+        view()->share('this_perm', self::PERMISSION);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -30,6 +38,29 @@ class PermissionController extends Controller
             ->addColumn('action', function (Permission $permission) {
                 $btn = view('datatables.permissions.action', compact('permission'))->render();
                 return $btn;
+            })
+            ->editColumn('type', function ($obj) {
+                $type = $obj->type;
+                switch ($type) {
+                    case 1:
+                        return 'View';
+                        break;
+
+                    case 2:
+                        return 'Create';
+                        break;
+
+                    case 3:
+                        return "Edit";
+                        break;
+                    case 4:
+                        return "Delete";
+                        break;
+
+                    default:
+                        return 'Action';
+                        break;
+                }
             })
             ->addIndexColumn()
             ->toJson();

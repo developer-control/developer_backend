@@ -12,9 +12,13 @@ use Yajra\DataTables\Facades\DataTables;
 
 class EmergencyController extends Controller
 {
+    const ROUTE = 'emergency.';
+    const PERMISSION = 'emergency>';
     public function __construct()
     {
-        $this->middleware(['auth', 'role_or_permission:superadmin|manage emergency']);
+        $this->middleware(['auth']);
+        view()->share('this_route', self::ROUTE);
+        view()->share('this_perm', self::PERMISSION);
     }
     /**
      * Display a listing of the resource.

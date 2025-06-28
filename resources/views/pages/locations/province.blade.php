@@ -1,4 +1,4 @@
-@extends('layouts.main', ['menu' => 'location', 'submenu' => 'location_province'])
+@extends('layouts.main')
 @section('style')
     <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/dataTables.bootstrap5.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/responsive.bootstrap5.css') }}">
@@ -20,11 +20,13 @@
                                 <h6>Setting Location Province</h6>
                             </div>
                             <div class="col-md-6 text-end">
-                                <button type="button" class="btn bg-gradient-primary mx-1" data-bs-toggle="modal"
-                                    data-bs-target="#modal-create"><i class="fas fa-plus me-sm-2"></i> Add
-                                    Province</button>
-                                <a href="{{ route('initialize_province') }}" class="btn bg-gradient-primary mx-1"><i
-                                        class="fas fa-location-arrow me-sm-2"></i> Initialize Province</a>
+                                @officeCan($this_perm . 'create')
+                                    <button type="button" class="btn bg-gradient-primary mx-1" data-bs-toggle="modal"
+                                        data-bs-target="#modal-create"><i class="fas fa-plus me-sm-2"></i> Add
+                                        Province</button>
+                                    <a href="{{ route($this_route . 'initialize') }}" class="btn bg-gradient-primary mx-1"><i
+                                            class="fas fa-location-arrow me-sm-2"></i> Initialize Province</a>
+                                @endofficeCan
                             </div>
                         </div>
                     </div>
@@ -59,7 +61,7 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <form action="{{ route('store_province') }}" method="POST">
+                <form action="{{ route($this_route . 'store') }}" method="POST">
                     <div class="modal-body">
                         @csrf
 
@@ -174,7 +176,7 @@
                     searchable: false
                 }
             ];
-            initializeDatatable('.datatable', "/locations/provinces/datatable", columnData)
+            initializeDatatable('.datatable', "{{ route($this_route . 'data') }}", columnData)
 
         });
         $(document).on("click", ".edit-modal", function() {

@@ -1,4 +1,4 @@
-@extends('layouts.main', ['menu' => 'access_user', 'submenu' => 'master_permission'])
+@extends('layouts.main')
 @section('style')
     <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/dataTables.bootstrap5.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/responsive.bootstrap5.css') }}">
@@ -31,9 +31,11 @@
                                 <h6>Setting Permission Access</h6>
                             </div>
                             <div class="col-md-6 text-end">
-                                <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal"
-                                    data-bs-target="#modal-create"><i class="fas fa-plus me-sm-2"></i> Add
-                                    Permission</button>
+                                @officeCan($this_perm . 'create')
+                                    <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal"
+                                        data-bs-target="#modal-create"><i class="fas fa-plus me-sm-2"></i> Add
+                                        Permission</button>
+                                @endofficeCan
                             </div>
                         </div>
                     </div>
@@ -44,6 +46,12 @@
                                     <tr>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             Name
+                                        </th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            Group
+                                        </th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            Type
                                         </th>
                                         <th
                                             class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
@@ -71,7 +79,7 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <form action="{{ route('store_permission') }}" method="POST">
+                <form action="{{ route($this_route . 'store') }}" method="POST">
                     <div class="modal-body">
                         @csrf
                         <div class="form-group">
@@ -173,13 +181,18 @@
     <script src="{{ asset('assets/src/plugins/datatables/js/dataTables.responsive.js') }}"></script>
     <script src="{{ asset('assets/src/plugins/datatables/js/responsive.bootstrap5.js') }}"></script>
     <script>
-        let choiceCreate, choiceEdit;
-
-
         $(function() {
             let columnData = [{
-                    data: 'name',
-                    name: 'name'
+                    data: 'menu',
+                    name: 'menu'
+                },
+                {
+                    data: 'group',
+                    name: 'group'
+                },
+                {
+                    data: 'type',
+                    name: 'type'
                 },
                 {
                     data: 'guard_name',
@@ -192,7 +205,7 @@
                     searchable: false
                 }
             ];
-            initializeDatatable('.datatable', "/access-users/permission-datatable", columnData)
+            initializeDatatable('.datatable', "{{ route($this_route . 'data') }}", columnData)
 
         });
         $(document).on("click", ".edit-modal", function() {

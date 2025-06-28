@@ -1,4 +1,4 @@
-@extends('layouts.main', ['menu' => 'menu_developer_bank'])
+@extends('layouts.main')
 @section('style')
     <link rel="stylesheet" href="{{ asset('assets/choices/css/choices.min.css') }}">
     <style>
@@ -17,6 +17,7 @@
         .choices__inner {
             border-radius: 8px;
             padding: .5rem .75rem;
+            background-color: #fff !important;
         }
 
         .choices__list--multiple .choices__item {
@@ -39,7 +40,7 @@
                         <h6 class="mb-1">Create Developer Bank</h6>
                     </div>
                     <div class="card-body p-3">
-                        <form action="{{ route('store_developer_bank') }}" enctype="multipart/form-data" method="POST">
+                        <form action="{{ route($this_route . 'store') }}" enctype="multipart/form-data" method="POST">
                             @csrf
                             <div class="row">
                                 <div class="col-md-5 mb-3">
@@ -135,7 +136,7 @@
             const optionDeveloper = document.getElementById('developer_id');
 
             if (optionDeveloper) {
-                setInputChoices('/developers/option-developers').then(choices => {
+                setInputChoices("{{ route('developer.option') }}").then(choices => {
                     const oldDeveloper = document.getElementById('old_developer');
                     let id = oldDeveloper.value ? Number(oldDeveloper.value) : null;
                     developerOption = initializeChoice(optionDeveloper, choices, id);

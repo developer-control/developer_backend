@@ -14,9 +14,13 @@ use Yajra\DataTables\Facades\DataTables;
 
 class ProvinceController extends Controller
 {
+    const ROUTE = 'location.province.';
+    const PERMISSION = 'location>province>';
     public function __construct()
     {
-        $this->middleware(['auth', 'role_or_permission:superadmin|manage province']);
+        $this->middleware(['auth']);
+        view()->share('this_route', self::ROUTE);
+        view()->share('this_perm', self::PERMISSION);
     }
     /**
      * Display a listing of the resource.

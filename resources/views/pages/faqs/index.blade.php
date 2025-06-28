@@ -1,4 +1,4 @@
-@extends('layouts.main', ['menu' => 'menu_faq'])
+@extends('layouts.main')
 @section('style')
     <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/dataTables.bootstrap5.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/responsive.bootstrap5.css') }}">
@@ -28,9 +28,11 @@
                                 <h6>Data FAQ</h6>
                             </div>
                             <div class="col-md-6 text-end">
-                                <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal"
-                                    data-bs-target="#modal-create"><i class="fas fa-plus me-sm-2"></i> Add
-                                    FAQ</button>
+                                @officeCan($this_perm . 'create')
+                                    <button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal"
+                                        data-bs-target="#modal-create"><i class="fas fa-plus me-sm-2"></i> Add
+                                        FAQ</button>
+                                @endofficeCan
                             </div>
                         </div>
                     </div>
@@ -71,7 +73,7 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <form action="{{ route('store_faq') }}" method="POST">
+                <form action="{{ route($this_route . 'store') }}" method="POST">
                     <div class="modal-body">
                         @csrf
                         <div class="form-group">
@@ -216,7 +218,7 @@
                 }
             ];
             let url = {
-                url: "/faqs/datatable",
+                url: "{{ route($this_route . 'data') }}",
 
             };
             initializeDatatable('.datatable', url, columnData)

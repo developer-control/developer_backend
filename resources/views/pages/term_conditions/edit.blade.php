@@ -1,4 +1,4 @@
-@extends('layouts.main', ['menu' => 'menu_term_condition'])
+@extends('layouts.main')
 @section('style')
     <link href="{{ asset('assets/quill/image-uploader/dist/quill.snow.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/quill/image-uploader/dist/quill.imageUploader.min.css') }}" rel="stylesheet" />
@@ -20,7 +20,7 @@
                         <h6 class="mb-1">Edit Term Condition</h6>
                     </div>
                     <div class="card-body p-3">
-                        <form action="{{ route('update_term_condition', ['id' => $term->id]) }}"
+                        <form action="{{ route($this_route . 'update', ['id' => $term->id]) }}"
                             enctype="multipart/form-data" method="POST">
                             @csrf
                             <div class="form-floating mb-3">

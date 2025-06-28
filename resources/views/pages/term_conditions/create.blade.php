@@ -1,4 +1,4 @@
-@extends('layouts.main', ['menu' => 'menu_term_condition'])
+@extends('layouts.main')
 @section('style')
     <style>
     </style>
@@ -22,7 +22,7 @@
                         <h6 class="mb-1">Create Term Condition</h6>
                     </div>
                     <div class="card-body p-3">
-                        <form action="{{ route('store_term_condition') }}" enctype="multipart/form-data" method="POST">
+                        <form action="{{ route($this_route . 'store') }}" enctype="multipart/form-data" method="POST">
                             @csrf
                             <div class="form-floating mb-3">
                                 <input type="text" class="form-control @error('title') is-invalid @enderror"

@@ -11,6 +11,14 @@ use Yajra\DataTables\DataTables;
 
 class FeatureController extends Controller
 {
+    const ROUTE = 'feature.';
+    const PERMISSION = 'feature>';
+    public function __construct()
+    {
+        $this->middleware(['auth']);
+        view()->share('this_route', self::ROUTE);
+        view()->share('this_perm', self::PERMISSION);
+    }
     /**
      * Display a listing of the resource.
      */

@@ -13,11 +13,15 @@ use Yajra\DataTables\Facades\DataTables;
 
 class RolePermissionController extends Controller
 {
-
+    const ROUTE = 'role.';
+    const PERMISSION = 'role>';
     public function __construct()
     {
         $this->middleware(['auth']);
+        view()->share('this_route', self::ROUTE);
+        view()->share('this_perm', self::PERMISSION);
     }
+
 
     /**
      * Display page Role Access Master.

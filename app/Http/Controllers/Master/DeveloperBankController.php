@@ -12,9 +12,13 @@ use Yajra\DataTables\DataTables;
 
 class DeveloperBankController extends Controller
 {
+    const ROUTE = 'developer.bank.';
+    const PERMISSION = 'developer>bank>';
     public function __construct()
     {
-        $this->middleware(['auth', 'role_or_permission:superadmin|manage developer bank']);
+        $this->middleware(['auth']);
+        view()->share('this_route', self::ROUTE);
+        view()->share('this_perm', self::PERMISSION);
     }
     /**
      * Display a listing of the resource.
@@ -71,7 +75,7 @@ class DeveloperBankController extends Controller
             return back();
         }
         toast('New bank has been created', 'success');
-        return redirect()->route('menu_developer_bank');
+        return redirect()->route(self::ROUTE . 'index');
     }
 
 
@@ -100,7 +104,7 @@ class DeveloperBankController extends Controller
         }
         $bank->update($request->all());
         toast('Bank has been updated', 'success');
-        return redirect()->route('menu_developer_bank');
+        return redirect()->route(self::ROUTE . 'index');
     }
 
     /**
