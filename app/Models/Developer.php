@@ -17,6 +17,15 @@ class Developer extends Model
     {
         return $this->hasMany(User::class);
     }
+    public function features()
+    {
+        return $this->belongsToMany(
+            Feature::class,
+            'developer_feature',
+            'developer_id', // Foreign key di tabel pivot yang mengacu ke Developers
+            'feature_id', // Foreign key di tabel pivot yang mengacu ke Features
+        );
+    }
     // public function developerSubscriptions()
     // {
     //     return $this->hasMany(DeveloperSubscription::class, 'developer_id');

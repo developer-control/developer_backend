@@ -91,6 +91,7 @@ class PermissionDictionary
         ['name' => 'developer>bank>delete', 'menu' => 'Developer Bank', 'group' => 'admin', 'type' => 4],
 
         ['name' => 'developer>permission>edit', 'menu' => 'Developer Permission', 'group' => 'admin', 'type' => 3],
+        ['name' => 'developer>feature>edit', 'menu' => 'Developer Feature', 'group' => 'admin', 'type' => 3],
 
         ['name' => 'support>read', 'menu' => 'Bantuan', 'group' => 'admin', 'type' => 1],
         ['name' => 'support>create', 'menu' => 'Bantuan', 'group' => 'admin', 'type' => 2],

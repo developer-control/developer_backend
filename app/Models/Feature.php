@@ -13,4 +13,8 @@ class Feature extends Model
     {
         return $this->belongsToMany(Subscription::class);
     }
+    public function developers()
+    {
+        return $this->belongsToMany(Developer::class);
+    }
 }

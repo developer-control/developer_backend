@@ -125,7 +125,7 @@ class MenuBuilder
                 [
                     'label' => 'Developer',
                     'icon' => 'fas fa-snowplow',
-                    'active' => ['developer.index'],
+                    'active' => ['developer.index', 'developer.permission.*', 'developer.feature.*'],
                     'route' => 'developer.index',
                     'can' => ['developer>read'],
                     'submenu' => null
