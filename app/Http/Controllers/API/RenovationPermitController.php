@@ -23,7 +23,7 @@ class RenovationPermitController extends Controller
      * @param  string $unit_id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index(Request $request, string $unit_id)
+    public function index(Request $request, string $slug, string $unit_id)
     {
         $request->validate([
             'project_id' => 'int|required',
@@ -43,7 +43,8 @@ class RenovationPermitController extends Controller
             'status' => 'string|nullable',
         ]);
         $limit = $request->limit ?? 10;
-        $permits = RenovationPermit::where('project_unit_id', $unit_id);
+        $developer = $request->developer;
+        $permits = RenovationPermit::where('project_unit_id', $unit_id)->where('developer_id', $developer->id);
         if ($request->status) {
             $permits->where('status', $request->status);
         }
@@ -62,7 +63,7 @@ class RenovationPermitController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
 
-    public function store(RenovationPermitRequest $request, string $unit_id)
+    public function store(RenovationPermitRequest $request, string $slug, string $unit_id)
     {
         $unit = ProjectUnit::find($unit_id);
         if (!$unit) {
@@ -140,7 +141,7 @@ class RenovationPermitController extends Controller
      * @param string $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(string $unit_id, string $id)
+    public function show(string $slug, string $unit_id, string $id)
     {
         $unit = ProjectUnit::find($unit_id);
         if (!$unit) {
@@ -164,7 +165,7 @@ class RenovationPermitController extends Controller
      * @param  string $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(RenovationPermitRequest $request, string $unit_id, string $id)
+    public function update(RenovationPermitRequest $request, string $slug, string $unit_id, string $id)
     {
         $unit = ProjectUnit::find($unit_id);
         if (!$unit) {
@@ -207,7 +208,7 @@ class RenovationPermitController extends Controller
      * @param  string $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(string $unit_id, string $id)
+    public function destroy(string $slug, string $unit_id, string $id)
     {
         $unit = ProjectUnit::find($unit_id);
         if (!$unit) {

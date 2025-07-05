@@ -22,7 +22,6 @@ class ComplainRequest extends FormRequest
     public function rules()
     {
         return array_merge([
-            'developer_id' => ['required', 'int'],
 
             /**
              * required jika type adalah lingkungan

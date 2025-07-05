@@ -24,7 +24,7 @@ class ClaimUnitRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'developer_id' => 'required',
+
             'project_id' => 'required',
             'project_area_id' => 'required',
             'project_bloc_id' => 'required',

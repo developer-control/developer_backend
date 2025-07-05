@@ -36,7 +36,7 @@ class PaymentController extends Controller
      * @param  \App\Http\Requests\Api\PaymentQuery $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index(string $unit_id, PaymentQuery $request)
+    public function index(string $slug, string $unit_id, PaymentQuery $request)
     {
         $limit = $request->limit ?? 6;
         $payments = Payment::where('project_unit_id', $unit_id);
@@ -60,7 +60,7 @@ class PaymentController extends Controller
      * @param  string $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(string $unit_id, string $id)
+    public function show(string $slug, string $unit_id, string $id)
     {
         $payment = Payment::with(['bills', 'paymentData', 'paymentData.developerBank'])
             ->where('project_unit_id', $unit_id)
@@ -83,7 +83,7 @@ class PaymentController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(string $unit_id, Request $request)
+    public function store(string $slug, string $unit_id, Request $request)
     {
         $request->validate(['billed_at' => 'required|array']);
         $bill =  $this->paymentService->getBill($unit_id, $request->billed_at)->first();
@@ -127,7 +127,7 @@ class PaymentController extends Controller
      * @param  string $unit_id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function indexBank(string $unit_id)
+    public function indexBank(string $slug, string $unit_id)
     {
         $unit = ProjectUnit::find($unit_id);
         $banks = DeveloperBank::where('developer_id', $unit->developer_id)->get();
@@ -143,7 +143,7 @@ class PaymentController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function storeData(string $unit_id, Request $request)
+    public function storeData(string $slug, string $unit_id, Request $request)
     {
         $request->validate([
             'invoice_code' => 'required',
@@ -191,7 +191,7 @@ class PaymentController extends Controller
      * @param  string $unit_id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function showInfoPayment(string $unit_id)
+    public function showInfoPayment(string $slug, string $unit_id)
     {
         $info = PaymentMaster::where('type', 'payment-info')->first();
         return ApiResponse::success($info->only(['title', 'description']), 'Get payment info data success', 200);

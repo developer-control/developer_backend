@@ -39,9 +39,7 @@ class DeveloperController extends Controller
         $developers = Developer::query();
 
         return DataTables::eloquent($developers)
-            ->editColumn('province.name', function (Developer $developer) {
-                return @$developer->province->name;
-            })
+
             ->addColumn('action', function (Developer $developer) {
                 $btn = view('datatables.developers.action', compact('developer'))->render();
                 return $btn;
@@ -79,6 +77,7 @@ class DeveloperController extends Controller
     {
         $developer = Developer::find($id);
         $developer->name = $request->name;
+        $developer->slug = $request->slug;
         $developer->save();
 
         toast('Developer has been updated', 'success');

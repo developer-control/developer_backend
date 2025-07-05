@@ -19,26 +19,21 @@ class MenuController extends Controller
      * @param  string  $developer_id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index($developer_id)
+    public function index(Request $request)
     {
-        $hasAccess = Feature::where('group', 'api')
-            ->where(function ($q) use ($developer_id) {
-                $q->whereHas('subscriptions.developerSubscriptions', function ($q) use ($developer_id) {
-                    $q->where('developer_id', $developer_id);
-                })
-                    ->orWhere('type', 'free');
-            })->pluck('id')->all();
+        $developer = $request->developer;
         $features = Feature::where('group', 'api')->get();
-        $developer = Developer::find($developer_id);
         $data = [];
         foreach ($features as $feature) {
-            $canAccess = in_array($feature->id, $hasAccess) ? 1 : 0;
+            $canAccess = $feature->developers()
+                ->where('id', $developer->id)
+                ->exists() ? 1 : 0;
             $data[] = [
-                'id' => $feature->id,
+                'id' => (int) $feature->id,
                 'key' => $feature->key,
                 'name' => $feature->name,
                 'developer' => new DeveloperResource($developer),
-                'has_access' => $canAccess,
+                'has_access' => (int) $canAccess,
             ];
         }
         return ApiResponse::success($data, 'Get menu access developer success.');

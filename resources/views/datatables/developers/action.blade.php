@@ -17,7 +17,8 @@
     @officeCan($this_perm . 'edit')
         <a class="nav-link edit-modal" role="button" data-bs-target="#modal-edit" data-bs-toggle="modal"
             data-bs-placement="bottom" title="Edit developer"
-            data-url="{{ route($this_route . 'update', ['id' => $developer->id]) }}" data-name="{{ $developer->name }}">
+            data-url="{{ route($this_route . 'update', ['id' => $developer->id]) }}" data-name="{{ $developer->name }}"
+            data-slug="{{ $developer->slug }}">
             <span class="fas fa-edit text-secondary mx-2"></span>
         </a>
     @endofficeCan

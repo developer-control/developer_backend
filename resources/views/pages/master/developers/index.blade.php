@@ -40,6 +40,9 @@
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             Name
                                         </th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            Slug
+                                        </th>
                                         <th class="text-secondary text-xs font-weight-bolder opacity-7">Action</th>
                                     </tr>
                                 </thead>
@@ -114,6 +117,17 @@
                             @enderror
 
                         </div>
+                        <div class="form-group">
+                            <label for="developer-slug" class="col-form-label">Developer Slug:</label>
+                            <input class="form-control @error('slug') is-invalid @enderror" placeholder="Developer Slug..."
+                                type="text" id="developer-slug" name="slug" value="{{ old('slug') }}" required>
+                            @error('slug')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+
+                        </div>
 
                     </div>
                     <div class="modal-footer">
@@ -177,6 +191,10 @@
                     name: 'name'
                 },
                 {
+                    data: 'slug',
+                    name: 'slug'
+                },
+                {
                     data: 'action',
                     name: 'action',
                     orderable: false,
@@ -189,7 +207,9 @@
         $(document).on("click", ".edit-modal", function() {
             let url = $(this).data('url');
             let name = $(this).data('name');
+            let slug = $(this).data('slug');
             $("#developer-name").val(name);
+            $("#developer-slug").val(slug);
             $('#edit-form').attr('action', url);
         });
         $(document).on("click", ".delete-modal", function() {

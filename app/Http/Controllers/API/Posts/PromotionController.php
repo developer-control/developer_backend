@@ -23,13 +23,13 @@ class PromotionController extends Controller
     public function index(PromotionQuery $request)
     {
         $limit = $request->limit ?? 10;
+        $developer = $request->developer;
         $promotions = Promotion::with(['createdBy:id,name'])->where('is_active', 1);
         if ($request->search) {
             $promotions->where('title', 'LIKE', '%' . $request->search . '%');
         }
-        if ($request->developer_id) {
-            $promotions->where('developer_id', $request->developer_id);
-        }
+        $promotions->where('developer_id', $developer->id);
+
         $results = $promotions->paginate($limit);
         return ApiResponse::success(PromotionResource::collection($results), 'Get promotions success.');
     }
@@ -45,7 +45,7 @@ class PromotionController extends Controller
      * @param  string  $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(string $id)
+    public function show(string $slug, string $id)
     {
         $promotion = Promotion::with(['createdBy:id,name'])->find($id);
         if (!$promotion) {

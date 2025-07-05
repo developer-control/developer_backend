@@ -6,13 +6,28 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 // use Spatie\Permission\Traits\HasPermissions;
 use Spatie\Permission\Traits\HasRoles;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
 class Developer extends Model
 {
     use SoftDeletes;
+    use HasSlug;
     use HasRoles;
     protected $guard_name = 'web'; // atau 'developer', tergantung konfigurasimu
     protected $guarded = [];
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('name')
+            ->saveSlugsTo('slug')
+            ->doNotGenerateSlugsOnUpdate();
+    }
+
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
     public function users()
     {
         return $this->hasMany(User::class);

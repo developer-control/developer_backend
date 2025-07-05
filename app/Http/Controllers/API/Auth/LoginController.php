@@ -8,32 +8,34 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
 use App\Helpers\ApiResponse;
+use App\Models\Developer;
 use Illuminate\Auth\Events\Verified;
 
 class LoginController extends Controller
 {
+
     /**
      * Login by Email.
      * 
      * Handle a login auth request to the api.
      * @unauthenticated
      *  
-     * @param  string  $provider
+     * @param  string  $slug
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login(Request $request)
+    public function login(Request $request, $slug)
     {
+
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
             'device_name' => 'required',
             'device_token' => 'string',
         ]);
-
+        $developer = $request->developer;
         // getting user
-        $user = User::where('email', $request->email)->first();
-
+        $user = User::where('email', $request->email)->where('developer_id', $developer->id)->first();
         // checking credentials
         if (!$user || !Hash::check($request->password, $user->password)) {
             return ApiResponse::error('Email or password is incorrect', 422);
@@ -60,23 +62,29 @@ class LoginController extends Controller
      * Handle a login by provider request to the api.
      *
      * @unauthenticated
+     * @param  string  $slug
      * @param  string  $provider
+     * @urlParam slug string required Developer slug. Example: pt-tata-enjiniring
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function loginProvider(string $provider, Request $request)
+    public function loginProvider(Request $request, string $slug, string $provider)
     {
         $request->validate([
             'token' => 'required',
             'device_name' => 'required',
             'device_token' => 'string',
         ]);
+        $developer = $request->developer;
         // Getting the user from socialite using token from google
         $socialUser = Socialite::driver($provider)->stateless()->userFromToken($request->token);
 
         // Getting or creating user from db
         $user = User::firstOrCreate(
-            ['email' => $socialUser->email],
+            [
+                'email' => $socialUser->email,
+                'developer_id' => $developer->id
+            ],
             [
                 'email_verified_at' => now(),
                 'name' => $socialUser->name,

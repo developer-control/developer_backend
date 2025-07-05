@@ -22,13 +22,13 @@ class BannerController extends Controller
     public function index(BannerQuery $request)
     {
         $limit = $request->limit ?? 10;
+        $developer = $request->developer;
         $banners = Banner::with(['createdBy:id,name'])->where('is_active', 1);
         if ($request->search) {
             $banners->where('title', 'LIKE', '%' . $request->search . '%');
         }
-        if ($request->developer_id) {
-            $banners->where('developer_id', $request->developer_id);
-        }
+        $banners->where('developer_id', $developer->id);
+
         $results = $banners->paginate($limit);
         return ApiResponse::success(BannerResource::collection($results), 'Get banners success.');
     }
@@ -44,7 +44,7 @@ class BannerController extends Controller
      * @param  string  $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(string $id)
+    public function show(string $slug, string $id)
     {
         $banner = Banner::with(['createdBy:id,name'])->find($id);
         if (!$banner) {

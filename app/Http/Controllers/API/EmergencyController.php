@@ -25,7 +25,8 @@ class EmergencyController extends Controller
             'search' => 'string|nullable',
             'limit' => 'int|nullable'
         ]);
-        $areas = EmergencyNumber::with(['project']);
+        $developer = $request->developer;
+        $areas = EmergencyNumber::with(['project'])->where('developer_id', $developer->id);
         if ($request->search) {
             $areas->where('name', 'LIKE', '%' . $request->search . '%');
         }

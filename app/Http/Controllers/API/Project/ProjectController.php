@@ -20,13 +20,13 @@ class ProjectController extends Controller
      */
     public function index(ProjectQuery $request)
     {
+        $developer = $request->developer;
         $limit = $request->limit ?? 10;
-        $projects = Project::with(['city:id,name', 'developer:id,name'])->select('id', 'name', 'city_id', 'developer_id');
+        $projects = Project::with(['city:id,name', 'developer:id,name'])
+            ->select('id', 'name', 'city_id', 'developer_id')
+            ->where('developer_id', $developer->id);
         if ($request->search) {
             $projects->where('name', 'LIKE', '%' . $request->search . '%');
-        }
-        if ($request->developer_id) {
-            $projects->where('developer_id', $request->developer_id);
         }
         if ($request->city_id) {
             $projects->where('city_id', $request->city_id);

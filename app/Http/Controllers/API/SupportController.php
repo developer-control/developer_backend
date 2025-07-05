@@ -22,10 +22,10 @@ class SupportController extends Controller
     {
         $request->validate([
             'search' => 'string|nullable',
-            'developer_id' => 'string|nullable',
             'limit' => 'string|nullable'
         ]);
-        $supports = Support::with(['developer:id,name'])->select('id', 'title', 'value', 'type', 'developer_id')->where('developer_id', $request->developer_id);
+        $developer = $request->developer;
+        $supports = Support::with(['developer:id,name'])->select('id', 'title', 'value', 'type', 'developer_id')->where('developer_id', $developer->id);
         if ($request->search) {
             $supports->where('name', 'LIKE', '%' . $request->search . '%');
         }

@@ -17,10 +17,11 @@ class BillController extends Controller
      *
      * api for get total bill from unit 
      *
+     * @param  string  $slug
      * @param  string  $unit_id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function showTotalBill(string $unit_id)
+    public function showTotalBill(string $slug, string $unit_id)
     {
         $bills = Bill::where('project_unit_id', $unit_id)
             ->where('status', 'not_paid')
@@ -32,10 +33,11 @@ class BillController extends Controller
      *
      * api for get total bill from unit that have not yet been issued
      *
+     * @param  string  $slug
      * @param  string  $unit_id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index(string $unit_id)
+    public function index(string $slug, string $unit_id)
     {
         $bills = Bill::where('project_unit_id', $unit_id)
             ->where('status', 'not_paid')
@@ -53,7 +55,7 @@ class BillController extends Controller
      * @param  \App\Http\Requests\Api\DetailBillQuery  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function showListBill(string $unit_id, DetailBillQuery $request)
+    public function showListBill(string $slug, string $unit_id, DetailBillQuery $request)
     {
         $bills = Bill::where('project_unit_id', $unit_id)
             ->whereMonth('billed_at', $request->month)

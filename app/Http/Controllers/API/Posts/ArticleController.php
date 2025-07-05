@@ -26,15 +26,16 @@ class ArticleController extends Controller
     public function index(ArticleQuery $request)
     {
         $limit = $request->limit ?? 10;
+        $developer = $request->developer;
         $articles = Article::with(['createdBy:id,name', 'tags:id,name']);
         if ($request->search) {
             $articles->where('title', 'LIKE', '%' . $request->search . '%');
         }
-        if ($request->developer_id) {
-            $articles->where(function ($q) use ($request) {
-                $q->whereNull('developer_id')->orWhere('developer_id', $request->developer_id);
-            });
-        }
+
+        $articles->where(function ($q) use ($developer) {
+            $q->whereNull('developer_id')->orWhere('developer_id', $developer->id);
+        });
+
         if ($request->tag_id) {
             $articles->whereHas('tags', function ($query) use ($request) {
                 $query->where('tags.id', $request->tag_id);
@@ -55,13 +56,12 @@ class ArticleController extends Controller
      */
     public function indexTag(TagQuery $request)
     {
-
+        $developer = $request->developer;
         $tags = Tag::has('articles');
-        if ($request->developer_id) {
-            $tags->whereHas('articles', function ($q) use ($request) {
-                $q->whereNull('developer_id')->orWhere('developer_id', $request->developer_id);
-            });
-        }
+        $tags->whereHas('articles', function ($q) use ($developer) {
+            $q->whereNull('developer_id')->orWhere('developer_id', $developer->id);
+        });
+
         if ($request->search) {
             $tags->where('name', 'LIKE', '%' . $request->search . '%');
         }
@@ -82,7 +82,7 @@ class ArticleController extends Controller
      * @param  string  $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(string $id)
+    public function show(string $slug, string $id)
     {
         $article = Article::with(['createdBy:id,name'])->find($id);
         if (!$article) {

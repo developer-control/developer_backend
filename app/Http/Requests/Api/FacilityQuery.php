@@ -24,7 +24,6 @@ class FacilityQuery extends FormRequest
         return [
             "limit" => 'int|nullable',
             "search" => 'string|nullable',
-            "developer_id" => 'int|nullable',
             "project_id" => 'required',
             /**
              * Page number

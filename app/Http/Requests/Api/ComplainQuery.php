@@ -24,7 +24,6 @@ class ComplainQuery extends FormRequest
         return [
             "limit" => 'int|nullable',
             "search" => 'string|nullable',
-            "developer_id" => 'int|nullable',
             /**
              * type complain
              * 

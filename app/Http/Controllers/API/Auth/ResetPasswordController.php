@@ -7,14 +7,9 @@ use App\Http\Controllers\Controller;
 use App\Mail\ResetPasswordMail;
 use App\Models\PasswordReset;
 use App\Models\User;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Password;
-use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Rules;
-use Illuminate\Contracts\Auth\CanResetPassword;
 
 class ResetPasswordController extends Controller
 {
@@ -30,17 +25,21 @@ class ResetPasswordController extends Controller
     public function sendResetLink(Request $request)
     {
         $request->validate(['email' => 'required|email']);
+        $developer = $request->developer;
         // Cek apakah email terdaftar
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('email', $request->email)
+            ->where('developer_id', $developer->id)
+            ->first();
         if (!$user) {
             return ApiResponse::error('Email not found', 404);
         }
         // Generate OTP
         $otp = random_int(100000, 999999);
-        PasswordReset::where('email', $request->email)->delete();
+        PasswordReset::where('email', $request->email)->where('developer_id', $developer->id)->delete();
         PasswordReset::create(
             [
                 'email' => $request->email,
+                'developer_id' => $developer->id,
                 'token' => $otp,
                 'otp' => $otp,
                 'otp_expires_at' => now()->addMinutes(10),
@@ -65,11 +64,15 @@ class ResetPasswordController extends Controller
             'email' => 'required|email',
             'otp' => 'required'
         ]);
-        $user = User::where('email', $request->email)->first();
+        $developer = $request->developer;
+        $user = User::where('email', $request->email)
+            ->where('developer_id', $developer->id)
+            ->first();
         if (!$user) {
             ApiResponse::error('User not found', 404);
         }
         $resetRequest = PasswordReset::where('email', $request->email)
+            ->where('developer_id', $developer->id)
             ->where('otp', $request->otp)
             ->where('otp_expires_at', '>', now())
             ->first();
@@ -98,9 +101,11 @@ class ResetPasswordController extends Controller
             'email' => 'required|email',
             'password' => ['required', 'confirmed', Rules\Password::defaults()]
         ]);
+        $developer = $request->developer;
         // Cek OTP
         $resetRequest = PasswordReset::where('email', $request->email)
             ->where('otp', $request->otp)
+            ->where('developer_id', $developer->id)
             ->where('otp_expires_at', '>', now())
             ->first();
 
@@ -109,12 +114,14 @@ class ResetPasswordController extends Controller
         }
 
         // Update password user
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('email', $request->email)
+            ->where('developer_id', $developer->id)
+            ->first();
         $user->password = bcrypt($request->password);
         $user->save();
 
         // Hapus OTP setelah reset password
-        PasswordReset::where('email', $request->email)->delete();
+        PasswordReset::where('email', $request->email)->where('developer_id', $developer->id)->delete();
 
         return response()->json(['message' => 'Password reset successfully']);
     }

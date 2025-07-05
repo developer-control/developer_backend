@@ -21,7 +21,9 @@ class AreaController extends Controller
     public function index(ProjectAreaQuery $request)
     {
         $limit = $request->limit ?? 10;
-        $areas = ProjectArea::select('id', 'name');
+        $developer = $request->developer;
+        $areas = ProjectArea::select('id', 'name')
+            ->where('developer_id', $developer->id);
         if ($request->search) {
             $areas->where('name', 'LIKE', '%' . $request->search . '%');
         }

@@ -8,7 +8,6 @@ use App\Http\Requests\Api\AccessCardQuery;
 use App\Http\Requests\Api\AccessCardRequest;
 use App\Http\Resources\Api\AccessCardResource;
 use App\Models\AccessCard;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class AccessCardController extends Controller
@@ -23,15 +22,15 @@ class AccessCardController extends Controller
      */
     public function index(AccessCardQuery $request)
     {
+        $developer = $request->developer;
         $limit = $request->limit ?? 10;
         $cards = AccessCard::with([
             'developer:id,name',
             'projectUnit:id,name'
         ])
-            ->where('user_id', $request->user()->id);
-        if ($request->developer_id) {
-            $cards->where('developer_id', $request->developer_id);
-        }
+            ->where('user_id', $request->user()->id)
+            ->where('developer_id', $developer->id);
+
         if ($request->project_unit_id) {
             $cards->where('project_unit_id', $request->project_unit_id);
         }
@@ -53,10 +52,11 @@ class AccessCardController extends Controller
      */
     public function store(AccessCardRequest $request)
     {
+        $developer = $request->developer;
         DB::beginTransaction();
         $card = AccessCard::create([
             'user_id' => $request->user()->id,
-            'developer_id' => $request->developer_id,
+            'developer_id' => $developer->id,
             'project_unit_id' => $request->project_unit_id,
             'name' => $request->name,
             'vehicle_number' => $request->vehicle_number,
@@ -74,10 +74,10 @@ class AccessCardController extends Controller
      * 
      * api for detail of access card from database
      *
-     * @param  int $id
+     * 
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(int $id)
+    public function show(string $slug, int $id)
     {
         $card = AccessCard::find($id);
         if (!$card) {
@@ -94,17 +94,18 @@ class AccessCardController extends Controller
      * api for user update request for complain
      *
      * @param  \App\Http\Requests\Api\AccessCardRequest   $request
-     * @param  int $id
+     * @param  string $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(AccessCardRequest $request, string $id)
+    public function update(AccessCardRequest $request, string $slug, string $id)
     {
         $card = AccessCard::find($id);
         if (!$card) {
             return ApiResponse::error('Access card not found', 404);
         }
+        $developer = $request->developer;
         DB::beginTransaction();
-        $card->developer_id = $request->developer_id;
+        $card->developer_id = $developer->id;
         $card->project_unit_id = $request->project_unit_id;
         $card->name = $request->name;
         $card->vehicle_number = $request->vehicle_number;
@@ -122,10 +123,10 @@ class AccessCardController extends Controller
      * 
      * api for user delete for access card
      *
-     * @param  int $id
+     * @param  AccessCard $accessCard
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(string $id)
+    public function destroy(string $slug, string $id)
     {
         $card = AccessCard::find($id);
         if (!$card) {

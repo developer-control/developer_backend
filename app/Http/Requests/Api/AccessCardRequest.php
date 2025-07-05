@@ -22,7 +22,7 @@ class AccessCardRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'developer_id' => ['required', 'int'],
+
             'project_unit_id' => ['int', 'required'],
             'name' => ['required', 'string'],
             'vehicle_number' => 'string|nullable',

@@ -21,6 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'office.permission' => \App\Http\Middleware\OfficePermission::class,
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
             'verified.api' => \App\Http\Middleware\EnsureEmailIsVerifiedForAPI::class,
+            'api.developer' => \App\Http\Middleware\ApiDeveloper::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

@@ -27,6 +27,7 @@ class ComplainController extends Controller
      */
     public function index(ComplainQuery $request)
     {
+        $developer = $request->developer;
         $limit = $request->limit ?? 10;
         $complains = Complain::with([
             'developer:id,name',
@@ -35,15 +36,13 @@ class ComplainController extends Controller
             'projectUnit:id,name',
             'solvedBy:id,name',
         ])
-            ->where('user_id', $request->user()->id);
+            ->where('user_id', $request->user()->id)
+            ->where('developer_id', $developer->id);
         if ($request->type) {
             $complains->where('type', $request->type); //unit, lingkungan, lainnya
         }
         if ($request->status) {
             $complains->where('status', $request->status); //request, finished
-        }
-        if ($request->developer_id) {
-            $complains->where('developer_id', $request->developer_id);
         }
         if ($request->search) {
             $complains->where('title', 'like', '%' . $request->search . '%');
@@ -61,6 +60,7 @@ class ComplainController extends Controller
      */
     public function store(ComplainRequest $request)
     {
+        $developer = $request->developer;
         try {
             DB::beginTransaction();
             //code...
@@ -78,7 +78,7 @@ class ComplainController extends Controller
             }
             $complain = Complain::create([
                 'user_id' => $request->user()->id,
-                'developer_id' => $request->developer_id,
+                'developer_id' => $developer->id,
                 'project_id' => $request->project_id ?? @$unit?->projectBloc?->projectArea?->project_id,
                 'project_area_id' => $request->project_area_id ?? @$unit?->projectBloc?->project_area_id,
                 'project_unit_id' => $request->project_unit_id,
@@ -111,7 +111,7 @@ class ComplainController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(int $id)
+    public function show(Request $request, string $slug, int $id)
     {
         $complain = Complain::find($id);
         if (!$complain) {
@@ -130,9 +130,10 @@ class ComplainController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(ComplainRequest $request, int $id)
+    public function update(ComplainRequest $request, string $slug, int $id)
     {
         $complain = Complain::find($id);
+        $developer = $request->developer;
         $oldImages = @json_decode($complain->images, true) ?? [];
         // $images = @$request->images ?? [];
         $images = array_map(function ($url) {
@@ -160,7 +161,7 @@ class ComplainController extends Controller
                 ])
                     ->find($request->project_unit_id);
             }
-            $complain->developer_id = $request->developer_id;
+            $complain->developer_id = $developer->id;
             $complain->project_id = $request->project_id ?? @$unit?->projectBloc?->projectArea?->project_id;
             $complain->project_area_id = $request->project_area_id ?? @$unit?->projectBloc?->project_area_id;
             $complain->project_unit_id = $request->project_unit_id;
@@ -198,7 +199,7 @@ class ComplainController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateSolve(Request $request, int $id)
+    public function updateSolve(Request $request, string $slug, int $id)
     {
         $complain = Complain::find($id);
         $request->validate(['solved_notes' => 'required']);
@@ -228,7 +229,7 @@ class ComplainController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(int $id)
+    public function destroy(Request $request, string $slug, int $id)
     {
         $complain = Complain::find($id);
         if (!$complain) {

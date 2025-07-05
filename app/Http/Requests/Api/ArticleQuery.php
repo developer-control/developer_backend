@@ -24,7 +24,7 @@ class ArticleQuery extends FormRequest
         return [
             "limit" => 'int|nullable',
             "search" => 'string|nullable',
-            "developer_id" => 'int|nullable',
+
             "tag_id" => 'int|nullable',
             /**
              * Page number

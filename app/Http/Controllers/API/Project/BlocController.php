@@ -22,7 +22,9 @@ class BlocController extends Controller
     public function index(ProjectBlocQuery $request)
     {
         $limit = $request->limit ?? 10;
-        $areas = ProjectBloc::select('id', 'name');
+        $developer = $request->developer;
+        $areas = ProjectBloc::select('id', 'name')
+            ->where('developer_id', $developer->id);
         if ($request->search) {
             $areas->where('name', 'LIKE', '%' . $request->search . '%');
         }

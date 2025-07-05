@@ -31,7 +31,9 @@ class UnitController extends Controller
     public function index(ProjectUnitQuery $request)
     {
         $limit = $request->limit ?? 10;
-        $areas = ProjectUnit::select('id', 'name');
+        $developer = $request->developer;
+        $areas = ProjectUnit::select('id', 'name')
+            ->where('developer_id', $developer->id);
         if ($request->search) {
             $areas->where('name', 'LIKE', '%' . $request->search . '%');
         }
@@ -55,8 +57,9 @@ class UnitController extends Controller
     {
 
         DB::beginTransaction();
+        $developer = $request->developer;
         $unit = UserUnit::create([
-            'developer_id' => $request->developer_id,
+            'developer_id' => $developer->id,
             'project_id' => $request->project_id,
             'project_area_id' => $request->project_area_id,
             'project_bloc_id' => $request->project_bloc_id,
@@ -92,6 +95,8 @@ class UnitController extends Controller
     public function indexMyUnit(UserUnitQuery $request)
     {
         $limit = $request->limit ?? 10;
+        $developer = $request->developer;
+
         $units = UserUnit::select(
             'user_units.*',
             'developers.name as developer_name',
@@ -109,7 +114,8 @@ class UnitController extends Controller
             ->join('project_units', 'user_units.project_unit_id', '=', 'project_units.id')
             ->join('cities', 'user_units.city_id', '=', 'cities.id')
             ->join('ownership_units', 'user_units.ownership_unit_id', '=', 'ownership_units.id')
-            ->where('user_units.user_id', $request->user()->id);
+            ->where('user_units.user_id', $request->user()->id)
+            ->where('user_units.developer_id', $developer->id);
         if ($request->status) {
             $units->where('user_units.status', $request->status);
             if ($request->status == 'claimed' && $request->is_active) {
@@ -143,6 +149,7 @@ class UnitController extends Controller
     public function indexHistoryMyUnit(HistoryUserUnitQuery $request)
     {
         $limit = $request->limit ?? 10;
+        $developer = $request->developer;
         $units = UserUnit::select(
             'user_units.*',
             'developers.name as developer_name',
@@ -161,7 +168,8 @@ class UnitController extends Controller
             ->join('cities', 'user_units.city_id', '=', 'cities.id')
             ->join('ownership_units', 'user_units.ownership_unit_id', '=', 'ownership_units.id')
             ->where('user_units.user_id', $request->user()->id)
-            ->where('user_units.is_active', 0);
+            ->where('user_units.is_active', 0)
+            ->where('user_units.developer_id', $developer->id);
         if ($request->status) {
             $units->where('user_units.status', $request->status);
         }
@@ -185,11 +193,14 @@ class UnitController extends Controller
      * 
      * api for detail of unit user from database
      *
+     * @param  Request $request
+     * @param  string $slug
      * @param  int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function showUnitUser(int $id)
+    public function showUnitUser(Request $request, string $slug, int $id)
     {
+        $developer = $request->developer;
         $unit = UserUnit::select(
             'user_units.*',
             'developers.name as developer_name',
@@ -208,6 +219,7 @@ class UnitController extends Controller
             ->join('cities', 'user_units.city_id', '=', 'cities.id')
             ->join('ownership_units', 'user_units.ownership_unit_id', '=', 'ownership_units.id')
             ->where('user_units.id', $id)
+            ->where('user_units_developer_id', $developer->id)
             ->first();
         if (!$unit) {
             return ApiResponse::success(null, 'unit not found', 200);

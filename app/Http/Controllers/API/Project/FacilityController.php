@@ -23,12 +23,11 @@ class FacilityController extends Controller
     public function index(FacilityQuery $request)
     {
         $limit = $request->limit ?? 10;
-        $facilities = Facility::with(['createdBy:id,name', 'project:id,name,city_id,developer_id', 'developer:id,name']);
+        $developer = $request->developer;
+        $facilities = Facility::with(['createdBy:id,name', 'project:id,name,city_id,developer_id', 'developer:id,name'])
+            ->where('developer_id', $developer->id);
         if ($request->search) {
             $facilities->where('title', 'LIKE', '%' . $request->search . '%');
-        }
-        if ($request->developer_id) {
-            $facilities->where('developer_id', $request->developer_id);
         }
         if ($request->project_id) {
             $facilities->where('project_id', $request->project_id);
@@ -48,9 +47,12 @@ class FacilityController extends Controller
      * @param  string  $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(string $id)
+    public function show(Request $request, string $slug, string $id)
     {
-        $facility = Facility::with(['createdBy:id,name', 'project:id,name,city_id,developer_id', 'developer:id,name'])->find($id);
+        $developer = $request->developer;
+        $facility = Facility::with(['createdBy:id,name', 'project:id,name,city_id,developer_id', 'developer:id,name'])
+            ->where('developer_id', $developer->id)
+            ->find($id);
         if (!$facility) {
             return ApiResponse::success(null, 'facility not found', 200);
         }

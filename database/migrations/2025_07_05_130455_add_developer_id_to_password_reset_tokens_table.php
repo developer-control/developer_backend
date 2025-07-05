@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->unsignedBigInteger('developer_id')->nullable()->index()->after('id');
+        Schema::table('password_reset_tokens', function (Blueprint $table) {
+            $table->unsignedBigInteger('developer_id')->nullable()->index()->after('email');
         });
     }
 
@@ -21,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('password_reset_tokens', function (Blueprint $table) {
             $table->dropColumn('developer_id');
         });
     }

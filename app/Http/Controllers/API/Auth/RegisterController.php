@@ -6,12 +6,10 @@ use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Mail\VerificationCodeMail;
 use App\Models\User;
-use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
 {
@@ -37,10 +35,11 @@ class RegisterController extends Controller
             'phone_number' => 'string|nullable',
         ]);
 
-
+        $developer = $request->developer;
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'developer_id' => $developer->id,
             'phone_number' => $request->phone_number,
             'password' => Hash::make($request->password),
         ]);
@@ -66,8 +65,10 @@ class RegisterController extends Controller
         $request->validate([
             'email' => 'required|email',
         ]);
-
-        $user = User::where('email', $request->email)->first();
+        $developer = $request->developer;
+        $user = User::where('email', $request->email)
+            ->where('developer_id', $developer->id)
+            ->first();
         if (!$user) {
             return ApiResponse::error('User not found', 404);
         }
@@ -105,7 +106,9 @@ class RegisterController extends Controller
             'device_name' => 'string|nullable',
             'device_token' => 'string|nullable',
         ]);
+        $developer = $request->developer;
         $user = User::where('email', $request->email)
+            ->where('developer_id', $developer->id)
             ->where('verification_code', $request->verification_code)
             ->first();
 
