@@ -266,7 +266,7 @@ Breadcrumbs::for('location_city', function (BreadcrumbTrail $trail) {
 // Home > menu_access_card
 Breadcrumbs::for('menu_access_card', function (BreadcrumbTrail $trail) {
     $trail->parent('home');
-    $trail->push('Access Card', route('menu_access_card'));
+    $trail->push('Access Card', route('access-card.index'));
 });
 
 // Home > menu_payment_master
@@ -287,6 +287,21 @@ Breadcrumbs::for('menu_detail_renovation_permit', function (BreadcrumbTrail $tra
     $trail->push('Complain User', route('menu_detail_renovation_permit', ['id' => $resource->id]));
 });
 
+// Home > menu_user
+Breadcrumbs::for('menu_user', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('User', route('user.index'));
+});
+// menu_user > create_user
+Breadcrumbs::for('create_user', function (BreadcrumbTrail $trail) {
+    $trail->parent('menu_user');
+    $trail->push('Create User', route('user.create'));
+});
+// menu_user > edit_user
+Breadcrumbs::for('edit_user', function (BreadcrumbTrail $trail, $resource) {
+    $trail->parent('menu_user');
+    $trail->push('Edit User', route('user.edit', ['id' => $resource->id]));
+});
 
 // tutup dulu ganti model bisnis
 // master_developer > developer_subscription

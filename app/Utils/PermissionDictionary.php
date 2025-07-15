@@ -66,6 +66,7 @@ class PermissionDictionary
         ['name' => 'unit>delete', 'menu' => 'Project Unit', 'group' => 'admin', 'type' => 4],
 
         ['name' => 'unit>request>read', 'menu' => 'Request Klaim Unit', 'group' => 'admin', 'type' => 1],
+        ['name' => 'unit>request>create', 'menu' => 'Request Klaim Unit', 'group' => 'admin', 'type' => 2],
         ['name' => 'unit>request>action', 'menu' => 'Request Klaim Unit', 'group' => 'admin', 'type' => 5],
 
         ['name' => 'unit>request>history>read', 'menu' => 'History Klaim Unit', 'group' => 'admin', 'type' => 1],
@@ -142,6 +143,13 @@ class PermissionDictionary
         ['name' => 'location>city>create', 'menu' => 'City', 'group' => 'admin', 'type' => 2],
         ['name' => 'location>city>edit', 'menu' => 'City', 'group' => 'admin', 'type' => 3],
         ['name' => 'location>city>delete', 'menu' => 'City', 'group' => 'admin', 'type' => 4],
+
+        ['name' => 'user>read', 'menu' => 'User', 'group' => 'admin', 'type' => 1],
+        ['name' => 'user>create', 'menu' => 'User', 'group' => 'admin', 'type' => 2],
+        ['name' => 'user>edit', 'menu' => 'User', 'group' => 'admin', 'type' => 3],
+        ['name' => 'user>delete', 'menu' => 'User', 'group' => 'admin', 'type' => 4],
+
+        ['name' => 'access-card>read', 'menu' => 'Access Card', 'group' => 'admin', 'type' => 1],
     ];
     public static function allPermissions()
     {

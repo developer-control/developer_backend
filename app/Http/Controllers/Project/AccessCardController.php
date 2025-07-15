@@ -9,9 +9,13 @@ use Yajra\DataTables\DataTables;
 
 class AccessCardController extends Controller
 {
+    const ROUTE = 'access-card.';
+    const PERMISSION = 'access-card>';
     public function __construct()
     {
-        $this->middleware(['auth', 'role_or_permission:superadmin|manage access card']);
+        $this->middleware(['auth']);
+        view()->share('this_route', self::ROUTE);
+        view()->share('this_perm', self::PERMISSION);
     }
 
     /**

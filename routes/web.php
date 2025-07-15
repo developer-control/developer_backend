@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\BillController;
 use App\Http\Controllers\Admin\ComplainController;
 use App\Http\Controllers\Admin\PaymentUserController;
 use App\Http\Controllers\Admin\RenovationPermitController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Base\ImageController;
 use App\Http\Controllers\HomeController;
@@ -19,7 +20,6 @@ use App\Http\Controllers\Master\FeatureController;
 use App\Http\Controllers\Master\OwnershipUnitController;
 use App\Http\Controllers\Master\PermissionController;
 use App\Http\Controllers\Master\RolePermissionController;
-use App\Http\Controllers\Master\SubscriptionController;
 use App\Http\Controllers\Master\SupportController;
 use App\Http\Controllers\Post\ArticleController;
 use App\Http\Controllers\Post\BannerController;
@@ -34,6 +34,7 @@ use App\Http\Controllers\Project\UserUnitController;
 use App\Http\Controllers\Setting\FaqController;
 use App\Http\Controllers\Setting\PaymentMasterController;
 use App\Http\Controllers\Setting\TermConditionController;
+use Dedoc\Scramble\Infer\Scope\Index;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -286,6 +287,17 @@ Route::prefix('access-users')->group(function () {
         Route::post('/update/{id}', [PermissionController::class, 'update'])->name('update')->middleware('office.permission:edit');
         Route::delete('/delete/{id}', [PermissionController::class, 'destroy'])->name('delete')->middleware('office.permission:delete');
     });
+
+    Route::prefix('user')->name('user.')->group(function () {
+        Route::get('/', [UserController::class, 'index'])->name('index')->middleware('office.permission:read');
+        Route::get('/datatable', [UserController::class, 'userDatatable'])->name('data')->middleware('office.permission:read');
+        Route::get('/create', [UserController::class, 'create'])->name('create')->middleware('office.permission:create');
+        Route::post('/store', [UserController::class, 'store'])->name('store')->middleware('office.permission:create');
+        Route::get('/edit/{id}', [UserController::class, 'edit'])->name('edit')->middleware('office.permission:edit');
+        Route::post('/update/{id}', [UserController::class, 'update'])->name('update')->middleware('office.permission:edit');
+        Route::delete('/delete/{id}', [UserController::class, 'destroy'])->name('delete')->middleware('office.permission:delete');
+        Route::post('/user-identity', [ImageController::class, 'storeIdentiyUser'])->name('upload-identity');
+    });
 });
 
 Route::prefix('locations')->name('location.')->group(function () {
@@ -310,15 +322,14 @@ Route::prefix('locations')->name('location.')->group(function () {
         Route::get('/option-cities', [CityController::class, 'indexOption'])->name('option');
     });
 });
-
+Route::prefix('access-cards')->name('access-card.')->group(function () {
+    Route::get('/', [AccessCardController::class, 'index'])->name('index')->middleware('office.permission:read');
+    Route::get('/datatable', [AccessCardController::class, 'dataTable'])->name('data')->middleware('office.permission:read');
+});
 
 /**
  * group route master developer
  */
-Route::group(['prefix' => 'access-cards'], function () {
-    Route::get('/', [AccessCardController::class, 'index'])->name('menu_access_card');
-    Route::get('/datatable', [AccessCardController::class, 'dataTable']);
-});
 
 /**
  * group route master developer
@@ -346,12 +357,12 @@ Route::group(['prefix' => 'payment-masters'], function () {
  * route subscription di tutup dulu karena flow diganti ke per developer diakses permission berbeda saja
  * 
  */
-Route::group(['prefix' => 'subscriptions'], function () {
-    Route::get('/', [SubscriptionController::class, 'index'])->name('menu_subscription');
-    Route::get('/datatable', [SubscriptionController::class, 'dataTable']);
-    Route::get('/detail/{id}', [SubscriptionController::class, 'show'])->name('detail_subscription');
-    Route::post('/subscription-feature/{id}', [SubscriptionController::class, 'subscribeFeature'])->name('subscription_feature');
-    Route::post('/create', [SubscriptionController::class, 'store'])->name('store_subscription');
-    Route::post('/update/{id}', [SubscriptionController::class, 'update'])->name('update_subscription');
-    Route::delete('/delete/{id}', [SubscriptionController::class, 'destroy'])->name('delete_subscription');
-});
+// Route::group(['prefix' => 'subscriptions'], function () {
+//     Route::get('/', [SubscriptionController::class, 'index'])->name('menu_subscription');
+//     Route::get('/datatable', [SubscriptionController::class, 'dataTable']);
+//     Route::get('/detail/{id}', [SubscriptionController::class, 'show'])->name('detail_subscription');
+//     Route::post('/subscription-feature/{id}', [SubscriptionController::class, 'subscribeFeature'])->name('subscription_feature');
+//     Route::post('/create', [SubscriptionController::class, 'store'])->name('store_subscription');
+//     Route::post('/update/{id}', [SubscriptionController::class, 'update'])->name('update_subscription');
+//     Route::delete('/delete/{id}', [SubscriptionController::class, 'destroy'])->name('delete_subscription');
+// });

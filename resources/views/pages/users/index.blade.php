@@ -4,10 +4,10 @@
     <link rel="stylesheet" href="{{ asset('assets/src/plugins/datatables/css/responsive.bootstrap5.css') }}">
 @endsection
 @section('breadcrumb')
-    {{ Breadcrumbs::render('menu_bill') }}
+    {{ Breadcrumbs::render('menu_user') }}
 @endsection
 @section('page-title')
-    Tagihan Unit
+    Data User
 @endsection
 @section('content')
     <div class="container-fluid py-4">
@@ -17,42 +17,13 @@
                     <div class="card-header pb-0">
                         <div class="row">
                             <div class="col-md-6">
-                                <h6>Tagihan Unit</h6>
-                                <form action="{{ route('bill.index') }}" method="get">
-                                    <div class="row">
-                                        <div class="form-group mb-1 col-8">
-                                            <select class="rounded form-select @error('status') is-invalid @enderror"
-                                                aria-label="" name="status" id="filter-status">
-                                                <option value=""@if ($request->status == '') selected @endif>All
-                                                </option>
-                                                <option value="not_paid" @if ($request->status == 'not_paid') selected @endif>
-                                                    Belum Dibayar
-                                                </option>
-                                                <option value="pending" @if ($request->status == 'pending') selected @endif>
-                                                    Proses Bayar
-                                                </option>
-                                                <option value="paid" @if ($request->status == 'paid') selected @endif>
-                                                    Dibayar
-                                                </option>
-                                                <option value="cancel" @if ($request->status == 'cancel') selected @endif>
-                                                    Dibatalkan
-                                                </option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group mb-1 col-4">
-                                            <label for="" class="col-form-label"></label>
-                                            <button type="submit" class="btn bg-gradient-primary"> <i
-                                                    class="fas fa-search me-1"></i>filter</button>
-                                        </div>
-                                    </div>
-                                </form>
+                                <h6>Data User</h6>
                             </div>
-
                             <div class="col-md-6 text-end">
                                 @officeCan($this_perm . 'create')
                                     <a href="{{ route($this_route . 'create') }}" class="btn bg-gradient-primary"><i
                                             class="fas fa-plus me-sm-2"></i> Add
-                                        Tagihan</a>
+                                        User</a>
                                 @endofficeCan
                             </div>
                         </div>
@@ -66,27 +37,17 @@
                                             No.
                                         </th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Unit
+                                            Email
                                         </th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Type Tagihan
+                                            Name
                                         </th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Periode Penggunaan
-                                        </th>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Bulan Penagihan
-                                        </th>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Total Tagihan
-                                        </th>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Status
+                                            Verified at
                                         </th>
                                         <th class="text-secondary text-xs font-weight-bolder opacity-7">Action</th>
                                     </tr>
                                 </thead>
-
                             </table>
                         </div>
                     </div>
@@ -94,6 +55,7 @@
             </div>
         </div>
     </div>
+
     <!-- Modal Delete-->
     <div class="modal fade" id="modal-delete" tabindex="-1" role="dialog" aria-labelledby="modal-notification"
         aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
@@ -141,49 +103,32 @@
                     searchable: false
                 },
                 {
-                    data: 'projectunit.name',
-                    name: 'projectunit.name'
+                    data: 'email',
+                    name: 'email'
                 },
                 {
-                    data: 'billtype.name',
-                    name: 'billtype.name'
+                    data: 'name',
+                    name: 'name'
                 },
                 {
-                    data: 'usage_period_at',
-                    name: 'usage_period_at'
-                },
-                {
-                    data: 'billed_at',
-                    name: 'billed_at'
-                },
-                {
-                    data: 'total',
-                    name: 'total'
-                },
-                {
-                    data: 'status',
-                    name: 'status',
+                    data: 'email_verified_at',
+                    name: 'email_verified_at'
                 },
                 {
                     data: 'action',
                     name: 'action',
                     orderable: false,
                     searchable: false
-                },
-            ];
-            let url = {
-                url: "{{ route($this_route . 'data') }}",
-                data: function(d) {
-                    d.status = document.getElementById('filter-status').value;
                 }
-            };
-            initializeDatatable('.datatable', url, columnData)
+            ];
+            initializeDatatable('.datatable', "{{ route($this_route . 'data') }}", columnData)
 
         });
+
         $(document).on("click", ".delete-modal", function() {
             let url = $(this).data('url');
             let name = $(this).data('name');
-            $("#delete-text").html(`Apa anda yakin menghapus tagihan ${name}?`);
+            $("#delete-text").html(`Apa anda yakin menghapus user ${name}?`);
             $('#delete-form').attr('action', url);
         });
     </script>

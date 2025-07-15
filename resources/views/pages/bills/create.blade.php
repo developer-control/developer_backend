@@ -29,8 +29,8 @@
     </div>
 @endsection
 @section('scripts')
-    <script src="{{ asset('assets/js/custom-choices.js') }}"></script>
     <script src="{{ asset('assets/js/custom-numeric.js') }}"></script>
-    <script src="{{ asset('assets/choices/js/choices.min.js') }}"></script>
     <script src="{{ asset('vendor/Auto-Numeric/auto-numeric.js') }}"></script>
+    <script src="{{ asset('assets/js/custom-choices.js') }}"></script>
+    <script src="{{ asset('assets/choices/js/choices.min.js') }}"></script>
 @endsection

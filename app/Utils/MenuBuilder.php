@@ -117,6 +117,14 @@ class MenuBuilder
                     'can' => ['facility>read'],
                     'submenu' => null
                 ],
+                [
+                    'label' => 'Access Card',
+                    'icon' => 'bi bi-credit-card-2-front-fill',
+                    'active' => ['access-card.*'],
+                    'route' => 'access-card.index',
+                    'can' => ['access-card>read'],
+                    'submenu' => null
+                ],
             ]
         ],
         [
@@ -205,10 +213,16 @@ class MenuBuilder
                 [
                     'label' => 'Access User',
                     'icon' => 'fas fa-user-cog ',
-                    'active' => ['role.*', 'permission.*'],
+                    'active' => ['user.*', 'role.*', 'permission.*'],
                     'route' => null,
-                    'can' => ['role>read', 'permission>read'],
+                    'can' => ['user>read', 'role>read', 'permission>read'],
                     'submenu' => [
+                        [
+                            'label' => 'Setting User',
+                            'active' => ['user.*'],
+                            'route' => 'user.index',
+                            'can' => ['user>read']
+                        ],
                         [
                             'label' => 'Master Role',
                             'active' => ['role.*'],

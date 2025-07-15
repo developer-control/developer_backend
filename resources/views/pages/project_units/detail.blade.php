@@ -56,6 +56,15 @@
                             <div class="col-md-6">
                                 <h6>Data Pemilik</h6>
                             </div>
+                            <div class="col-md-6 d-flex justify-content-end">
+                                @if (!$userUnit)
+                                    @officeCan($this_perm . 'request>create')
+                                        <button type="button" class="btn bg-gradient-primary btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#modal-create"><i class="fas fa-plus me-sm-2"></i> Add
+                                            Pemilik</button>
+                                    @endofficeCan
+                                @endif
+                            </div>
                         </div>
                     </div>
                     <div class="card-body">

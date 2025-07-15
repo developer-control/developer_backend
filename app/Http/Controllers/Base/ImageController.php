@@ -192,4 +192,49 @@ class ImageController extends Controller
         $data = ['full_url' => storage_url($file), 'url' => $file];
         return ApiResponse::success($data, 'Upload file success.');
     }
+
+    public function storeIdentiyUser(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|file|mimes:jpg,jpeg,png,pdf|max:6144',
+        ]);
+        if ($request->hasFile('image')) {
+            // Simpan file di storage
+            $file = $request->file('image');
+            $fileMimeType = $file->getMimeType();
+
+            if (strpos($fileMimeType, 'image') !== false) {
+                $filePath = $this->uploadImage($request, 'users/identities', 720);
+            } else {
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $header = [
+                    'ContentType' => $fileMimeType,
+                    'disk' => 'public',
+                ];
+                $filePath = $file->storeAs('users/identities', $fileName, $header);
+            }
+            if ($filePath) {
+                Media::create([
+                    'name' => "User Identity",
+                    'type' => $fileMimeType,
+                    'url' => $filePath,
+                    'alt' => null,
+                    'title' => "User Identity",
+                    'description' => null
+                ]);
+            }
+            return response()->json([
+                'success' => true,
+                'message' => 'File uploaded successfully.',
+                'filePath' => $filePath,
+                'url' => storage_url($filePath)
+                // 'fileName' => $fileName,
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'No file uploaded.',
+        ]);
+    }
 }

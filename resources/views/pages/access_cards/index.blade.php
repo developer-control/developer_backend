@@ -100,7 +100,7 @@
                 }
             ];
             let url = {
-                url: "/access-cards/datatable"
+                url: "{{ route($this_route . 'data') }}"
             };
             initializeDatatable('.datatable', url, columnData)
 
