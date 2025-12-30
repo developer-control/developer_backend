@@ -14,6 +14,7 @@ class PermissionSeeder extends Seeder
      */
     public function run(): void
     {
+        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
         $permissions = PermissionDictionary::allPermissions();
 
         foreach ($permissions as $perm) {
@@ -29,5 +30,7 @@ class PermissionSeeder extends Seeder
                 ]
             );
         }
+        // update cache to know about the newly created permissions (required if using WithoutModelEvents in seeders)
+        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
     }
 }

@@ -53,8 +53,8 @@
                             </div>
                         @endif
                         @foreach ($promotions as $promotion)
-                            <div class="col-xl-3 col-md-6 mb-xl-0 my-3">
-                                <div class="card card-blog card-plain">
+                            <div class="col-xl-3 col-md-6 mb-xl-0 my-3 d-flex">
+                                <div class="card card-blog card-plain h-100 w-100 d-flex flex-column">
                                     <div class="position-relative">
                                         <a class="d-block ratio ratio-16x9">
                                             <img src="{{ storage_url($promotion->image) }}" alt="img-blur-shadow"
@@ -76,7 +76,7 @@
                                             @endofficeCan
                                         </div>
                                     </div>
-                                    <div class="card-body px-1 pb-0">
+                                    <div class="card-body px-1 pb-0 d-flex flex-column">
                                         {{-- <p class="text-secondary mb-0 text-sm">Project #2</p> --}}
                                         <a href="javascript:;">
                                             <h5 class="font-weight-bolder">
@@ -84,11 +84,17 @@
                                             </h5>
                                         </a>
 
-                                        <p class="mb-4 text-sm">
-                                            {{ str($promotion->content)->limit(120) }}
+                                        <div class="mt-auto">
+                                            <p class="mb-4 text-sm">
+                                                {{ str($promotion->content)->limit(120) }}
+                                            </p>
+                                            @role('superadmin')
+                                                <span class="text-muted mt-auto">
+                                                    By {{ optional($promotion->developer)->name ?? 'superadmin' }}
+                                                </span>
+                                            @endrole
 
-                                        </p>
-
+                                        </div>
                                     </div>
                                 </div>
                             </div>

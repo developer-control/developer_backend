@@ -53,8 +53,8 @@
                             </div>
                         @endif
                         @foreach ($banners as $banner)
-                            <div class="col-xl-3 col-md-6 mb-xl-0 my-3">
-                                <div class="card card-blog card-plain">
+                            <div class="col-xl-3 col-md-6 mb-xl-0 my-3 d-flex">
+                                <div class="card card-blog card-plain h-100 w-100 d-flex flex-column">
                                     <div class="position-relative">
                                         <a class="d-block ratio ratio-16x9">
                                             <img src="{{ storage_url($banner->image) }}" alt="img-blur-shadow"
@@ -84,10 +84,16 @@
                                             </h5>
                                         </a>
 
-                                        <p class="mb-4 text-sm">
+                                        <div class="mt-auto" <p class="mb-4 text-sm">
                                             {{ str($banner->content)->limit(120) }}
 
-                                        </p>
+                                            </p>
+                                            @role('superadmin')
+                                                <span class="text-muted mt-auto">
+                                                    By {{ optional($banner->developer)->name ?? 'superadmin' }}
+                                                </span>
+                                            @endrole
+                                        </div>
                                         {{-- <div class="d-flex align-items-center justify-content-between">
                                             <button type="button"
                                                 class="btn btn-outline-primary btn-sm mb-0 mx-2">Detail</button>
