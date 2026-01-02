@@ -167,7 +167,7 @@ class PaymentController extends Controller
                 'file_url' => $request->file_url ? path_image($request->file_url) : null,
                 'paid_at' => now(),
             ]);
-            $input = $request->except(['invoice_code']);
+            $input = $request->except(['invoice_code', 'developer']);
             $paymentData = $payment->paymentData()->create($input);
             $file = Media::where('url', @$input['file_url'])->first();
             if ($file) {
