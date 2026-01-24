@@ -33,6 +33,7 @@ class DetailBillResource extends JsonResource
             'penalty_release' => $this->penalty_release,
             'paid' => $this->paid,
             'total' => $this->total,
+            'status' => $this->status,
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),
         ];

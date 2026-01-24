@@ -60,7 +60,7 @@ class BillController extends Controller
         $bills = Bill::where('project_unit_id', $unit_id)
             ->whereMonth('billed_at', $request->month)
             ->whereYear('billed_at', $request->year)
-            ->where('status', 'not_paid')
+            // ->where('status', 'not_paid')
             ->with([
                 'billType:id,name'
             ]);
