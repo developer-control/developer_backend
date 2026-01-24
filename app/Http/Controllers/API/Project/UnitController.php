@@ -219,7 +219,7 @@ class UnitController extends Controller
             ->join('cities', 'user_units.city_id', '=', 'cities.id')
             ->join('ownership_units', 'user_units.ownership_unit_id', '=', 'ownership_units.id')
             ->where('user_units.id', $id)
-            ->where('user_units_developer_id', $developer->id)
+            ->where('user_units.developer_id', $developer->id)
             ->first();
         if (!$unit) {
             return ApiResponse::success(null, 'unit not found', 200);
