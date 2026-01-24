@@ -32,6 +32,7 @@ class DetailBillQuery extends FormRequest
              * @example 2025
              */
             'year' => ['string', 'required'],
+            'invoice_code' => ['nullable', 'string'],
         ];
     }
 }

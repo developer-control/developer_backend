@@ -64,6 +64,13 @@ class BillController extends Controller
             ->with([
                 'billType:id,name'
             ]);
+        if ($request->filled('invoice_code')) {
+            $bills->whereHas('payments', function ($q) use ($request) {
+                $q->where('payments.invoice_code', $request->invoice_code);
+            });
+        } else {
+            $bills->where('status', 'not_paid');
+        }
         $results = $bills->get();
         return ApiResponse::success(DetailBillResource::collection($results), 'Get list detail bill success');
     }
