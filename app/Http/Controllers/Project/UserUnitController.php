@@ -107,8 +107,7 @@ class UserUnitController extends Controller
                 ->where('id', '<>', $id)
                 ->first();
             if ($oldUnit) {
-                toast('Unit sudah di klaim dengan status kepimilikan yang sama', 'error');
-                return back();
+                throw new \Exception('Unit sudah di klaim dengan status kepimilikan yang sama');
             }
             $unit->status = 'claimed';
             $unit->is_active = 1;
