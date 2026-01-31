@@ -99,7 +99,7 @@ class UserUnitController extends Controller
     {
         DB::beginTransaction();
         try {
-            $unit = UserUnit::find($id);
+            $unit = UserUnit::findOrFail($id);
             $oldUnit = UserUnit::where('ownership_unit_id', $unit->ownership_unit_id)
                 ->where('project_unit_id', $unit->project_unit_id)
                 ->where('status', 'claimed')
