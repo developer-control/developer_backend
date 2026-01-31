@@ -193,6 +193,7 @@ class RenovationPermitController extends Controller
             $this->setMedia($request, $permit, $permit);
             $permit->update($request->all());
             DB::commit();
+            return ApiResponse::success(null, 'Update renovation permit success', 200);
         } catch (\Throwable $th) {
             DB::rollBack();
             return ApiResponse::error($th->getMessage(), 500);

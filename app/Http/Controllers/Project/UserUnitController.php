@@ -135,6 +135,7 @@ class UserUnitController extends Controller
         toast('Klaim unit berhasil di setujui', 'success');
         return back();
     }
+
     public function updateReject(string $id, Request $request)
     {
         DB::beginTransaction();
