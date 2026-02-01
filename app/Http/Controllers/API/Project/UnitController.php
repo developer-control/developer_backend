@@ -55,31 +55,42 @@ class UnitController extends Controller
      */
     public function storeClaimUnit(ClaimUnitRequest $request)
     {
-
-        DB::beginTransaction();
-        $developer = $request->developer;
-        $unit = UserUnit::create([
-            'developer_id' => $developer->id,
-            'project_id' => $request->project_id,
-            'project_area_id' => $request->project_area_id,
-            'project_bloc_id' => $request->project_bloc_id,
-            'project_unit_id' => $request->project_unit_id,
-            'city_id' => $request->city_id,
-            'user_id' => $request->user()->id,
-            'ownership_unit_id' => $request->ownership_unit_id,
-            'status' => 'request',
-            'is_active' => 0,
-        ]);
-        //get media
-        $evidence_file = Media::where('url', path_image($request->evidence_file))->first();
-        if ($evidence_file) {
-            $unit->media()->attach($evidence_file, ['type' => 'image']);
-            $unit->evidence_file = $evidence_file->url;
-            $unit->save();
+        try {
+            DB::beginTransaction();
+            $developer = $request->developer;
+            $oldUnit = UserUnit::where('ownership_unit_id', $request->ownership_unit_id)
+                ->where('project_unit_id', $request->project_unit_id)
+                ->where('status', 'claimed')
+                ->where('is_active', 1)
+                ->first();
+            if ($oldUnit) {
+                throw new \Exception('Unit sudah di klaim dengan status kepimilikan yang sama', '400');
+            }
+            $unit = UserUnit::create([
+                'developer_id' => $developer->id,
+                'project_id' => $request->project_id,
+                'project_area_id' => $request->project_area_id,
+                'project_bloc_id' => $request->project_bloc_id,
+                'project_unit_id' => $request->project_unit_id,
+                'city_id' => $request->city_id,
+                'user_id' => $request->user()->id,
+                'ownership_unit_id' => $request->ownership_unit_id,
+                'status' => 'request',
+                'is_active' => 0,
+            ]);
+            //get media
+            $evidence_file = Media::where('url', path_image($request->evidence_file))->first();
+            if ($evidence_file) {
+                $unit->media()->attach($evidence_file, ['type' => 'image']);
+                $unit->evidence_file = $evidence_file->url;
+                $unit->save();
+            }
+            DB::commit();
+            return ApiResponse::success(null, 'Create request claim unit success', 201);
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return ApiResponse::error($th->getMessage(), $th->getCode());
         }
-        DB::commit();
-
-        return ApiResponse::success(null, 'Create request claim unit success', 201);
     }
 
 

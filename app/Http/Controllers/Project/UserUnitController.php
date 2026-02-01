@@ -141,7 +141,7 @@ class UserUnitController extends Controller
         try {
             $unit = UserUnit::find($id);
 
-            $unit->status = 'failed';
+            $unit->status = 'reject';
             $unit->notes = $request->notes;
             $unit->verified_by = Auth::user()->id;
             $unit->verified_at = now();
